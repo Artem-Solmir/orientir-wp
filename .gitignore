@@ -1,0 +1,20 @@
+# Local secrets (use wp-config.example.php as template)
+/wp-config.php
+
+# Large / generated WordPress data
+/wp-content/uploads/
+/wp-content/cache/
+/wp-content/ai1wm-backups/
+/wp-content/upgrade/
+/wp-content/debug.log
+/wp-content/advanced-cache.php
+/wp-content/object-cache.php
+/wp-content/db.php
+/wp-content/*.w3tc-bak
+
+# Server / IDE
+/webstat/
+/.idea/
+/.vscode/
+Thumbs.db
+Desktop.ini

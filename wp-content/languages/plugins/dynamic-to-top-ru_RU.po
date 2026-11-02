@@ -1,0 +1,298 @@
+# Translation of Plugins - Dynamic &quot;To Top&quot; Plugin - Development (trunk) in Russian
+# This file is distributed under the same license as the Plugins - Dynamic &quot;To Top&quot; Plugin - Development (trunk) package.
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2021-10-16 16:02:21+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2);\n"
+"X-Generator: GlotPress/3.0.0-alpha.2\n"
+"Language: ru\n"
+"Project-Id-Version: Plugins - Dynamic &quot;To Top&quot; Plugin - Development (trunk)\n"
+
+#. Author URI of the plugin/theme
+msgid "http://www.mattvarone.com"
+msgstr "http://www.mattvarone.com"
+
+#. Author of the plugin/theme
+msgid "Matt Varone"
+msgstr "Matt Varone"
+
+#. Description of the plugin/theme
+msgid "Adds an automatic and dynamic \"To Top\" button to scroll long pages back to the top."
+msgstr "Добавляет автоматическую и динамическую кнопку Наверх для прокрутки длинных страниц вверх."
+
+#. Plugin URI of the plugin/theme
+msgid "http://www.mattvarone.com/featured-content/dynamic-to-top/"
+msgstr "http://www.mattvarone.com/featured-content/dynamic-to-top/"
+
+#. Plugin Name of the plugin/theme
+msgid "Dynamic To Top"
+msgstr "Dynamic To Top"
+
+#: inc/dynamic-to-top-options.php:736
+msgid "select a color"
+msgstr "выбрать цвет"
+
+#: inc/dynamic-to-top-options.php:736
+msgid "close"
+msgstr "закрыть"
+
+#: inc/dynamic-to-top-options.php:578
+msgid "Add a subtle text shadow."
+msgstr "Добавьте тонкую текстовую тень."
+
+#: inc/dynamic-to-top-options.php:564
+msgid "Make the text bold."
+msgstr "Сделайте текст жирным."
+
+#: inc/dynamic-to-top-options.php:550
+msgid "Add a CSS3 shadow."
+msgstr "Добавьте CSS3 тень."
+
+#: inc/dynamic-to-top-options.php:536
+msgid "Add CSS3 inset-highlight."
+msgstr "Добавьте подсветку вставки CSS3."
+
+#: inc/dynamic-to-top-options.php:522
+msgid "Show a text version instead of the arrow up icon."
+msgstr "Отображение текстовой версии вместо значка со стрелкой вверх."
+
+#: inc/dynamic-to-top-options.php:508
+msgid "Disable the button on mobile browsers."
+msgstr "Отключите кнопку в мобильных браузерах."
+
+#: inc/dynamic-to-top-options.php:508 inc/dynamic-to-top-options.php:522
+#: inc/dynamic-to-top-options.php:536 inc/dynamic-to-top-options.php:550
+#: inc/dynamic-to-top-options.php:564 inc/dynamic-to-top-options.php:578
+msgid "Yes"
+msgstr "Да"
+
+#: inc/dynamic-to-top-options.php:492
+msgid "Text displayed on the button."
+msgstr "Текст, отображаемый на кнопке."
+
+#: inc/dynamic-to-top-options.php:478
+msgid "Distance from top to show the button. ( Pixels )"
+msgstr "Расстояние кнопки сверху. (px)"
+
+#: inc/dynamic-to-top-options.php:462
+msgid "Button border radius"
+msgstr "Скругление углов кнопки"
+
+#: inc/dynamic-to-top-options.php:448
+msgid "Button border width"
+msgstr "Ширина рамки кнопки"
+
+#: inc/dynamic-to-top-options.php:434
+msgid "Spacing on Left and Right. ( <span id=\"padding-left-right-val\"></span>px )"
+msgstr "Отступы слева и справа. ( <span id=\"padding-left-right-val\"></span>px )"
+
+#: inc/dynamic-to-top-options.php:420
+msgid "Spacing on Top and Bottom. ( <span id=\"padding-top-bottom-val\"></span>px )"
+msgstr "Отступы сверху и снизу. ( <span id=\"padding-top-bottom-val\"></span>px )"
+
+#: inc/dynamic-to-top-options.php:406
+msgid "Button text size. ( <span id=\"font-size-val\"></span> Em/s )"
+msgstr "Размер текста кнопки. ( <span id=\"font-size-val\"></span> Em/s )"
+
+#: inc/dynamic-to-top-options.php:392
+msgid "Time it takes for the page to scroll up. Less for faster. ( <span id=\"speed-val\"></span> Milliseconds )"
+msgstr "Время, необходимое для прокрутки страницы вверх. Меньше - быстрее. ( <span id=\"speed-val\"></span> миллисекунд)"
+
+#: inc/dynamic-to-top-options.php:376
+msgid "Button position."
+msgstr "Положение кнопки."
+
+#: inc/dynamic-to-top-options.php:373
+msgid "Bottom Right"
+msgstr "Внизу справа"
+
+#: inc/dynamic-to-top-options.php:372
+msgid "Bottom Left"
+msgstr "Внизу слева"
+
+#: inc/dynamic-to-top-options.php:371
+msgid "Top Right"
+msgstr "Вверху справа"
+
+#: inc/dynamic-to-top-options.php:370
+msgid "Top Left"
+msgstr "Вверху слева"
+
+#: inc/dynamic-to-top-options.php:355
+msgid "<a href=\"http://gsgd.co.uk/sandbox/jquery/easing\" title=\"Easing type\">Easing type</a> used to scroll the page up."
+msgstr "<a href=\"http://gsgd.co.uk/sandbox/jquery/easing\" title=\"Easing type\">Тип замедления</a>, используемый для прокрутки страницы вверх."
+
+#: inc/dynamic-to-top-options.php:352
+msgid "Elastic"
+msgstr "Эластичный"
+
+#: inc/dynamic-to-top-options.php:351
+msgid "Bounce"
+msgstr "Отскок"
+
+#: inc/dynamic-to-top-options.php:350
+msgid "In Out"
+msgstr "Вход и выход"
+
+#: inc/dynamic-to-top-options.php:349
+msgid "Out"
+msgstr "Вне"
+
+#: inc/dynamic-to-top-options.php:348
+msgid "In"
+msgstr "Внутри"
+
+#: inc/dynamic-to-top-options.php:347
+msgid "Linear"
+msgstr "Линейный"
+
+#: inc/dynamic-to-top-options.php:316 inc/dynamic-to-top-options.php:330
+msgid "Text shadow color."
+msgstr "Цвет тени текста."
+
+#: inc/dynamic-to-top-options.php:302
+msgid "Button text color."
+msgstr "Цвет текста кнопки."
+
+#: inc/dynamic-to-top-options.php:288
+msgid "Background color for the button."
+msgstr "Цвет фона кнопки."
+
+#: inc/dynamic-to-top-options.php:274
+msgid "Color for the button border."
+msgstr "Цвет рамки кнопки."
+
+#: inc/dynamic-to-top-options.php:129
+msgid "white"
+msgstr "белый"
+
+#: inc/dynamic-to-top-options.php:129
+msgid "grey"
+msgstr "серый"
+
+#: inc/dynamic-to-top-options.php:129
+msgid "black"
+msgstr "чёрный"
+
+#: inc/dynamic-to-top-options.php:129
+msgid "Preview over"
+msgstr "Предварительный просмотр за"
+
+#: inc/dynamic-to-top-options.php:108
+msgid "Donate"
+msgstr "Пожертвовать"
+
+#: inc/dynamic-to-top-options.php:108
+msgid "<strong>Dynamic To Top</strong> plugin brought to you by"
+msgstr "Плагин <strong>Dynamic To Top</strong> предоставлен вам"
+
+#: inc/dynamic-to-top-options.php:105
+msgid "Save Changes"
+msgstr "Сохранить изменения"
+
+#: inc/dynamic-to-top-options.php:97
+msgid "here"
+msgstr "здесь"
+
+#: inc/dynamic-to-top-options.php:97
+msgid "Welcome to the <strong>Dynamic To Top</strong> plugin settings. Click %s to learn more about this plugin."
+msgstr "Добро пожаловать в настройки плагина <strong>Dynamic To Top</strong>. Нажмите %s, чтобы узнать больше об этом плагине."
+
+#: inc/dynamic-to-top-options.php:73
+msgid "Shadow"
+msgstr "Тень"
+
+#: inc/dynamic-to-top-options.php:72
+msgid "Inset highlighting"
+msgstr "Подсветка вставки"
+
+#: inc/dynamic-to-top-options.php:71
+msgid "Border radius"
+msgstr "Радиус рамки"
+
+#: inc/dynamic-to-top-options.php:70
+msgid "Border width"
+msgstr "Ширина рамки"
+
+#: inc/dynamic-to-top-options.php:69
+msgid "Border color"
+msgstr "Цвет рамки"
+
+#: inc/dynamic-to-top-options.php:68
+msgid "Background color"
+msgstr "Цвет фона"
+
+#: inc/dynamic-to-top-options.php:67
+msgid "Text shadow color"
+msgstr "Цвет тени текста"
+
+#: inc/dynamic-to-top-options.php:66
+msgid "Text shadow"
+msgstr "Тень текста"
+
+#: inc/dynamic-to-top-options.php:65
+msgid "Bold Text"
+msgstr "Жирный текст"
+
+#: inc/dynamic-to-top-options.php:64
+msgid "Text color"
+msgstr "Цвет текста"
+
+#: inc/dynamic-to-top-options.php:63
+msgid "Font size"
+msgstr "Размер шрифта"
+
+#: inc/dynamic-to-top-options.php:62
+msgid "Sides padding"
+msgstr "Отступы по сторонам"
+
+#: inc/dynamic-to-top-options.php:61
+msgid "Top/bottom padding"
+msgstr "Верхний/Нижний отступ"
+
+#: inc/dynamic-to-top-options.php:60
+msgid "Button text"
+msgstr "Текст кнопки"
+
+#: inc/dynamic-to-top-options.php:59
+msgid "Text version"
+msgstr "Текстовая версия"
+
+#: inc/dynamic-to-top-options.php:57
+msgid "Prevent on mobile"
+msgstr "Запретить на мобильном устройстве"
+
+#: inc/dynamic-to-top-options.php:56
+msgid "Position"
+msgstr "Позиция"
+
+#: inc/dynamic-to-top-options.php:55
+msgid "Easing"
+msgstr "Сглаживание"
+
+#: inc/dynamic-to-top-options.php:54
+msgid "Fade-in distance"
+msgstr "Расстояние затухания"
+
+#: inc/dynamic-to-top-options.php:53
+msgid "Scroll time"
+msgstr "Время прокрутки"
+
+#: inc/dynamic-to-top-options.php:51
+msgid "Appearance"
+msgstr "Внешний вид"
+
+#: inc/dynamic-to-top-options.php:50
+msgid "Behavior"
+msgstr "Поведение"
+
+#: inc/dynamic-to-top-options.php:29 inc/dynamic-to-top-options.php:492
+msgid "To Top"
+msgstr "To Top"
+
+#: inc/dynamic-to-top-options.php:29 inc/dynamic-to-top-options.php:95
+msgid "Dynamic To Top Options"
+msgstr "Настройки Dynamic To Top"

@@ -1,0 +1,11 @@
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2 / 1), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+  #logo .logo-retina {
+    display: inherit; }
+  #logo .logo-retina + .logo-original {
+    display: none; }
+  .post-play-video {
+    background-image: url("../img/icon-play@2x.png"); }
+  .carousel-nav-prev {
+    background: url("../img/carousel-nav-prev@2x.png") no-repeat; }
+  .carousel-nav-next {
+    background: url("../img/carousel-nav-next@2x.png") no-repeat; } }

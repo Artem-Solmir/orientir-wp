@@ -1,0 +1,20 @@
+User-agent: *
+Allow: /wp-content/uploads/
+Disallow: /cgi-bin/
+Disallow: /wp-admin/
+Disallow: /wp-includes/
+Disallow: /wp-content/
+Disallow: /wp-*
+Disallow: */trackback
+Disallow: */comments
+Disallow: */comment-*
+Disallow: */feed
+Disallow: /?s=
+Disallow: /xmlrpc.php
+Host: www.yourdomain.ru
+Sitemap: http://orientir.by/sitemap.xml
+User-agent: Googlebot-Image
+Allow: /*
+Internet Archiver Wayback Machine
+User-agent: ia_archiver
+Disallow: /

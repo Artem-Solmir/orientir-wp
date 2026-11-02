@@ -1,0 +1,284 @@
+# Translation of Plugins - WP-UserOnline - Stable (latest release) in Russian
+# This file is distributed under the same license as the Plugins - WP-UserOnline - Stable (latest release) package.
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2019-01-16 02:52:22+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: GlotPress/2.4.0-alpha\n"
+"Language: ru\n"
+"Project-Id-Version: Plugins - WP-UserOnline - Stable (latest release)\n"
+
+#: wp-useronline.php:76
+msgid "Browsing This Page."
+msgstr "просматривают эту страницу."
+
+#. Author of the plugin
+msgid "Lester 'GaMerZ' Chan"
+msgstr "Lester 'GaMerZ' Chan"
+
+#. Author URI of the plugin
+msgid "https://lesterchan.net"
+msgstr "https://lesterchan.net"
+
+#. Plugin URI of the plugin
+msgid "https://lesterchan.net/portfolio/programming/php/"
+msgstr "https://lesterchan.net/portfolio/programming/php/"
+
+#: wp-useronline.php:67 wp-useronline.php:76
+msgctxt "Template Element"
+msgid "Users"
+msgstr "Пользователей"
+
+#. Description of the plugin
+msgid "Enable you to display how many users are online on your Wordpress site"
+msgstr "Позволяет показывать число пользователей онлайн на вашем сайте WordPress"
+
+#: wp-useronline.php:54
+msgid "1 Bot"
+msgstr "1 робот"
+
+#: wp-useronline.php:59
+msgid "Online"
+msgstr "на сайте"
+
+#: wp-useronline.php:63 wp-useronline.php:64 wp-useronline.php:65
+#: wp-useronline.php:72 wp-useronline.php:73 wp-useronline.php:74
+msgid ","
+msgstr ","
+
+#: wp-useronline.php:55
+msgid "%COUNT% Bots"
+msgstr "%COUNT% поисковых роботов"
+
+#: widget.php:61
+msgid "Users Online Count"
+msgstr "Кол-во посетителей на сайте"
+
+#: widget.php:62
+msgid "Users Browsing Current Page"
+msgstr "Сведения о посетителях текущей страницы"
+
+#: widget.php:63
+msgid "Users Browsing Site"
+msgstr "Имена посетителей сайта"
+
+#: widget.php:65
+msgid "Users Online Count & Users Browsing Current Page"
+msgstr "Кол-во посетителей на сайте и имена посетителей текущей страницы"
+
+#: widget.php:66
+msgid "Users Online Count & Users Browsing Site"
+msgstr "Кол-во и имена посетителей сайта"
+
+#: wp-stats.php:24
+msgid "<strong>%s</strong> user online now."
+msgid_plural "<strong>%s</strong> users online now."
+msgstr[0] "Сейчас на сайте <strong>%s</strong> посетитель."
+msgstr[1] "Сейчас на сайте <strong>%s</strong> посетителя."
+msgstr[2] "Сейчас на сайте <strong>%s</strong> посетителей."
+
+#: wp-useronline.php:48
+msgid "1 User"
+msgstr "1 посетитель"
+
+#: wp-useronline.php:50
+msgid "1 Member"
+msgstr "1 зарегистрированный пользователь"
+
+#: wp-useronline.php:52
+msgid "1 Guest"
+msgstr "1 гость"
+
+#: wp-useronline.php:51
+msgid "%COUNT% Members"
+msgstr "%COUNT% зарегистрированных пользователей"
+
+#: wp-useronline.php:53
+msgid "%COUNT% Guests"
+msgstr "%COUNT% гостей"
+
+#: wp-useronline.php:49
+msgid "%COUNT% Users"
+msgstr "%COUNT% пользователей"
+
+#: widget.php:59
+msgid "Statistics Type:"
+msgstr "Тип статистики:"
+
+#: template-tags.php:194
+msgid "referral"
+msgstr "источник трафика"
+
+#: template-tags.php:205
+msgid "Online Now"
+msgstr " "
+
+#: template-tags.php:250 template-tags.php:252
+msgid "%s @ %s"
+msgstr "%s в %s"
+
+#: template-tags.php:272
+msgid "Most users ever online were <strong>%s</strong>, on <strong>%s</strong>"
+msgstr "Больше всего посетителей (<strong>%s</strong>) здесь было <strong>%s</strong>"
+
+#: widget.php:5
+msgid "WP-UserOnline users online statistics"
+msgstr "Сведения о количестве посетителей на сайте"
+
+#: widget.php:56
+msgid "Title:"
+msgstr "Заголовок:"
+
+#: template-tags.php:193
+msgid "url"
+msgstr "ссылка"
+
+#: template-tags.php:190
+msgid "No one is online now."
+msgstr "Ни одного пользователя онлайн"
+
+#: template-tags.php:80
+msgid "There is <strong>%s</strong> online now: <strong>%s</strong>, <strong>%s</strong> and <strong>%s</strong>."
+msgid_plural "There are a total of <strong>%s</strong> online now: <strong>%s</strong>, <strong>%s</strong> and <strong>%s</strong>."
+msgstr[0] "Онлайн сейчас <strong>%s</strong>: <strong>%s</strong>, <strong>%s</strong> и <strong>%s</strong>."
+msgstr[1] "Онлайн сейчас <strong>%s</strong>: <strong>%s</strong>, <strong>%s</strong> и <strong>%s</strong>."
+msgstr[2] "Онлайн сейчас <strong>%s</strong>: <strong>%s</strong>, <strong>%s</strong> и <strong>%s</strong>."
+
+#: template-tags.php:192
+msgid "on"
+msgstr "&nbsp;&mdash; "
+
+#: core.php:189
+msgid "Admin"
+msgstr "Администратор"
+
+#: scb/AdminPage.php:259
+msgid "Settings <strong>saved</strong>."
+msgstr "Настройки <strong>сохранены</strong>."
+
+#: scb/AdminPage.php:516
+msgid "Settings"
+msgstr "Настройки"
+
+#: core.php:195
+msgid "Archive"
+msgstr "Архив"
+
+#: admin.php:196
+msgid "Singular Form"
+msgstr "Единственное число"
+
+#: admin.php:197
+msgid "Plural Form"
+msgstr "Множественное число"
+
+#: admin.php:227
+msgid "User(s) Online:"
+msgstr "Шаблон &laquo;Посетители&raquo;:"
+
+#: admin.php:233 admin.php:258
+msgid "Restore Default Template"
+msgstr "Восстановить стандартный шаблон"
+
+#: admin.php:264
+msgid "Member Names Separator"
+msgstr "Разделитель списка зарегистрированных пользователей"
+
+#: admin.php:265
+msgid "Guests Separator"
+msgstr "Разделитель списка гостей"
+
+#: admin.php:266
+msgid "Bots Separator"
+msgstr "Разделитель списка роботов"
+
+#: core.php:120
+msgid "Guest"
+msgstr "гость"
+
+#: admin.php:187
+msgid "Naming Conventions:"
+msgstr "Шаблоны обозначения посетителей:"
+
+#: admin.php:188 admin.php:228 admin.php:250
+msgid "Allowed Variables:"
+msgstr "Допустимые переменные:"
+
+#: admin.php:190
+msgid "Restore Defaults"
+msgstr "Вернуть настройки по умолчанию"
+
+#: admin.php:163
+msgid "User(s) Browsing Site:"
+msgstr "Шаблон &laquo;Просматривают сайт&raquo;:"
+
+#: admin.php:164
+msgid "User(s) Browsing Page:"
+msgstr "Шаблон &laquo;Просматривают страницу&raquo;:"
+
+#: admin.php:177
+msgid "Save Changes"
+msgstr "Сохранить изменения"
+
+#: admin.php:151
+msgid "Useronline Templates"
+msgstr "Шаблоны списков посетителей"
+
+#: admin.php:132
+msgid "Link user names to their author page"
+msgstr "Имя пользователя оформлять ссылкой, ведущей на его профиль"
+
+#: admin.php:131
+msgid "No"
+msgstr "Нет"
+
+#: admin.php:113
+msgid "Time Out"
+msgstr "Срок хранения:"
+
+#: admin.php:121
+msgid "UserOnline URL"
+msgstr "URL списка посетителей:"
+
+#: admin.php:131
+msgid "Yes"
+msgstr "Да"
+
+#: admin.php:116
+msgid "How long until it will remove the user from the database (in seconds)."
+msgstr "Сколько времени до удаления пользователя из базы данных (в секундах)"
+
+#: admin.php:124
+msgid "URL To UserOnline Page<br />Example: http://www.yoursite.com/useronline/<br />Example: http://www.yoursite.com/?page_id=2"
+msgstr "URL к странице Пользователи Онлайн<br />Пример: http://www.yoursite.com/useronline/<br />Пример: http://www.yoursite.com/?page_id=2"
+
+#: admin.php:128
+msgid "Link user names?"
+msgstr "Имена пользователей сделать ссылкой?"
+
+#: admin.php:9
+msgid "Users Online Now"
+msgstr "Посетители сайта"
+
+#. Plugin Name of the plugin
+#: wp-stats.php:15 wp-stats.php:32 admin.php:10
+msgid "WP-UserOnline"
+msgstr "Посетители сайта"
+
+#: widget.php:6 widget.php:49 admin.php:56
+msgid "UserOnline"
+msgstr "Посетители сайта"
+
+#: admin.php:26
+msgid "There is <strong><a href='%s'>%s user</a></strong> online now."
+msgid_plural "There are a total of <strong><a href='%s'>%s users</a></strong> online now."
+msgstr[0] "Сейчас всего <strong><a href='%s'>%s пользователь</a></strong> онлайн."
+msgstr[1] "Сейчас всего <strong><a href='%s'>%s пользователя</a></strong> онлайн."
+msgstr[2] "Сейчас всего <strong><a href='%s'>%s пользователей</a></strong> онлайн."
+
+#: admin.php:55
+msgid "UserOnline Options"
+msgstr "Настройки плагина UserOnline"

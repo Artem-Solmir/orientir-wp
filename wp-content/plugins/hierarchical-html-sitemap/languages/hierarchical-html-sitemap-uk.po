@@ -1,0 +1,38 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Hierarchical HTML Sitemap\n"
+"POT-Creation-Date: 2018-06-16 06:58+0300\n"
+"PO-Revision-Date: 2018-06-16 06:59+0300\n"
+"Last-Translator: Alexandra Vovk <avovkdesign@gmail.com>\n"
+"Language-Team: WP Puzzle <wppuzzle@gmail.com>\n"
+"Language: uk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.0.8\n"
+"X-Poedit-Basepath: .\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Poedit-KeywordsList: __;_e;_x;_\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../hierarchical-sitemap.php:14
+msgid "Hierarchical HTML Sitemap"
+msgstr "Ієрархічна HTML карта сайту"
+
+#: ../hierarchical-sitemap.php:15
+msgid ""
+"Generates hierarchical HTML sitemap wich displays hierarchically sorted "
+"categories with posts links. You need add <code>[htmlmap]</code> shortcode "
+"at any page. It's working easy and fast. Super lightweight PHP code, without "
+"external CSS/JS files."
+msgstr ""
+"Генерує HTML карту сайту, яка виводить список записів, розбитих за рубриками "
+"і відсортованих з урахуванням вкладеності (ієрархії). Додайте карту сайту на "
+"будь-якій сторінці шорткодом <code>[htmlmap]</code>. Плагін працює швидко, "
+"має неймовірно простий PHP код, не підключає ніяких зовнішніх CSS/JS фалів."
+
+#: ../hierarchical-sitemap.php:223
+msgid "All Pages"
+msgstr "Всі сторінки"

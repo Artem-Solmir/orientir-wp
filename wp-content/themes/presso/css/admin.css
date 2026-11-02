@@ -1,0 +1,565 @@
+/* -----------------------------------------------------------------------------
+ * Page section editor
+ * -------------------------------------------------------------------------- */
+.page-sections-editor #page-section-template {
+  display: none; }
+
+.page-sections-editor .page-section-options .section-padding-top, .page-sections-editor .page-section-options .section-padding-bottom {
+  width: 5em; }
+
+.page-sections-editor .page-section-options .wp-picker-container {
+  vertical-align: bottom; }
+
+.page-sections-editor .page-section-options textarea {
+  width: 100%; }
+
+.page-sections-editor button i {
+  font-size: 10px; }
+
+.page-sections {
+  border: 1px solid #ccc;
+  padding: 10px;
+  background-color: white;
+  min-height: 150px; }
+  .page-sections > .page-section {
+    position: relative;
+    display: block;
+    border: 1px solid #dfdfdf;
+    background-color: white;
+    border-radius: 2px;
+    box-shadow: inset 0 1px rgba(255, 255, 255, 0.2), 0 1px 3px rgba(0, 0, 0, 0.1); }
+    .page-sections > .page-section .optional {
+      font-style: italic;
+      color: #bbb; }
+    .page-sections > .page-section .meta-box {
+      background-color: #f9f9f9;
+      padding: rhythm(0.5); }
+    .page-sections > .page-section .section-name {
+      font-weight: bold;
+      cursor: move;
+      margin-top: 10px;
+      margin-left: 10px; }
+    .page-sections > .page-section .bg-thumbnail {
+      background-color: white;
+      border: 1px solid white;
+      border-radius: 3px;
+      display: inline-block;
+      vertical-align: middle;
+      overflow: hidden;
+      position: relative;
+      float: left;
+      width: 100px;
+      height: 36px;
+      margin-right: 1em; }
+      .page-sections > .page-section .bg-thumbnail img {
+        position: absolute;
+        max-height: 100%;
+        width: auto; }
+    .page-sections > .page-section .toolbox {
+      display: inline-block;
+      margin: 5px 0 5px 10px;
+      float: right; }
+
+/* -----------------------------------------------------------------------------
+ * Review items
+ * -------------------------------------------------------------------------- */
+#vw_review .field-review-summary, #vw_review .field-review-score {
+  display: none; }
+
+.review-scores {
+  margin: 15px 0;
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 2px;
+  border: 1px solid #ddd; }
+  .review-scores .review-score-row {
+    border: 1px solid #ddd;
+    background-color: #F1F1F1;
+    background: -webkit-linear-gradient(bottom, #ECECEC, #F9F9F9);
+    background: linear-gradient(to top, #ECECEC, #F9F9F9);
+    border-radius: 2px;
+    padding: 5px 10px 5px 5px;
+    position: relative; }
+    .review-scores .review-score-row i {
+      color: #ccc; }
+      .review-scores .review-score-row i:hover {
+        color: #3FACD6; }
+    .review-scores .review-score-row .move-icon {
+      font-size: 24px;
+      line-height: 1em;
+      vertical-align: middle;
+      margin-right: 10px;
+      cursor: move; }
+    .review-scores .review-score-row .delete-icon {
+      font-size: 16px;
+      line-height: 1em;
+      position: absolute;
+      top: 50%;
+      right: 5px;
+      cursor: pointer;
+      margin-top: -0.5em; }
+    .review-scores .review-score-row .review-score-label {
+      font-size: 11px;
+      color: #666;
+      font-weight: bold;
+      margin-right: 5px; }
+    .review-scores .review-score-row .rwmb-text {
+      width: 40%;
+      margin-right: 10px; }
+  .review-scores .review-score-row + .review-score-row {
+    margin-top: 5px; }
+
+/* -----------------------------------------------------------------------------
+ * Custom Bootstrap Modal
+ * -------------------------------------------------------------------------- */
+.modal-open {
+  overflow: hidden; }
+
+body.modal-open,
+.modal-open .navbar-fixed-top,
+.modal-open .navbar-fixed-bottom {
+  margin-right: 15px; }
+
+.vwsce-modal {
+  display: none;
+  overflow: auto;
+  overflow-y: scroll;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1040; }
+
+.vwsce-modal.fade .vwsce-modal-dialog {
+  -webkit-transform: translate(0, -25%);
+  -ms-transform: translate(0, -25%);
+  transform: translate(0, -25%);
+  -webkit-transition: -webkit-transform 0.3s ease-out;
+  -moz-transition: -moz-transform 0.3s ease-out;
+  -o-transition: -o-transform 0.3s ease-out;
+  transition: transform 0.3s ease-out; }
+
+.vwsce-modal.in .vwsce-modal-dialog {
+  -webkit-transform: translate(0, 0);
+  -ms-transform: translate(0, 0);
+  transform: translate(0, 0); }
+
+.vwsce-modal-dialog {
+  margin-left: auto;
+  margin-right: auto;
+  width: auto;
+  padding: 10px;
+  z-index: 1050; }
+
+.vwsce-modal-content {
+  position: relative;
+  background-color: #ffffff;
+  border: 1px solid #999999;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+  -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+  background-clip: padding-box;
+  outline: none; }
+
+.vwsce-modal-backdrop {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1030;
+  background-color: #000000; }
+
+.vwsce-modal-backdrop.fade {
+  opacity: 0;
+  filter: alpha(opacity=0); }
+
+.vwsce-modal-backdrop.in {
+  opacity: 0.5;
+  filter: alpha(opacity=50); }
+
+.vwsce-modal-header {
+  padding: 15px;
+  border-bottom: 1px solid #e5e5e5;
+  min-height: 16.428571429px; }
+
+.vwsce-modal-header .close {
+  margin-top: -2px; }
+
+.vwsce-modal-title {
+  margin: 0;
+  line-height: 1.428571429; }
+
+.vwsce-modal-body {
+  position: relative;
+  padding: 20px; }
+
+.vwsce-modal-footer {
+  margin-top: 15px;
+  padding: 19px 20px 20px;
+  text-align: right;
+  border-top: 1px solid #e5e5e5; }
+
+.vwsce-modal-footer:before,
+.vwsce-modal-footer:after {
+  content: " ";
+  /* 1 */
+  display: table;
+  /* 2 */ }
+
+.vwsce-modal-footer:after {
+  clear: both; }
+
+.vwsce-modal-footer .btn + .btn {
+  margin-left: 5px;
+  margin-bottom: 0; }
+
+.vwsce-modal-footer .btn-group .btn + .btn {
+  margin-left: -1px; }
+
+.vwsce-modal-footer .btn-block + .btn-block {
+  margin-left: 0; }
+
+@media screen and (min-width: 768px) {
+  .vwsce-modal-dialog {
+    left: 50%;
+    right: auto;
+    width: 600px;
+    padding-top: 30px;
+    padding-bottom: 30px; }
+  .vwsce-modal-content {
+    -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); } }
+
+.modal-backdrop {
+  z-index: 10000; }
+
+.vwsce-modal {
+  z-index: 10001; }
+
+/* -----------------------------------------------------------------------------
+ * Custom Bootstrap Dropdown
+ * -------------------------------------------------------------------------- */
+.rtl #vwpc-container .dropdown-menu {
+  left: auto;
+  right: 0; }
+
+/* -----------------------------------------------------------------------------
+ * Tinymce
+ * -------------------------------------------------------------------------- */
+.mceButton.mce_vw_shortcodes .mceIcon,
+.mce-vw_shortcodes .mce-ico {
+  background: url("../img/shortcode-icon.png"); }
+
+/* -----------------------------------------------------------------------------
+ * Shortcode Editor
+ * -------------------------------------------------------------------------- */
+/* -----------------------------------------------------------------------------
+ * Field
+ * -------------------------------------------------------------------------- */
+.vwsce-field {
+  padding-top: 20px;
+  padding-bottom: 20px; }
+  .vwsce-field + .vwsce-field {
+    border-top: 1px solid #eee; }
+  .vwsce-field.clearfix:before, .vwsce-field.clearfix:after {
+    content: " ";
+    display: table; }
+  .vwsce-field.clearfix:after {
+    clear: both; }
+
+.vwsce-field-title {
+  font-weight: bold; }
+
+.vwsce-field-description {
+  font-size: 0.9em;
+  color: #666; }
+
+.vwsce-field-body input[type=text], .vwsce-field-body textarea, .vwsce-field-body select {
+  width: 100%; }
+
+.vwsce-field-body input[type=text].color-picker {
+  width: 80px; }
+
+.vwsce-field-body textarea {
+  height: 10em; }
+
+.vwsce-field.one-column-field .vwsce-field-description {
+  margin-bottom: 15px; }
+
+.vwsce-field.two-column-field .vwsce-field-body, .vwsce-field.two-column-field .vwsce-field-description-container {
+  width: 49%; }
+
+.vwsce-field.two-column-field .vwsce-field-description-container {
+  float: right; }
+
+/* -----------------------------------------------------------------------------
+ * Modal Dialog
+ * -------------------------------------------------------------------------- */
+.modal-title {
+  font-size: 16px; }
+
+/* -----------------------------------------------------------------------------
+ * Icon Field
+ * -------------------------------------------------------------------------- */
+.vwsce-field-icon {
+  /* empty */ }
+
+.vwsce-available-icons {
+  height: 275px;
+  overflow-y: scroll;
+  padding-left: 1px;
+  border: 1px solid #ddd;
+  margin-left: -1px; }
+  .vwsce-available-icons i {
+    display: inline-block;
+    background-color: #ffffff;
+    border: 1px solid #eeeeee;
+    width: 50px;
+    line-height: 50px;
+    text-align: center;
+    cursor: pointer;
+    margin-left: -2px;
+    margin-top: -2px;
+    font-size: 14px;
+    -webkit-transition: all 0.1s ease-out;
+    -moz-transition: all 0.1s ease-out;
+    transition: all 0.1s ease-out; }
+    .vwsce-available-icons i:hover {
+      color: #ff7700;
+      z-index: 1;
+      -webkit-backface-visibility: hidden;
+      -webkit-transform: scale(1.2);
+      -moz-transform: scale(1.2);
+      -ms-transform: scale(1.2);
+      -o-transform: scale(1.2);
+      transform: scale(1.2); }
+      .vwsce-available-icons i:hover:before {
+        font-size: 1.2em; }
+  .vwsce-available-icons .selected-icon, .vwsce-available-icons .selected-icon:hover {
+    color: #ffffff;
+    background-color: #1d7bcb; }
+
+/* -----------------------------------------------------------------------------
+ * Image Field
+ * -------------------------------------------------------------------------- */
+.vwsce-field-image > img {
+  border: 1px solid #ddd;
+  padding: 5px;
+  border-radius: 3px;
+  max-width: 90%;
+  max-height: 400px;
+  margin-top: 15px; }
+
+.vwsce-field-image .vwsce-insert-media {
+  margin-right: 5px; }
+
+/* -----------------------------------------------------------------------------
+ * Page Composer
+ * -------------------------------------------------------------------------- */
+#vwpc-container {
+  background-color: #f6f6f6;
+  border-radius: 3px;
+  border: 1px solid #DFDFDF;
+  margin-bottom: 20px;
+  position: relative; }
+
+.vwpc-add-section-menu {
+  position: absolute; }
+
+.vwpc-toolbox {
+  padding: 10px;
+  background-image: -webkit-linear-gradient(bottom, #ECECEC, #F9F9F9);
+  background-image: linear-gradient(to top, #ECECEC, #F9F9F9); }
+  .vwpc-toolbox .dropdown a {
+    text-decoration: none;
+    font-size: 12px; }
+  .vwpc-toolbox .dropdown .caret {
+    border-top-color: #fff; }
+
+.vwpc-sections {
+  padding: 10px;
+  border-top: 1px solid #DFDFDF;
+  min-height: 50px; }
+  .vwpc-sections .vwpc-section-empty {
+    border: 1px dashed #ddd;
+    margin: 10px;
+    padding: 10px;
+    color: #999;
+    display: none; }
+    .vwpc-sections .vwpc-section-empty:last-child {
+      display: block; }
+  .vwpc-sections .vwpc-section-loading {
+    margin: 10px;
+    padding: 10px;
+    color: #999;
+    text-align: center; }
+    .vwpc-sections .vwpc-section-loading i {
+      -webkit-animation: loading-spin 2s infinite linear;
+      -moz-animation: loading-spin 2s infinite linear;
+      animation: loading-spin 2s infinite linear;
+      display: inline-block; }
+
+@-webkit-keyframes loading-spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg); }
+  100% {
+    -webkit-transform: rotate(359deg);
+    -moz-transform: rotate(359deg);
+    -ms-transform: rotate(359deg);
+    -o-transform: rotate(359deg);
+    transform: rotate(359deg); } }
+
+@-moz-keyframes loading-spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg); }
+  100% {
+    -webkit-transform: rotate(359deg);
+    -moz-transform: rotate(359deg);
+    -ms-transform: rotate(359deg);
+    -o-transform: rotate(359deg);
+    transform: rotate(359deg); } }
+
+@keyframes loading-spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg); }
+  100% {
+    -webkit-transform: rotate(359deg);
+    -moz-transform: rotate(359deg);
+    -ms-transform: rotate(359deg);
+    -o-transform: rotate(359deg);
+    transform: rotate(359deg); } }
+
+.vwpc-sortable-placeholder {
+  display: block;
+  margin: 10px;
+  border: 1px dashed #ccc; }
+
+.vwpc-section {
+  margin: 10px;
+  background-color: #fff;
+  border: 1px solid #DFDFDF;
+  border-radius: 3px;
+  box-shadow: inset 0 1px 0 #FFF; }
+  .vwpc-section .vwpc-section-bar {
+    padding: 10px; }
+  .vwpc-section .vwpc-section-label, .vwpc-section [class^="icon-"], .vwpc-section [class*=" icon-"] {
+    font-size: 16px;
+    line-height: 16px;
+    vertical-align: middle; }
+  .vwpc-section .vwpc-section-label {
+    font-size: inherit;
+    font-weight: bold;
+    display: inline-block;
+    cursor: move; }
+  .vwpc-section .vwpc-section-toolbox {
+    float: right; }
+  .vwpc-section .vwpc-section-handle {
+    cursor: move;
+    padding-right: 10px;
+    margin-right: 10px;
+    border-right: 1px solid #DFDFDF; }
+
+.vwpc-section-options {
+  padding: 10px 15px;
+  background-color: #f9f9f9;
+  background-image: -webkit-linear-gradient(top, #f0f0f0 0%, #f9f9f9 4%);
+  background-image: linear-gradient(to bottom, #f0f0f0 0%, #f9f9f9 4%);
+  border-top: 1px solid #DFDFDF; }
+  .vwpc-section-options .vwpc-section-option + .vwpc-section-option {
+    margin-top: 15px; }
+  .vwpc-section-options .vwpc-section-option-label-wrapper {
+    display: block; }
+  .vwpc-section-options .vwpc-section-option-label {
+    font-weight: bold;
+    margin-top: 5px;
+    display: block; }
+  .vwpc-section-options .vwpc-section-option-description {
+    font-size: 11px;
+    opacity: 0.7; }
+  .vwpc-section-options .vwpc-section-option-field-wrapper {
+    display: block; }
+  .vwpc-section-options input[type=text], .vwpc-section-options select {
+    min-width: 50%; }
+  .vwpc-section-options input[type=number] {
+    min-width: 100px; }
+  .vwpc-section-options textarea {
+    width: 100%;
+    min-height: 150px; }
+
+.vwpc-section-option.vwpc-section-option-2-columns .vwpc-section-option-label-wrapper {
+  width: 30%;
+  display: inline-block;
+  vertical-align: top; }
+
+.vwpc-section-option.vwpc-section-option-2-columns .vwpc-section-option-field-wrapper {
+  width: 69%;
+  display: inline-block;
+  vertical-align: top; }
+
+/* -----------------------------------------------------------------------------
+ * Theme Options
+ * -------------------------------------------------------------------------- */
+#redux-opts-header {
+  background: url("../img/theme-options-logo.png") no-repeat; }
+
+.color-schemes .color-scheme {
+  display: inline-block;
+  width: 24%;
+  padding: 3px 10px 3px 5px;
+  margin-top: 5px;
+  margin-right: 5px;
+  font-size: 10px;
+  color: white;
+  text-decoration: none; }
+  .color-schemes .color-scheme:hover {
+    outline: 2px solid #ddd; }
+  .color-schemes .color-scheme .accent {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin: 0 5px; }
+
+/* -----------------------------------------------------------------------------
+ * Utility Classes
+ * -------------------------------------------------------------------------- */
+.page-sections-editor .clearfix {
+  *zoom: 1; }
+
+.page-sections-editor .clearfix:before, .page-sections-editor .clearfix:after {
+  display: table;
+  content: "";
+  line-height: 0; }
+
+.page-sections-editor .clearfix:after {
+  clear: both; }
+
+/* -----------------------------------------------------------------------------
+ * Widget Editor - Envirra Categories
+ * -------------------------------------------------------------------------- */
+.vw-category-checklist {
+  padding: 5px;
+  background-color: #fff;
+  border: 1px solid #DDD;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.07);
+  height: 150px;
+  overflow-y: scroll; }
+  .vw-category-checklist li {
+    list-style: none; }
+  .vw-category-checklist ul {
+    padding: 5px 0 5px 15px; }
