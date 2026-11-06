@@ -108,7 +108,7 @@ describe("transformBody (golden)", () => {
     const out = transformBody(raw);
     expect(out).toBe(
       '<p>Первый абзац<br />вторая строка</p>\n' +
-        '<figure class="wp-caption aligncenter"><img src="/wp-content/uploads/a.jpg" alt="x" /><figcaption>Подпись</figcaption></figure>\n' +
+        '<figure class="wp-caption aligncenter"><img src="/wp-content/uploads/a.jpg" alt="x" loading="lazy" decoding="async" /><figcaption>Подпись</figcaption></figure>\n' +
         "<p>Конец</p>",
     );
   });

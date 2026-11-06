@@ -69,7 +69,7 @@ export const SANITIZE: sanitizeHtml.IOptions = {
   ],
   allowedAttributes: {
     a: ["href", "title", "target", "rel"],
-    img: ["src", "alt", "width", "height", "class", "title"],
+    img: ["src", "alt", "width", "height", "class", "title", "loading", "decoding"],
     figure: ["class"],
     div: ["data-gallery", "data-form"],
     th: ["colspan", "rowspan"],
@@ -83,7 +83,10 @@ export const SANITIZE: sanitizeHtml.IOptions = {
   },
   allowedSchemes: ["http", "https", "mailto", "tel"],
   allowedIframeHostnames: IFRAME_HOSTS,
-  transformTags: { a: sanitizeHtml.simpleTransform("a", { rel: "noopener" }, true) },
+  transformTags: {
+    a: sanitizeHtml.simpleTransform("a", { rel: "noopener" }, true),
+    img: sanitizeHtml.simpleTransform("img", { loading: "lazy", decoding: "async" }, true),
+  },
 };
 
 export function sanitize(html: string): string {

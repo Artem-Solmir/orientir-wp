@@ -1,15 +1,28 @@
 import Link from "next/link";
+import { Sections } from "@/components/sections";
+import { getPage } from "@/lib/content";
 
-// Placeholder layout for Phase 1. The real home page (Page Composer sections) lands in Phase 3.
-export default function Home() {
+export const revalidate = 3600;
+
+const HOME_SLUG = "home";
+
+export default async function Home() {
+  const home = await getPage(HOME_SLUG);
   return (
-    <main className="mx-auto flex min-h-screen max-w-3xl flex-col items-start justify-center gap-6 p-8">
-      <h1 className="text-3xl font-semibold">Ориентир</h1>
-      <p className="text-neutral-600">Сайт в разработке.</p>
-      <nav className="flex gap-4 underline">
-        <Link href="/login">Вход</Link>
-        <Link href="/register">Регистрация</Link>
-      </nav>
-    </main>
+    <div className="container">
+      <section className="hero">
+        <h1>Клуб туризма «Ориентир»</h1>
+        <p>Отчёты, планы и новости: походы, велопоходы и приключенческие гонки.</p>
+        <div className="actions">
+          <Link href="/archive" className="btn btn--primary">
+            Свежие записи
+          </Link>
+          <Link href="/plany" className="btn btn--secondary">
+            Планы клуба
+          </Link>
+        </div>
+      </section>
+      {home && <Sections sections={home.sections} page={1} pageBase="/" />}
+    </div>
   );
 }

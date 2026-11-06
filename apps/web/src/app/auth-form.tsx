@@ -8,26 +8,23 @@ type Props = {
   mode: "login" | "register";
 };
 
-const field =
-  "w-full rounded border border-neutral-300 px-3 py-2 text-neutral-900 focus:outline-2 focus:outline-offset-2 focus:outline-blue-700";
-
 export function AuthForm({ action, mode }: Props) {
   const [state, formAction, pending] = useActionState(action, undefined);
   const register = mode === "register";
 
   return (
-    <form action={formAction} className="flex w-full max-w-sm flex-col gap-4">
+    <form action={formAction} className="form">
       {register && (
-        <label className="flex flex-col gap-1">
+        <label className="field">
           Имя
-          <input name="name" type="text" autoComplete="name" required minLength={2} maxLength={80} className={field} />
+          <input name="name" type="text" autoComplete="name" required minLength={2} maxLength={80} className="input" />
         </label>
       )}
-      <label className="flex flex-col gap-1">
+      <label className="field">
         Email
-        <input name="email" type="email" autoComplete="email" required maxLength={254} className={field} />
+        <input name="email" type="email" autoComplete="email" required maxLength={254} className="input" />
       </label>
-      <label className="flex flex-col gap-1">
+      <label className="field">
         Пароль
         <input
           name="password"
@@ -36,19 +33,15 @@ export function AuthForm({ action, mode }: Props) {
           required
           minLength={register ? 10 : 1}
           maxLength={128}
-          className={field}
+          className="input"
         />
       </label>
       {state?.error && (
-        <p role="alert" className="text-red-700">
+        <p role="alert" className="error">
           {state.error}
         </p>
       )}
-      <button
-        type="submit"
-        disabled={pending}
-        className="rounded bg-neutral-900 px-4 py-2 text-white disabled:opacity-60"
-      >
+      <button type="submit" disabled={pending} className="btn btn--primary">
         {register ? "Зарегистрироваться" : "Войти"}
       </button>
     </form>

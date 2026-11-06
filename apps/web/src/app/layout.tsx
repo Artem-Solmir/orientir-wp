@@ -1,29 +1,31 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Manrope, Prata } from "next/font/google";
+import { SiteFooter, SiteHeader } from "@/components/site-chrome";
+import { SITE_DESCRIPTION, SITE_NAME, siteUrl } from "@/lib/site";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const prata = Prata({ weight: "400", subsets: ["latin", "cyrillic"], variable: "--font-prata", display: "swap" });
+const manrope = Manrope({ subsets: ["latin", "cyrillic"], variable: "--font-manrope", display: "swap" });
 
 export const metadata: Metadata = {
-  title: { default: "Ориентир", template: "%s | Ориентир" },
-  description: "Ориентир",
+  metadataBase: new URL(siteUrl()),
+  title: { default: SITE_NAME, template: `%s | ${SITE_NAME}` },
+  description: SITE_DESCRIPTION,
+  openGraph: { siteName: SITE_NAME, locale: "ru_RU", type: "website" },
+  alternates: { types: { "application/rss+xml": "/feed" } },
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html
-      lang="ru"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col">{children}</body>
+    <html lang="ru" className={`${prata.variable} ${manrope.variable}`}>
+      <body>
+        <a className="skip-link" href="#content">
+          К содержимому
+        </a>
+        <SiteHeader />
+        <main id="content">{children}</main>
+        <SiteFooter />
+      </body>
     </html>
   );
 }

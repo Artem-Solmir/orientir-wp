@@ -34,7 +34,7 @@ describe("every allowed tag survives sanitize", () => {
   it("keeps void tags", () => {
     expect(sanitize("a<br />b")).toBe("a<br />b");
     expect(sanitize("<hr />")).toBe("<hr />");
-    expect(sanitize('<img src="/a.jpg" alt="x" />')).toBe('<img src="/a.jpg" alt="x" />');
+    expect(sanitize('<img src="/a.jpg" alt="x" />')).toBe('<img src="/a.jpg" alt="x" loading="lazy" decoding="async" />');
   });
 
   it("keeps video with src and controls only", () => {

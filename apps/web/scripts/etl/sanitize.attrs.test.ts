@@ -6,7 +6,7 @@ const attrs = SANITIZE.allowedAttributes as Record<string, string[]>;
 const sample: Record<string, string> = {
   href: "/x", title: "t", target: "_blank", rel: "nofollow", src: "/a.jpg", alt: "a", width: "10", height: "20",
   class: "aligncenter", "data-gallery": "5", "data-form": "contact", colspan: "2", rowspan: "3",
-  allowfullscreen: "", frameborder: "0", controls: "",
+  allowfullscreen: "", frameborder: "0", controls: "", loading: "eager", decoding: "sync",
 };
 
 function html(tag: string, attr: string): string {

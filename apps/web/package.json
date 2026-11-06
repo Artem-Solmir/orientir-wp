@@ -12,6 +12,7 @@
     "dup": "jscpd",
     "mutate": "stryker run",
     "etl": "tsx --env-file=.env scripts/etl/run.ts",
+    "golden": "tsx --env-file=.env scripts/golden-urls.ts",
     "etl:verify": "tsx --env-file=.env scripts/etl/verify.ts",
     "db:up": "docker compose up -d",
     "db:migrate": "prisma migrate dev",
