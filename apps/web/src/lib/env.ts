@@ -3,7 +3,6 @@ import { z } from "zod";
 
 const schema = z.object({
   DATABASE_URL: z.string().url(),
-  AUTH_SECRET: z.string().min(32),
   AGENT_API_TOKEN: z.string().min(32),
   APP_URL: z.string().url(),
 });

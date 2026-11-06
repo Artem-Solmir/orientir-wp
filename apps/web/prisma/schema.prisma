@@ -7,11 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Role {
-  user
-  owner
-}
-
 enum ContentStatus {
   draft
   published
@@ -21,26 +16,6 @@ enum ContentStatus {
 enum PageTemplate {
   default
   composer
-}
-
-model User {
-  id             String    @id @default(cuid())
-  email          String    @unique
-  name           String
-  passwordHash   String
-  role           Role      @default(user)
-  // Incremented to revoke every issued JWT session of this user.
-  sessionVersion Int       @default(0)
-  // Social/profile fields (plain text, validated by Zod, never rendered as HTML).
-  bio            String?
-  website        String?
-  vk             String?
-  telegram       String?
-  legacyWpId     Int?      @unique
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
-  posts          Post[]
-  auditLogs      AuditLog[]
 }
 
 model Post {
@@ -58,8 +33,6 @@ model Post {
   seoDescription String?
   coverId     String?
   cover       MediaAsset?   @relation("PostCover", fields: [coverId], references: [id], onDelete: SetNull)
-  authorId    String?
-  author      User?         @relation(fields: [authorId], references: [id], onDelete: SetNull)
   // Attribution for historical posts whose author is not migrated.
   authorName  String?
   legacyWpId  Int?          @unique
@@ -172,9 +145,7 @@ model LegacyRedirect {
 
 model AuditLog {
   id        String   @id @default(cuid())
-  actorId   String?
-  actor     User?    @relation(fields: [actorId], references: [id], onDelete: SetNull)
-  // "agent" for the service token, "user" for a session.
+  // "agent" for the service token.
   actorType String
   action    String
   entity    String
@@ -186,7 +157,7 @@ model AuditLog {
   @@index([createdAt])
 }
 
-// Failed/attempted logins and registrations for rate limiting. Keys are HMAC-free
+// Public form submissions for rate limiting. Keys are HMAC-free
 // hashes of (kind + identifier) so raw emails/IPs are not stored.
 model RateLimitHit {
   id        String   @id @default(cuid())
@@ -194,4 +165,25 @@ model RateLimitHit {
   createdAt DateTime @default(now())
 
   @@index([key, createdAt])
+}
+
+enum SubmissionStatus {
+  new
+  processed
+  rejected
+}
+
+// Hike materials sent through the public form. Photos stay on an external service;
+// only the link is stored. Plain text only, never rendered as HTML.
+model Submission {
+  id         String           @id @default(cuid())
+  name       String
+  contact    String
+  title      String
+  message    String
+  photosUrl  String?
+  status     SubmissionStatus @default(new)
+  createdAt  DateTime         @default(now())
+
+  @@index([status, createdAt])
 }

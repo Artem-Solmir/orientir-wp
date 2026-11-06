@@ -3,7 +3,6 @@ import { parseEnv } from "./env";
 
 const good = {
   DATABASE_URL: "postgresql://u:p@127.0.0.1:5432/db",
-  AUTH_SECRET: "s".repeat(32),
   AGENT_API_TOKEN: "t".repeat(32),
   APP_URL: "http://localhost:3000",
 };
@@ -15,8 +14,8 @@ describe("parseEnv", () => {
 
   it("rejects weak secrets and names the key without leaking its value", () => {
     const weak = "short-secret-value";
-    expect(() => parseEnv({ ...good, AUTH_SECRET: weak })).toThrowError(/AUTH_SECRET/);
-    expect(() => parseEnv({ ...good, AUTH_SECRET: weak })).not.toThrowError(new RegExp(weak));
+    expect(() => parseEnv({ ...good, AGENT_API_TOKEN: weak })).toThrowError(/AGENT_API_TOKEN/);
+    expect(() => parseEnv({ ...good, AGENT_API_TOKEN: weak })).not.toThrowError(new RegExp(weak));
   });
 
   it("rejects a missing database url", () => {
@@ -24,8 +23,8 @@ describe("parseEnv", () => {
   });
 
   it("lists every invalid key once, comma separated", () => {
-    expect(() => parseEnv({ ...good, AUTH_SECRET: "x", DATABASE_URL: "bad" })).toThrowError(
-      "Invalid environment configuration: DATABASE_URL, AUTH_SECRET",
+    expect(() => parseEnv({ ...good, AGENT_API_TOKEN: "x", DATABASE_URL: "bad" })).toThrowError(
+      "Invalid environment configuration: DATABASE_URL, AGENT_API_TOKEN",
     );
   });
 

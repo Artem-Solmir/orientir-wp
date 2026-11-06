@@ -48,7 +48,7 @@ async function verifyHome(db: PrismaClient) {
 async function verifyGoldenPost(db: PrismaClient) {
   const golden = await db.post.findUnique({ where: { slug: "poxod-po-reke-ptich-11-14-maya-2023-goda" }, include: { categories: true } });
   check("golden post exists with body", Boolean(golden?.title) && (golden?.body.length ?? 0) > 100, golden?.title);
-  check("golden post has an author name but no user link", Boolean(golden?.authorName) && golden?.authorId === null);
+  check("golden post has an author name", Boolean(golden?.authorName));
 }
 
 async function verifyInvariants(db: PrismaClient) {
@@ -59,7 +59,6 @@ async function verifyInvariants(db: PrismaClient) {
   check("no raw shortcodes, absolute site urls in attributes or scripts in bodies", dirty.length === 0, dirty.map((d) => d.slug).join(","));
   check("posts have covers", (await db.post.count({ where: { coverId: { not: null } } })) > 150);
   check("every post is published", (await db.post.count({ where: { status: { not: "published" } } })) === 0);
-  check("no ETL-created users", (await db.user.count({ where: { legacyWpId: { not: null } } })) === 0);
 
   const slugs = new Set((await db.post.findMany({ select: { slug: true } })).map((p) => p.slug));
   const clash = (await db.page.findMany({ select: { slug: true } })).filter((p) => slugs.has(p.slug));

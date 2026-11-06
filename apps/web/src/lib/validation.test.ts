@@ -1,43 +1,55 @@
 import { describe, expect, it } from "vitest";
-import { loginSchema, registerSchema } from "./validation";
+import { isPhotoUrl, submissionSchema } from "./validation";
 
-describe("registerSchema", () => {
-  const valid = { email: "  User@Example.COM ", name: " Ann ", password: "1234567890" };
+const valid = {
+  name: " Анна ",
+  contact: "anna@example.com",
+  title: "Поход по Припяти",
+  message: "Прошли 40 км за два дня.",
+  photosUrl: "https://disk.yandex.ru/d/abc123",
+};
 
-  it("normalizes email and trims name", () => {
-    const parsed = registerSchema.parse(valid);
-    expect(parsed.email).toBe("user@example.com");
-    expect(parsed.name).toBe("Ann");
+describe("submissionSchema", () => {
+  it("trims fields and keeps a valid photo link", () => {
+    const parsed = submissionSchema.parse(valid);
+    expect(parsed.name).toBe("Анна");
+    expect(parsed.photosUrl).toBe(valid.photosUrl);
   });
 
-  it("rejects passwords shorter than 10 chars", () => {
-    expect(registerSchema.safeParse({ ...valid, password: "123456789" }).success).toBe(false);
+  it("treats an empty photo link as absent", () => {
+    expect(submissionSchema.parse({ ...valid, photosUrl: "  " }).photosUrl).toBeNull();
   });
 
-  it("reports a human-readable message for a short password", () => {
-    const result = registerSchema.safeParse({ ...valid, password: "short" });
-    expect(result.success ? "" : result.error.issues[0]?.message).toBe("Минимум 10 символов");
+  it("rejects links to other hosts", () => {
+    expect(submissionSchema.safeParse({ ...valid, photosUrl: "https://evil.example/x" }).success).toBe(false);
   });
 
-  it("accepts 10 and rejects 129 chars (bounds argon2 work)", () => {
-    expect(registerSchema.safeParse({ ...valid, password: "a".repeat(10) }).success).toBe(true);
-    expect(registerSchema.safeParse({ ...valid, password: "a".repeat(128) }).success).toBe(true);
-    expect(registerSchema.safeParse({ ...valid, password: "a".repeat(129) }).success).toBe(false);
+  it("reports readable messages", () => {
+    const r = submissionSchema.safeParse({ ...valid, name: "A" });
+    expect(r.success ? "" : r.error.issues[0]?.message).toBe("Укажите имя");
   });
 
-  it("rejects invalid email and too-short name", () => {
-    expect(registerSchema.safeParse({ ...valid, email: "nope" }).success).toBe(false);
-    expect(registerSchema.safeParse({ ...valid, name: "A" }).success).toBe(false);
+  it("enforces length bounds", () => {
+    expect(submissionSchema.safeParse({ ...valid, name: "Aн" }).success).toBe(true);
+    expect(submissionSchema.safeParse({ ...valid, message: "a".repeat(10_000) }).success).toBe(true);
+    expect(submissionSchema.safeParse({ ...valid, message: "a".repeat(10_001) }).success).toBe(false);
+    expect(submissionSchema.safeParse({ ...valid, message: "short" }).success).toBe(false);
+    expect(submissionSchema.safeParse({ ...valid, title: "ab" }).success).toBe(false);
+    expect(submissionSchema.safeParse({ ...valid, contact: "ab" }).success).toBe(false);
   });
 });
 
-describe("loginSchema", () => {
-  it("does not enforce password policy on login", () => {
-    expect(loginSchema.safeParse({ email: "a@b.co", password: "x" }).success).toBe(true);
-  });
-
-  it("rejects empty password and oversize password", () => {
-    expect(loginSchema.safeParse({ email: "a@b.co", password: "" }).success).toBe(false);
-    expect(loginSchema.safeParse({ email: "a@b.co", password: "a".repeat(129) }).success).toBe(false);
+describe("isPhotoUrl", () => {
+  it.each([
+    ["https://disk.yandex.ru/d/x", true],
+    ["https://disk.yandex.by/d/x", true],
+    ["https://yadi.sk/d/x", true],
+    ["http://disk.yandex.ru/d/x", false],
+    ["https://user:pw@disk.yandex.ru/d/x", false],
+    ["https://disk.yandex.ru.evil.com/d/x", false],
+    ["javascript:alert(1)", false],
+    ["not a url", false],
+  ])("%s -> %s", (url, ok) => {
+    expect(isPhotoUrl(url)).toBe(ok);
   });
 });

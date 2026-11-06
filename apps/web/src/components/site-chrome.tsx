@@ -21,7 +21,7 @@ export async function SiteHeader() {
               <Link href="/contact">Контакты</Link>
             </li>
             <li>
-              <Link href="/login">Вход</Link>
+              <Link href="/materials">Прислать материалы</Link>
             </li>
           </ul>
         </nav>
@@ -56,6 +56,9 @@ export function SiteFooter() {
           </li>
           <li>
             <Link href="/contact">Контакты</Link>
+          </li>
+          <li>
+            <Link href="/materials">Прислать материалы</Link>
           </li>
           <li>
             {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- route handler, not a page */}
