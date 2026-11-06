@@ -1,0 +1,7 @@
+{
+  "$schema": "https://raw.githubusercontent.com/stryker-mutator/stryker/master/packages/core/schema/stryker-core.schema.json",
+  "testRunner": "vitest",
+  "mutate": ["src/lib/validation.ts", "src/lib/env.ts"],
+  "reporters": ["clear-text", "progress"],
+  "thresholds": { "high": 90, "low": 75, "break": 70 }
+}

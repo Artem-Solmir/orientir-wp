@@ -1,0 +1,7 @@
+{
+  "path": ["src", "scripts"],
+  "ignore": ["**/*.test.ts", "**/node_modules/**", "**/.next/**"],
+  "threshold": 3,
+  "minLines": 8,
+  "reporters": ["console"]
+}

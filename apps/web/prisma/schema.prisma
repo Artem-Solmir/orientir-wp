@@ -1,0 +1,197 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  user
+  owner
+}
+
+enum ContentStatus {
+  draft
+  published
+  archived
+}
+
+enum PageTemplate {
+  default
+  composer
+}
+
+model User {
+  id             String    @id @default(cuid())
+  email          String    @unique
+  name           String
+  passwordHash   String
+  role           Role      @default(user)
+  // Incremented to revoke every issued JWT session of this user.
+  sessionVersion Int       @default(0)
+  // Social/profile fields (plain text, validated by Zod, never rendered as HTML).
+  bio            String?
+  website        String?
+  vk             String?
+  telegram       String?
+  legacyWpId     Int?      @unique
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  posts          Post[]
+  auditLogs      AuditLog[]
+}
+
+model Post {
+  id          String        @id @default(cuid())
+  slug        String        @unique
+  title       String
+  excerpt     String?
+  // Sanitized HTML (DOMPurify on write, see Phase 2/5).
+  body        String
+  status      ContentStatus @default(draft)
+  publishedAt DateTime?
+  expiresAt   DateTime?
+  views       Int           @default(0)
+  seoTitle    String?
+  seoDescription String?
+  coverId     String?
+  cover       MediaAsset?   @relation("PostCover", fields: [coverId], references: [id], onDelete: SetNull)
+  authorId    String?
+  author      User?         @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  // Attribution for historical posts whose author is not migrated.
+  authorName  String?
+  legacyWpId  Int?          @unique
+  categories  PostCategory[]
+  tags        PostTag[]
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@index([status, publishedAt])
+}
+
+model Page {
+  id          String        @id @default(cuid())
+  slug        String        @unique
+  title       String
+  body        String
+  template    PageTemplate  @default(default)
+  status      ContentStatus @default(draft)
+  seoTitle    String?
+  seoDescription String?
+  legacyWpId  Int?          @unique
+  sections    PageSection[]
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+model PageSection {
+  id      String @id @default(cuid())
+  pageId  String
+  page    Page   @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  order   Int
+  // featured_post_slider | latest | ... (validated by Zod discriminated union)
+  type    String
+  config  Json
+
+  @@unique([pageId, order])
+}
+
+model Category {
+  id         String         @id @default(cuid())
+  slug       String         @unique
+  name       String
+  legacyWpId Int?           @unique
+  posts      PostCategory[]
+}
+
+model Tag {
+  id         String    @id @default(cuid())
+  slug       String    @unique
+  name       String
+  legacyWpId Int?      @unique
+  posts      PostTag[]
+}
+
+model PostCategory {
+  postId     String
+  categoryId String
+  post       Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@id([postId, categoryId])
+}
+
+model PostTag {
+  postId String
+  tagId  String
+  post   Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  tag    Tag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([postId, tagId])
+}
+
+model MediaAsset {
+  id         String   @id @default(cuid())
+  // Path relative to the media root, e.g. 2023/05/photo.jpg (no leading slash, no "..").
+  path       String   @unique
+  mimeType   String
+  width      Int?
+  height     Int?
+  alt        String?
+  legacyWpId Int?     @unique
+  createdAt  DateTime @default(now())
+  covers     Post[]   @relation("PostCover")
+  galleryItems GalleryItem[]
+}
+
+model Gallery {
+  id         String        @id @default(cuid())
+  slug       String        @unique
+  title      String
+  status     ContentStatus @default(published)
+  legacyWpId Int?          @unique
+  items      GalleryItem[]
+}
+
+model GalleryItem {
+  galleryId String
+  mediaId   String
+  order     Int
+  gallery   Gallery    @relation(fields: [galleryId], references: [id], onDelete: Cascade)
+  media     MediaAsset @relation(fields: [mediaId], references: [id], onDelete: Cascade)
+
+  @@id([galleryId, mediaId])
+}
+
+model LegacyRedirect {
+  fromPath String @id
+  toPath   String
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  actorId   String?
+  actor     User?    @relation(fields: [actorId], references: [id], onDelete: SetNull)
+  // "agent" for the service token, "user" for a session.
+  actorType String
+  action    String
+  entity    String
+  entityId  String?
+  meta      Json?
+  createdAt DateTime @default(now())
+
+  @@index([entity, entityId])
+  @@index([createdAt])
+}
+
+// Failed/attempted logins and registrations for rate limiting. Keys are HMAC-free
+// hashes of (kind + identifier) so raw emails/IPs are not stored.
+model RateLimitHit {
+  id        String   @id @default(cuid())
+  key       String
+  createdAt DateTime @default(now())
+
+  @@index([key, createdAt])
+}
