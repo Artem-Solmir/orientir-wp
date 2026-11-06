@@ -18,3 +18,11 @@
 /.vscode/
 Thumbs.db
 Desktop.ini
+
+# Migration to Next.js
+/migration/private/
+.env
+.env.*
+!.env.example
+/apps/web/node_modules/
+/apps/web/.next/

@@ -1,0 +1,4 @@
+\wp-content\plugins\classic-editor-addon\vendor\afragen\wp-dependency-installer\composer.json
+\wp-content\plugins\classic-editor-addon\vendor\composer\installers\composer.json
+\wp-content\plugins\wp-useronline\scb\composer.json
+\wp-content\themes\presso\framework\redux-framework\composer.json
