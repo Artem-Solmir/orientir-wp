@@ -6,25 +6,11 @@ export async function SiteHeader() {
   const categories = await getNavCategories();
   return (
     <header className="site-header">
-      <div className="container">
+      <div className="container top-row">
         <Link href="/" className="wordmark">
           Ориентир
+          <span className="wordmark-sub">Мозырский клуб туризма</span>
         </Link>
-        <nav aria-label="Основное меню">
-          <ul className="nav">
-            {categories.map((c) => (
-              <li key={c.slug}>
-                <Link href={`/category/${c.slug}`}>{c.name}</Link>
-              </li>
-            ))}
-            <li>
-              <Link href="/contact">Контакты</Link>
-            </li>
-            <li>
-              <Link href="/materials">Прислать материалы</Link>
-            </li>
-          </ul>
-        </nav>
         <form action="/search" role="search" className="search">
           <label className="label" htmlFor="site-search" hidden>
             Поиск по сайту
@@ -34,7 +20,22 @@ export async function SiteHeader() {
             Найти
           </button>
         </form>
+        <Link href="/materials" className="btn btn--primary">
+          Прислать материалы
+        </Link>
       </div>
+      <nav aria-label="Основное меню" className="nav-bar">
+        <ul className="nav container">
+          {categories.map((c) => (
+            <li key={c.slug}>
+              <Link href={`/category/${c.slug}`}>{c.name}</Link>
+            </li>
+          ))}
+          <li>
+            <Link href="/contact">Контакты</Link>
+          </li>
+        </ul>
+      </nav>
     </header>
   );
 }
@@ -45,7 +46,7 @@ export function SiteFooter() {
       <div className="container">
         <div>
           <p className="wordmark">Ориентир</p>
-          <p className="label">{SITE_NAME}</p>
+          <p className="footer-name">{SITE_NAME}</p>
         </div>
         <ul>
           <li>
