@@ -1,7 +1,9 @@
 import { Prisma, type PrismaClient } from "@prisma/client";
 import { parseComposer, resolveCategories } from "./composer";
 import { transformBody } from "./content";
-import { imageSize, serializedIds } from "./php";
+import { existsSync } from "node:fs";
+import { dirname, resolve } from "node:path";
+import { imageSize, imageVariants, serializedIds } from "./php";
 import {
   sql,
   type AttachmentRow,
@@ -40,6 +42,15 @@ export async function loadTaxonomies(src: Source, db: PrismaClient, stats: Stats
   return { categoryIds, tagIds, slugById };
 }
 
+const uploadsRoot = () => resolve(process.env.MEDIA_ROOT ?? resolve(process.cwd(), "../../wp-content/uploads"));
+
+/** Only variants that really exist on disk are kept, so the site never links to a missing thumbnail. */
+function presentVariants(path: string, meta: string | null) {
+  const root = uploadsRoot();
+  if (!existsSync(root)) return [];
+  return imageVariants(meta).filter((v) => existsSync(resolve(root, dirname(path), v.file)));
+}
+
 export async function loadMedia(src: Source, db: PrismaClient, stats: Stats): Promise<Ids> {
   const ids: Ids = new Map();
   for (const a of await src.query<AttachmentRow>(sql.attachments)) {
@@ -48,7 +59,7 @@ export async function loadMedia(src: Source, db: PrismaClient, stats: Stats): Pr
       continue;
     }
     const size = imageSize(a.meta);
-    const data = { path: a.file, mimeType: a.mime || "application/octet-stream", width: size?.width ?? null, height: size?.height ?? null, alt: a.alt || null };
+    const data = { path: a.file, mimeType: a.mime || "application/octet-stream", width: size?.width ?? null, height: size?.height ?? null, alt: a.alt || null, variants: presentVariants(a.file, a.meta) };
     const row = await db.mediaAsset.upsert({ where: { legacyWpId: a.ID }, create: { ...data, legacyWpId: a.ID }, update: data });
     ids.set(a.ID, row.id);
     inc(stats, "media");

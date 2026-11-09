@@ -113,6 +113,8 @@ model MediaAsset {
   width      Int?
   height     Int?
   alt        String?
+  // Resized copies next to the original: [{ file, width, height }], only those present on disk.
+  variants   Json?
   legacyWpId Int?     @unique
   createdAt  DateTime @default(now())
   covers     Post[]   @relation("PostCover")

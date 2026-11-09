@@ -1,20 +1,24 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { CardPost } from "@/lib/content";
-import { mediaUrl } from "@/lib/site";
+import { pickImage } from "@/lib/media";
 import { formatDate } from "@/lib/text";
+
+/** Cards are ~290 CSS px wide; 400 px of source covers 1.25x screens without shipping the original. */
+const CARD_IMAGE_WIDTH = 400;
 
 export function PostCard({ post, priority = false }: { post: CardPost; priority?: boolean }) {
   const href = `/${post.slug}`;
+  const image = post.cover ? pickImage(post.cover, CARD_IMAGE_WIDTH) : null;
   return (
     <article className="card">
       <Link href={href} className="card-media" tabIndex={-1} aria-hidden="true">
-        {post.cover && (
+        {image && (
           <Image
-            src={mediaUrl(post.cover.path)}
+            src={image.src}
             alt=""
-            width={post.cover.width ?? 640}
-            height={post.cover.height ?? 480}
+            width={image.width}
+            height={image.height}
             sizes="(max-width: 40rem) 86vw, 18rem"
             priority={priority}
           />

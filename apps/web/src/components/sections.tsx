@@ -2,7 +2,7 @@ import Link from "next/link";
 import { listPosts, getCategory, type CardPost } from "@/lib/content";
 import { pageCount, pageHref } from "@/lib/pagination";
 import { csv, isLatestSection, sectionConfig, type SectionConfig } from "@/lib/section-config";
-import { mediaUrl } from "@/lib/site";
+import { pickImage } from "@/lib/media";
 import { formatDate } from "@/lib/text";
 import { Pagination } from "./pagination";
 import { PostGrid } from "./post-card";
@@ -10,12 +10,14 @@ import { Slider, type SlideItem } from "./slider";
 
 type Section = { id: string; type: string; config: unknown };
 
+const SLIDE_IMAGE_WIDTH = 640;
+
 function slideOf(p: CardPost): SlideItem {
   return {
     href: `/${p.slug}`,
     title: p.title,
     date: p.publishedAt ? formatDate(p.publishedAt) : "",
-    image: p.cover ? { src: mediaUrl(p.cover.path), width: p.cover.width ?? 640, height: p.cover.height ?? 480 } : null,
+    image: p.cover ? pickImage(p.cover, SLIDE_IMAGE_WIDTH) : null,
   };
 }
 

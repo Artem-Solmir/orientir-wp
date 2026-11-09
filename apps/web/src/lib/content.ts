@@ -8,7 +8,7 @@ import { htmlToText, summarize } from "./text";
 
 export const REVALIDATE = 3600;
 
-export type Cover = { path: string; width: number | null; height: number | null; alt: string | null };
+export type Cover = { path: string; width: number | null; height: number | null; alt: string | null; variants: unknown };
 export type CardPost = {
   slug: string;
   title: string;
@@ -27,7 +27,7 @@ const cardSelect = {
   body: true,
   publishedAt: true,
   authorName: true,
-  cover: { select: { path: true, width: true, height: true, alt: true } },
+  cover: { select: { path: true, width: true, height: true, alt: true, variants: true } },
 } satisfies Prisma.PostSelect;
 
 type CardRow = Prisma.PostGetPayload<{ select: typeof cardSelect }>;
@@ -67,7 +67,7 @@ export const getPost = cache(async (slug: string) => {
     where: { slug, ...live() },
     select: {
       slug: true, title: true, excerpt: true, body: true, publishedAt: true, updatedAt: true, authorName: true,
-      cover: { select: { path: true, width: true, height: true, alt: true } },
+      cover: { select: { path: true, width: true, height: true, alt: true, variants: true } },
       categories: { select: { category: { select: { slug: true, name: true } } } },
       tags: { select: { tag: { select: { slug: true, name: true } } } },
     },

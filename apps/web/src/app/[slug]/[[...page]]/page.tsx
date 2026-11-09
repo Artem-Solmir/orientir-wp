@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Sections } from "@/components/sections";
 import { getNeighbors, getPage, getPost } from "@/lib/content";
+import { pickImage } from "@/lib/media";
 import { parsePageSegments } from "@/lib/pagination";
 import { slugParams } from "@/lib/static-params";
 import { SITE_DESCRIPTION, absoluteUrl, mediaUrl } from "@/lib/site";
@@ -77,6 +78,7 @@ export default async function SlugPage({ params }: Props) {
 
 async function PostView({ post }: { post: NonNullable<Awaited<ReturnType<typeof getPost>>> }) {
   const { prev, next } = await getNeighbors(post.publishedAt);
+  const cover = post.cover ? pickImage(post.cover, 800) : null;
   return (
     <article className="container post">
       <header className="post-head">
@@ -91,13 +93,13 @@ async function PostView({ post }: { post: NonNullable<Awaited<ReturnType<typeof 
           ))}
         </div>
       </header>
-      {post.cover && (
+      {post.cover && cover && (
         <figure className="post-cover">
           <Image
-            src={mediaUrl(post.cover.path)}
+            src={cover.src}
             alt={post.cover.alt ?? ""}
-            width={post.cover.width ?? 1200}
-            height={post.cover.height ?? 800}
+            width={cover.width}
+            height={cover.height}
             sizes="(max-width: 72rem) 100vw, 68ch"
             priority
           />
