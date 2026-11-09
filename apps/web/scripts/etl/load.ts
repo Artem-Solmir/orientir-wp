@@ -141,13 +141,39 @@ async function upsertPage(db: PrismaClient, p: PostRow, ctx: PostContext, l: Loo
   inc(stats, "page_sections", sections.length);
 }
 
+/** Largest share of existing legacy rows a single run may delete; more means a broken source, not real deletions. */
+export const MAX_PRUNE_SHARE = 0.2;
+
+export function pruneAllowed(existing: number, toDelete: number): boolean {
+  return toDelete === 0 || (existing > 0 && toDelete / existing <= MAX_PRUNE_SHARE);
+}
+
+/** Delete-propagation for delta runs: rows that came from WordPress and are gone from the source are removed. */
+async function pruneMissing(db: PrismaClient, kind: "post" | "page", keep: number[], stats: Stats) {
+  const where = { legacyWpId: { not: null, notIn: keep } };
+  const legacy = { legacyWpId: { not: null } };
+  const [existing, stale] =
+    kind === "post"
+      ? await Promise.all([db.post.count({ where: legacy }), db.post.count({ where })])
+      : await Promise.all([db.page.count({ where: legacy }), db.page.count({ where })]);
+  if (!pruneAllowed(existing, stale)) {
+    throw new Error(`Refusing to delete ${stale} of ${existing} legacy ${kind}s: the source looks incomplete`);
+  }
+  if (stale > 0) await (kind === "post" ? db.post.deleteMany({ where }) : db.page.deleteMany({ where }));
+  inc(stats, `${kind}s_removed`, stale);
+}
+
 export async function loadPosts(src: Source, db: PrismaClient, ctx: PostContext, stats: Stats) {
   const lookups = await loadLookups(src);
+  const seen = { post: [] as number[], page: [] as number[] };
   for (const p of await src.query<PostRow>(sql.posts)) {
     if (p.post_type === "post") await upsertPost(db, p, ctx, lookups);
     else await upsertPage(db, p, ctx, lookups, stats);
+    seen[p.post_type === "post" ? "post" : "page"].push(p.ID);
     inc(stats, p.post_type === "post" ? "posts" : "pages");
   }
+  await pruneMissing(db, "post", seen.post, stats);
+  await pruneMissing(db, "page", seen.page, stats);
 }
 
 export async function loadGalleries(src: Source, db: PrismaClient, mediaIds: Ids, stats: Stats) {

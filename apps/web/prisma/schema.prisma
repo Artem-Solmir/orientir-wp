@@ -156,34 +156,3 @@ model AuditLog {
   @@index([entity, entityId])
   @@index([createdAt])
 }
-
-// Public form submissions for rate limiting. Keys are HMAC-free
-// hashes of (kind + identifier) so raw emails/IPs are not stored.
-model RateLimitHit {
-  id        String   @id @default(cuid())
-  key       String
-  createdAt DateTime @default(now())
-
-  @@index([key, createdAt])
-}
-
-enum SubmissionStatus {
-  new
-  processed
-  rejected
-}
-
-// Hike materials sent through the public form. Photos stay on an external service;
-// only the link is stored. Plain text only, never rendered as HTML.
-model Submission {
-  id         String           @id @default(cuid())
-  name       String
-  contact    String
-  title      String
-  message    String
-  photosUrl  String?
-  status     SubmissionStatus @default(new)
-  createdAt  DateTime         @default(now())
-
-  @@index([status, createdAt])
-}

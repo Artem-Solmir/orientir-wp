@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   title: { default: SITE_NAME, template: `%s | ${SITE_NAME}` },
   description: SITE_DESCRIPTION,
   openGraph: { siteName: SITE_NAME, locale: "ru_RU", type: "website" },
-  alternates: { types: { "application/rss+xml": "/feed" } },
+  alternates: { types: { "application/rss+xml": "/feed.xml" } },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

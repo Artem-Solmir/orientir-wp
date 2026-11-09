@@ -61,8 +61,7 @@ export function SiteFooter() {
             <Link href="/materials">Прислать материалы</Link>
           </li>
           <li>
-            {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- route handler, not a page */}
-            <a href="/feed">RSS-лента</a>
+            <a href="/feed.xml">RSS-лента</a>
           </li>
         </ul>
       </div>

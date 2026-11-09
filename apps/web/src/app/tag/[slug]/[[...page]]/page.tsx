@@ -3,13 +3,12 @@ import { notFound } from "next/navigation";
 import { Listing } from "@/components/listing";
 import { getTag, listPosts } from "@/lib/content";
 import { parsePageSegments } from "@/lib/pagination";
+import { tagParams } from "@/lib/static-params";
 import { absoluteUrl } from "@/lib/site";
 
-export const revalidate = 3600;
+export const dynamicParams = false;
 
-export function generateStaticParams() {
-  return [];
-}
+export const generateStaticParams = tagParams;
 
 type Props = { params: Promise<{ slug: string; page?: string[] }> };
 

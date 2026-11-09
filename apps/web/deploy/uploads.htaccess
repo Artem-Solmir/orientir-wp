@@ -1,0 +1,14 @@
+# Goes to wp-content/uploads/.htaccess on the server. Uploads are data only: nothing in here may execute.
+# (The old WordPress uploads folder is a classic place for planted scripts.)
+Options -Indexes -ExecCGI
+<FilesMatch "(?i)\.(php[0-9]?|phtml|phar|pl|py|cgi|sh|asp|aspx|jsp|exe)$">
+  Require all denied
+</FilesMatch>
+<IfModule mod_php.c>
+  php_flag engine off
+</IfModule>
+<IfModule mod_headers.c>
+  Header set X-Content-Type-Options "nosniff"
+  Header set Content-Security-Policy "default-src 'none'; img-src 'self'; media-src 'self'; style-src 'unsafe-inline'; sandbox"
+  Header set Cache-Control "public, max-age=2592000"
+</IfModule>

@@ -5,17 +5,13 @@ import { notFound } from "next/navigation";
 import { Sections } from "@/components/sections";
 import { getNeighbors, getPage, getPost } from "@/lib/content";
 import { parsePageSegments } from "@/lib/pagination";
+import { slugParams } from "@/lib/static-params";
 import { SITE_DESCRIPTION, absoluteUrl, mediaUrl } from "@/lib/site";
 import { formatDate, htmlToText, summarize } from "@/lib/text";
 
-export const revalidate = 3600;
-export const dynamicParams = true;
+export const dynamicParams = false;
 
-// Nothing is prerendered at build time; pages are generated on first request and revalidated
-// hourly or on demand (revalidatePath/Tag from the agent API in Phase 5).
-export function generateStaticParams() {
-  return [];
-}
+export const generateStaticParams = slugParams;
 
 type Props = { params: Promise<{ slug: string; page?: string[] }> };
 

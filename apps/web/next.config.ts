@@ -1,36 +1,16 @@
 import type { NextConfig } from "next";
+import { securityHeaders } from "./deploy/security-headers";
 
 const isProd = process.env.NODE_ENV === "production";
 
-// Next.js needs inline scripts/styles for hydration; tightening to nonces is a Phase 3 task.
-const csp = [
-  "default-src 'self'",
-  `script-src 'self' 'unsafe-inline'${isProd ? "" : " 'unsafe-eval'"}`,
-  "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: blob:",
-  "font-src 'self' data:",
-  "connect-src 'self'",
-  "frame-src https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com https://www.google.com",
-  "media-src 'self'",
-  "frame-ancestors 'none'",
-  "base-uri 'self'",
-  "form-action 'self'",
-  "object-src 'none'",
-].join("; ");
-
-const securityHeaders = [
-  { key: "Content-Security-Policy", value: csp },
-  { key: "X-Content-Type-Options", value: "nosniff" },
-  { key: "X-Frame-Options", value: "DENY" },
-  { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-  { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
-  ...(isProd
-    ? [{ key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains" }]
-    : []),
-];
-
+// The public site is exported to plain HTML (see docs in migration/CUTOVER.md). Security headers and
+// redirects for production live in deploy/htaccess.template; the dev server below mirrors them.
 const nextConfig: NextConfig = {
-  poweredByHeader: false,
+  output: "export",
+  trailingSlash: true, // same URLs as WordPress (/slug/) so nothing needs redirecting
+  images: { unoptimized: true },
+  // Each export worker opens its own Prisma pool; keep the total well under Postgres max_connections.
+  experimental: { cpus: 4 },
   turbopack: {
     rules: {
       "*.css": {
@@ -39,9 +19,17 @@ const nextConfig: NextConfig = {
       },
     },
   },
-  async headers() {
-    return [{ source: "/:path*", headers: securityHeaders }];
-  },
+  ...(isProd
+    ? {}
+    : {
+        // Dev only: serve legacy uploads from the local WordPress copy.
+        async rewrites() {
+          return [{ source: "/wp-content/uploads/:path*", destination: "http://orientir.local/wp-content/uploads/:path*" }];
+        },
+        async headers() {
+          return [{ source: "/:path*", headers: securityHeaders(false) }];
+        },
+      }),
 };
 
 export default nextConfig;

@@ -3,13 +3,12 @@ import { notFound } from "next/navigation";
 import { Listing } from "@/components/listing";
 import { getCategory } from "@/lib/content";
 import { parsePageSegments } from "@/lib/pagination";
+import { categoryParams } from "@/lib/static-params";
 import { absoluteUrl } from "@/lib/site";
 
-export const revalidate = 3600;
+export const dynamicParams = false;
 
-export function generateStaticParams() {
-  return [];
-}
+export const generateStaticParams = categoryParams;
 
 type Props = { params: Promise<{ slug: string; page?: string[] }> };
 

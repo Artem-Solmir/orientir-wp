@@ -2,13 +2,12 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Listing } from "@/components/listing";
 import { parsePageSegments } from "@/lib/pagination";
+import { archiveParams } from "@/lib/static-params";
 import { absoluteUrl } from "@/lib/site";
 
-export const revalidate = 3600;
+export const dynamicParams = false;
 
-export function generateStaticParams() {
-  return [];
-}
+export const generateStaticParams = archiveParams;
 
 type Props = { params: Promise<{ page?: string[] }> };
 

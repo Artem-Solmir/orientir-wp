@@ -2,7 +2,6 @@ import Link from "next/link";
 import { Sections } from "@/components/sections";
 import { getPage } from "@/lib/content";
 
-export const revalidate = 3600;
 
 const HOME_SLUG = "home";
 

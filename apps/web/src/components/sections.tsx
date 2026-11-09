@@ -1,21 +1,12 @@
-import { z } from "zod";
 import Link from "next/link";
 import { listPosts, getCategory, type CardPost } from "@/lib/content";
 import { pageCount, pageHref } from "@/lib/pagination";
+import { csv, isLatestSection, sectionConfig, type SectionConfig } from "@/lib/section-config";
 import { mediaUrl } from "@/lib/site";
 import { formatDate } from "@/lib/text";
 import { Pagination } from "./pagination";
 import { PostGrid } from "./post-card";
 import { Slider, type SlideItem } from "./slider";
-
-// Section configs come from the ETL (Presso Page Composer) and, later, from the agent API.
-const sectionConfig = z.object({
-  title: z.string().optional(),
-  number: z.coerce.number().int().min(1).max(30).default(6),
-  categorySlug: z.string().optional(),
-  excludeCategorySlugs: z.string().optional(),
-  show_pagination: z.coerce.number().default(0),
-});
 
 type Section = { id: string; type: string; config: unknown };
 
@@ -28,9 +19,7 @@ function slideOf(p: CardPost): SlideItem {
   };
 }
 
-const csv = (value: string | undefined) => (value ? value.split(",").filter(Boolean) : undefined);
-
-async function SliderSection({ config }: { config: z.infer<typeof sectionConfig> }) {
+async function SliderSection({ config }: { config: SectionConfig }) {
   const { items } = await listPosts({ categorySlugs: csv(config.categorySlug), withCover: true }, 1, config.number);
   return (
     <section className="section">
@@ -39,7 +28,7 @@ async function SliderSection({ config }: { config: z.infer<typeof sectionConfig>
   );
 }
 
-async function LatestSection({ config, page, pageBase }: { config: z.infer<typeof sectionConfig>; page: number; pageBase: string }) {
+async function LatestSection({ config, page, pageBase }: { config: SectionConfig; page: number; pageBase: string }) {
   const filter = { categorySlugs: csv(config.categorySlug), excludeCategorySlugs: csv(config.excludeCategorySlugs) };
   const paginated = config.show_pagination === 1;
   const { items, total } = await listPosts(filter, paginated ? page : 1, config.number);
@@ -68,7 +57,7 @@ export async function Sections({ sections, page, pageBase }: { sections: Section
         const parsed = sectionConfig.safeParse(s.config);
         if (!parsed.success) return null;
         if (s.type === "featured_post_slider") return <SliderSection key={s.id} config={parsed.data} />;
-        if (s.type === "latest" || s.type === "latest_category") {
+        if (isLatestSection(s.type)) {
           return <LatestSection key={s.id} config={parsed.data} page={page} pageBase={pageBase} />;
         }
         return null; // unsupported legacy section types are skipped, never rendered blindly

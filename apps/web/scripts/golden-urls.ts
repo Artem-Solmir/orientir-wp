@@ -25,7 +25,7 @@ function h1Of(html: string): string {
 
 async function get(base: string, slug: string) {
   try {
-    const res = await fetch(`${base}/${encodeURIComponent(slug)}${base === WP ? "/" : ""}`, { redirect: "follow" });
+    const res = await fetch(`${base}/${encodeURIComponent(slug)}/`, { redirect: "follow" });
     return { status: res.status, h1: h1Of(await res.text()) };
   } catch (e) {
     return { status: 0, h1: String(e) };

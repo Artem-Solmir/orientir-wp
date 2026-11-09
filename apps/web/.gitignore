@@ -45,3 +45,6 @@ next-env.d.ts
 .stryker-tmp/
 reports/
 coverage/
+
+# Production mail config (recipient address)
+/deploy/send-config.php
