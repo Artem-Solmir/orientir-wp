@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { legacyRedirect, shortlinkRedirect, vercelConfig } from "./build-vercel";
+import { collectMediaUrls, legacyRedirect, shortlinkRedirect, vercelConfig } from "./build-vercel";
 
 describe("legacyRedirect", () => {
   it("covers the path with and without a trailing slash", () => {
@@ -30,5 +30,12 @@ describe("vercelConfig", () => {
     expect(keys(true)).toContain("X-Robots-Tag");
     expect(keys(false)).not.toContain("X-Robots-Tag");
     expect(keys(false)).toContain("Content-Security-Policy");
+  });
+});
+
+describe("collectMediaUrls", () => {
+  it("lists each upload once and ignores other files and path tricks", () => {
+    const html = `<img src="/wp-content/uploads/2024/05/a-400x300.jpg"><img src="/wp-content/uploads/2024/05/a-400x300.jpg"><a href="/wp-content/uploads/x.pdf"></a><img src="/wp-content/uploads/../../secret.jpg"><img src="/wp-content/uploads/2024/b%20c.png">`;
+    expect(collectMediaUrls(html)).toEqual(["/wp-content/uploads/2024/05/a-400x300.jpg", "/wp-content/uploads/2024/b c.png"]);
   });
 });

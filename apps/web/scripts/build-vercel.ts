@@ -4,14 +4,18 @@
  * Usage: npm run build:vercel   (PUBLIC_SITE_URL=https://<project>.vercel.app, VERCEL_NOINDEX=0 to allow indexing)
  */
 import { spawnSync } from "node:child_process";
-import { readdirSync, readFileSync, rmSync, statSync, writeFileSync } from "node:fs";
-import { join } from "node:path";
+import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from "node:fs";
+import { dirname, join, resolve } from "node:path";
 import { PrismaClient } from "@prisma/client";
 import { securityHeaders } from "../deploy/security-headers";
 
 const ROOT = join(import.meta.dirname, "..");
 const OUT = join(ROOT, "out");
 const PUBLIC_URL = process.env.PUBLIC_SITE_URL ?? "https://orientir.vercel.app";
+// Photos are far too big to ship whole (~2.4 GB referenced); only those used by these pages are copied.
+const MEDIA_PAGES = (process.env.VERCEL_MEDIA_PAGES ?? "/").split(",").map((p) => p.trim()).filter(Boolean);
+const MEDIA_ROOT = resolve(process.env.MEDIA_ROOT ?? join(ROOT, "../../wp-content/uploads"));
+const MEDIA_URL = /\/wp-content\/uploads\/[A-Za-z0-9/_%.-]+\.(?:jpe?g|png|webp|gif)/gi;
 const SAFE_PATH = /^[A-Za-z0-9/_%.-]+$/;
 
 type Redirect = { source: string; destination: string; permanent: true; has?: { type: "query"; key: string; value: string }[] };
@@ -47,6 +51,34 @@ async function redirects(): Promise<Redirect[]> {
   }
 }
 
+/** Distinct upload URLs mentioned in a page, rejecting anything that could climb out of the uploads folder. */
+export function collectMediaUrls(html: string): string[] {
+  const found = new Set((html.match(MEDIA_URL) ?? []).map((u) => decodeURIComponent(u)));
+  return [...found].filter((u) => !u.split("/").includes("..")).sort();
+}
+
+function copyMedia(): { copied: number; missing: string[]; bytes: number } {
+  const urls = new Set<string>();
+  for (const page of MEDIA_PAGES) {
+    const file = join(OUT, page === "/" ? "index.html" : `${page.replace(/^\/|\/$/g, "")}/index.html`);
+    if (existsSync(file)) collectMediaUrls(readFileSync(file, "utf8")).forEach((u) => urls.add(u));
+  }
+  const missing: string[] = [];
+  let bytes = 0;
+  for (const url of urls) {
+    const source = join(MEDIA_ROOT, url.replace("/wp-content/uploads/", ""));
+    if (!source.startsWith(MEDIA_ROOT) || !existsSync(source)) {
+      missing.push(url);
+      continue;
+    }
+    const target = join(OUT, url);
+    mkdirSync(dirname(target), { recursive: true });
+    copyFileSync(source, target);
+    bytes += statSync(source).size;
+  }
+  return { copied: urls.size - missing.length, missing, bytes };
+}
+
 function listFiles(dir: string): string[] {
   return readdirSync(dir, { withFileTypes: true }).flatMap((e) => (e.isDirectory() ? listFiles(join(dir, e.name)) : [join(dir, e.name)]));
 }
@@ -68,6 +100,9 @@ async function main() {
 
   const config = vercelConfig(await redirects(), process.env.VERCEL_NOINDEX !== "0");
   writeFileSync(join(OUT, "vercel.json"), `${JSON.stringify(config, null, 2)}\n`);
+
+  const media = copyMedia();
+  process.stdout.write(`media: ${media.copied} photos, ${(media.bytes / 1e6).toFixed(1)} MB for pages ${MEDIA_PAGES.join(", ")}; missing ${media.missing.length}\n`);
 
   const issues = problems();
   const files = listFiles(OUT);

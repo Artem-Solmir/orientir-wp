@@ -14,7 +14,7 @@ const project = JSON.parse(readFileSync(join(ROOT, "deploy", "vercel-project.jso
 for (const required of ["index.html", "404.html", "vercel.json"]) {
   if (!existsSync(join(OUT, required))) throw new Error(`out/${required} is missing: run npm run build:vercel first`);
 }
-const result = spawnSync("vercel", ["deploy", OUT, "--prod", "--yes"], {
+const result = spawnSync("vercel", ["deploy", OUT, "--prod", "--yes", "--archive=tgz"], {
   cwd: ROOT,
   stdio: "inherit",
   shell: true,
