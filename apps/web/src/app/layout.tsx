@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { Golos_Text, JetBrains_Mono, Oswald } from "next/font/google";
+import { Golos_Text, JetBrains_Mono, Unbounded } from "next/font/google";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { SITE_DESCRIPTION, SITE_NAME, siteUrl } from "@/lib/site";
 import "./globals.css";
 
-const oswald = Oswald({ weight: ["600", "700"], subsets: ["latin", "cyrillic"], variable: "--font-oswald", display: "swap" });
+const unbounded = Unbounded({ weight: ["500", "600"], subsets: ["latin", "cyrillic"], variable: "--font-unbounded", display: "swap" });
 const golos = Golos_Text({ weight: ["400", "500"], subsets: ["latin", "cyrillic"], variable: "--font-golos", display: "swap" });
 const mono = JetBrains_Mono({ weight: "500", subsets: ["latin", "cyrillic"], variable: "--font-mono", display: "swap" });
 
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ru" className={`${oswald.variable} ${golos.variable} ${mono.variable}`}>
+    <html lang="ru" className={`${unbounded.variable} ${golos.variable} ${mono.variable}`}>
       <body>
         <a className="skip-link" href="#content">
           К содержимому

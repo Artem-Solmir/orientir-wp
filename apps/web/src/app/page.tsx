@@ -29,15 +29,20 @@ export default async function Home() {
       <section className="hero">
         {image && <Image className="hero-photo" src={image.src} alt="" width={image.width} height={image.height} sizes="100vw" priority />}
         <div className="container hero-copy">
-          <h1>Клуб туризма «Ориентир»</h1>
-          <p>Отчёты, планы и новости: походы, велопоходы и приключенческие гонки.</p>
-          <div className="actions">
-            <Link href="/archive" className="btn btn--primary">
-              Свежие записи
-            </Link>
-            <Link href="/plany" className="btn btn--ghost">
-              Планы клуба
-            </Link>
+          <h1>
+            <span className="hero-kicker">Клуб туризма</span>
+            <span className="hero-word">Ориентир</span>
+          </h1>
+          <div className="hero-row">
+            <p>Отчёты, планы и новости: походы, велопоходы и приключенческие гонки.</p>
+            <div className="actions">
+              <Link href="/archive" className="btn btn--primary">
+                Свежие записи
+              </Link>
+              <Link href="/plany" className="btn btn--ghost">
+                Планы клуба
+              </Link>
+            </div>
           </div>
           {lead && (
             <p className="hero-credit">
