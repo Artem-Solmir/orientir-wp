@@ -7,13 +7,16 @@
  *   npm run agent -- post:update <slug> <file.json|->
  *   npm run agent -- post:archive <slug>
  *   npm run agent -- page:update <slug> <file.json|->
+ *   npm run agent -- photos:import <public Yandex Disk url> [--apply]   (without --apply: list only, nothing is downloaded)
  *
  * Output is JSON on stdout; errors go to stderr with a non-zero exit code.
  */
 import { readFileSync } from "node:fs";
 import { PrismaClient } from "@prisma/client";
 import { ZodError } from "zod";
+import { resolve } from "node:path";
 import { Agent, AgentError } from "./posts";
+import { importPhotos } from "./photos";
 import { listQuerySchema, pagePatchSchema, postCreateSchema, postPatchSchema, slugSchema } from "./schemas";
 
 const MAX_INPUT_BYTES = 1_000_000;
@@ -38,7 +41,7 @@ function flags(args: string[]): Record<string, string> {
   );
 }
 
-type Handler = (agent: Agent, args: string[]) => Promise<unknown>;
+type Handler = (agent: Agent, args: string[], db: PrismaClient) => Promise<unknown>;
 
 const COMMANDS: Record<string, Handler> = {
   "post:list": (agent, args) => agent.listPosts(listQuerySchema.parse(flags(args))),
@@ -49,6 +52,12 @@ const COMMANDS: Record<string, Handler> = {
     await agent.archivePost(slugSchema.parse(slug));
     return { ok: true };
   },
+  "photos:import": (_agent, [url], db) =>
+    importPhotos(db, {
+      url: url ?? "",
+      apply: process.argv.includes("--apply"),
+      root: resolve(process.env.MEDIA_ROOT ?? resolve(process.cwd(), "../../wp-content/uploads")),
+    }),
   "page:update": async (agent, [slug, file]) => {
     await agent.updatePage(slugSchema.parse(slug), pagePatchSchema.parse(readInput(file)));
     return { ok: true };
@@ -72,7 +81,7 @@ async function main() {
   }
   const db = new PrismaClient();
   try {
-    process.stdout.write(`${JSON.stringify(await handler(new Agent(db), args), null, 2)}\n`);
+    process.stdout.write(`${JSON.stringify(await handler(new Agent(db), args, db), null, 2)}\n`);
   } catch (error) {
     process.stderr.write(`${describe(error)}\n`);
     process.exitCode = 1;
