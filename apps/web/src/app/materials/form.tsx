@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { submissionSchema } from "@/lib/validation";
+import { photoUrlProblem, submissionSchema } from "@/lib/validation";
 
 // The static site has no server: the form posts to a small PHP script on the hosting (deploy/send.php).
 const ENDPOINT = process.env.NEXT_PUBLIC_FORM_ENDPOINT ?? "/send.php";
@@ -25,10 +25,17 @@ async function send(payload: Record<string, string>): Promise<State> {
 
 export function MaterialsForm() {
   const [state, setState] = useState<State>({ kind: "idle" });
+  const [photoHint, setPhotoHint] = useState<string | null>(null);
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const data = Object.fromEntries(new FormData(event.currentTarget)) as Record<string, string>;
+    const photoProblem = photoUrlProblem(data.photosUrl ?? "");
+    if (photoProblem) {
+      setPhotoHint(photoProblem);
+      (event.currentTarget.elements.namedItem("photosUrl") as HTMLInputElement | null)?.focus();
+      return;
+    }
     const parsed = submissionSchema.safeParse(data);
     if (!parsed.success) {
       setState({ kind: "error", message: parsed.error.issues[0]?.message ?? "Проверьте введённые данные" });
@@ -73,7 +80,14 @@ export function MaterialsForm() {
           maxLength={500}
           placeholder="https://disk.yandex.ru/d/..."
           className="input"
+          aria-invalid={photoHint ? true : undefined}
+          aria-describedby="photos-help"
+          onBlur={(e) => setPhotoHint(photoUrlProblem(e.currentTarget.value))}
+          onChange={(e) => photoHint && setPhotoHint(photoUrlProblem(e.currentTarget.value))}
         />
+        <span id="photos-help" role={photoHint ? "alert" : undefined} className={photoHint ? "error" : "label"}>
+          {photoHint ?? "Необязательно. Папка с фото: «Поделиться» → доступ по ссылке."}
+        </span>
       </label>
       <div className="hp" aria-hidden="true">
         <label>

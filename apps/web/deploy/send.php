@@ -71,11 +71,12 @@ $message = field($data, 'message', 10, 10000, 'Расскажите о похо�
 $photos = trim((string) ($data['photosUrl'] ?? ''));
 if ($photos !== '') {
     $parts = parse_url($photos);
-    $hosts = ['disk.yandex.ru', 'disk.yandex.by', 'disk.yandex.com', 'yadi.sk'];
+    $hosts = ['disk.yandex.ru', 'disk.yandex.by', 'disk.yandex.kz', 'disk.yandex.com', 'disk.yandex.uz', 'yadi.sk'];
     $ok = is_array($parts)
         && ($parts['scheme'] ?? '') === 'https'
         && !isset($parts['user'], $parts['pass'])
         && in_array($parts['host'] ?? '', $hosts, true)
+        && preg_match('#^/[di]/[\w-]+/?$#', $parts['path'] ?? '') === 1
         && strlen($photos) <= 500;
     if (!$ok) {
         respond(422, ['error' => 'Нужна публичная ссылка на Яндекс Диск (https://disk.yandex.ru/...)']);

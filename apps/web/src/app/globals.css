@@ -858,6 +858,11 @@ a:hover {
   background: var(--color-paper-2);
 }
 
+.input[aria-invalid="true"] {
+  border-color: var(--color-danger);
+  border-width: var(--rule-bar);
+}
+
 textarea.input {
   resize: vertical;
   font: inherit;

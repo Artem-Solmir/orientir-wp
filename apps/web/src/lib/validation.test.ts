@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { isPhotoUrl, submissionSchema } from "./validation";
+import { isPhotoUrl, photoUrlProblem, submissionSchema } from "./validation";
 
 const valid = {
   name: " Анна ",
@@ -44,6 +44,8 @@ describe("isPhotoUrl", () => {
     ["https://disk.yandex.ru/d/x", true],
     ["https://disk.yandex.by/d/x", true],
     ["https://yadi.sk/d/x", true],
+    ["https://disk.yandex.kz/i/3OSCPKicxyCKEA", true],
+    ["https://disk.yandex.kz/client/disk?idApp=client", false],
     ["http://disk.yandex.ru/d/x", false],
     ["https://user:pw@disk.yandex.ru/d/x", false],
     ["https://disk.yandex.ru.evil.com/d/x", false],
@@ -51,5 +53,21 @@ describe("isPhotoUrl", () => {
     ["not a url", false],
   ])("%s -> %s", (url, ok) => {
     expect(isPhotoUrl(url)).toBe(ok);
+  });
+});
+
+describe("photoUrlProblem", () => {
+  it.each([
+    ["", null],
+    ["https://disk.yandex.kz/d/vHTxVAK3OmzUpg", null],
+    ["disk.yandex.ru/d/x", "Это не похоже на ссылку"],
+    ["http://disk.yandex.ru/d/x", "https://"],
+    ["https://google.com/x", "только ссылки Яндекс Диска"],
+    ["https://disk.yandex.kz/client/disk?idApp=client", "личный кабинет"],
+    ["https://u:p@disk.yandex.ru/d/x", "логин и пароль"],
+  ])("%s", (url, hint) => {
+    const problem = photoUrlProblem(url);
+    if (hint === null) expect(problem).toBeNull();
+    else expect(problem).toContain(hint);
   });
 });
