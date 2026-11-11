@@ -17,7 +17,10 @@ export function SiteMenu({ children }: { children: ReactNode }) {
 
   return (
     <details className="menu" ref={ref}>
-      <summary className="menu-toggle">Меню</summary>
+      <summary className="menu-toggle">
+        <span className="menu-label">Меню</span>
+        <span className="burger" aria-hidden="true" />
+      </summary>
       <div className="menu-panel">{children}</div>
     </details>
   );

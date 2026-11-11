@@ -52,9 +52,12 @@ export async function SiteHeader() {
                 Найти
               </button>
             </form>
+            <Link href="/materials" className="btn btn--primary menu-cta">
+              Прислать материалы
+            </Link>
           </div>
         </SiteMenu>
-        <Link href="/materials" className="btn btn--primary">
+        <Link href="/materials" className="btn btn--primary header-cta">
           Прислать материалы
         </Link>
       </div>
