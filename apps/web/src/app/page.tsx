@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Sections } from "@/components/sections";
+import { UpcomingEvents } from "@/components/upcoming-events";
 import { getPage, listPosts } from "@/lib/content";
 import { pickImage } from "@/lib/media";
 
@@ -27,10 +28,12 @@ export default async function Home() {
   return (
     <>
       <section className="hero">
-        {image && <Image className="hero-photo" src={image.src} alt="" width={image.width} height={image.height} sizes="100vw" priority />}
+        {image && (
+          <Image className="hero-photo" src={image.src} alt="" width={image.width} height={image.height} sizes="100vw" priority fetchPriority="high" />
+        )}
         <div className="container hero-copy">
           <h1>
-            <span className="hero-kicker">Клуб туризма</span>
+            <span className="hero-kicker">Молодёжное спортивное общественное объединение «Мозырский клуб туризма»</span>
             <span className="hero-word">Ориентир</span>
           </h1>
           <div className="hero-row">
@@ -64,6 +67,7 @@ export default async function Home() {
             <dd>{all.total}</dd>
           </div>
         </dl>
+        <UpcomingEvents />
         {home && <Sections sections={home.sections} page={1} pageBase="/" />}
       </div>
     </>

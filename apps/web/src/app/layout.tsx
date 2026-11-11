@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import { Golos_Text, JetBrains_Mono, Unbounded } from "next/font/google";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
@@ -8,6 +8,13 @@ import "./globals.css";
 const unbounded = Unbounded({ weight: ["500", "600"], subsets: ["latin", "cyrillic"], variable: "--font-unbounded", display: "swap" });
 const golos = Golos_Text({ weight: ["400", "500"], subsets: ["latin", "cyrillic"], variable: "--font-golos", display: "swap" });
 const mono = JetBrains_Mono({ weight: "500", subsets: ["latin", "cyrillic"], variable: "--font-mono", display: "swap" });
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "oklch(97.5% 0.008 85)" },
+    { media: "(prefers-color-scheme: dark)", color: "oklch(15% 0.012 70)" },
+  ],
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl()),

@@ -4,8 +4,16 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { normalizeQuery, searchEntries, type SearchEntry } from "@/lib/search";
+import { highlightPlain } from "@/lib/text";
 
 type Index = { status: "loading" } | { status: "error" } | { status: "ready"; entries: SearchEntry[] };
+
+const SUGGEST = [
+  { href: "/category/otchyoty-o-poxodax", label: "Отчёты о походах" },
+  { href: "/plany", label: "Планы" },
+  { href: "/category/novosti", label: "Новости" },
+  { href: "/archive", label: "Все записи" },
+];
 
 export function SearchClient() {
   const query = normalizeQuery(useSearchParams().get("s"));
@@ -28,7 +36,23 @@ export function SearchClient() {
   if (index.status === "loading") return <p className="empty">Ищем…</p>;
 
   const { total, items } = searchEntries(index.entries, query);
-  if (total === 0) return <p className="empty">Ничего не найдено.</p>;
+  if (total === 0) {
+    return (
+      <div className="search-empty">
+        <p className="empty">Ничего не найдено по запросу «{query}».</p>
+        <p className="label">Попробуйте другие слова или перейдите в раздел:</p>
+        <ul className="search-suggest">
+          {SUGGEST.map((s) => (
+            <li key={s.href}>
+              <Link href={s.href} className="chip">
+                {s.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
+  }
   return (
     <>
       <p className="label">
@@ -38,11 +62,15 @@ export function SearchClient() {
       <ul className="index">
         {items.map((r) => (
           <li key={r.s}>
-            {r.d && <time className="label" dateTime={r.d}>{r.d.split("-").reverse().join(".")}</time>}
+            {r.d && (
+              <time className="label" dateTime={r.d}>
+                {r.d.split("-").reverse().join(".")}
+              </time>
+            )}
             <h3>
-              <Link href={`/${r.s}`}>{r.t}</Link>
+              <Link href={`/${r.s}`} dangerouslySetInnerHTML={{ __html: highlightPlain(r.t, query) }} />
             </h3>
-            {r.e && <p>{r.e}</p>}
+            {r.e && <p dangerouslySetInnerHTML={{ __html: highlightPlain(r.e, query) }} />}
           </li>
         ))}
       </ul>

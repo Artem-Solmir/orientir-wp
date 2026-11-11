@@ -7,8 +7,13 @@ const TEXT_LIMIT = 2000;
 
 /** Compact index for client-side search on the static site: title, date and the start of the text. */
 export async function GET() {
+  const now = new Date();
   const posts = await db.post.findMany({
-    where: { status: "published", publishedAt: { lte: new Date() } },
+    where: {
+      status: "published",
+      publishedAt: { lte: now },
+      OR: [{ expiresAt: null }, { expiresAt: { gt: now } }],
+    },
     select: { slug: true, title: true, excerpt: true, body: true, publishedAt: true },
     orderBy: { publishedAt: "desc" },
   });

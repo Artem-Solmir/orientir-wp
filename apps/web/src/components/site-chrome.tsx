@@ -74,24 +74,30 @@ export function SiteFooter() {
         </p>
         <div className="footer-row">
           <p className="footer-name">{SITE_NAME}</p>
-          <ul>
-            <li>
-              <Link href="/archive">Все записи</Link>
-            </li>
-            <li>
-              <Link href="/plany">Планы</Link>
-            </li>
-            <li>
-              <Link href="/contact">Контакты</Link>
-            </li>
-            <li>
-              <Link href="/materials">Прислать материалы</Link>
-            </li>
-            <li>
-              <a href="/feed.xml">RSS-лента</a>
-            </li>
-          </ul>
-          <ThemeToggle />
+          <nav className="footer-links" aria-label="Ссылки в подвале">
+            <ul className="footer-link-col">
+              <li>
+                <Link href="/archive">Все записи</Link>
+              </li>
+              <li>
+                <Link href="/plany">Планы</Link>
+              </li>
+              <li>
+                <Link href="/contact">Контакты</Link>
+              </li>
+            </ul>
+            <ul className="footer-link-col">
+              <li>
+                <Link href="/materials">Прислать материалы</Link>
+              </li>
+              <li>
+                <a href="/feed.xml">RSS-лента</a>
+              </li>
+            </ul>
+          </nav>
+          <div className="footer-tools">
+            <ThemeToggle />
+          </div>
         </div>
       </div>
     </footer>

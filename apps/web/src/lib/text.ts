@@ -40,3 +40,23 @@ const dateFormat = new Intl.DateTimeFormat("ru-RU", {
 export function formatDate(date: Date): string {
   return dateFormat.format(date);
 }
+
+const WORDS_PER_MINUTE = 200;
+
+/** Plain-text reading time for a report body. */
+export function readingMinutes(text: string): number {
+  const words = text.trim().split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.ceil(words / WORDS_PER_MINUTE));
+}
+
+export function countImagesInHtml(html: string): number {
+  return (html.match(/<img\b/gi) ?? []).length;
+}
+
+/** Wrap query words in <mark> for search results (already escaped plain text). */
+export function highlightPlain(text: string, query: string): string {
+  const words = [...new Set(query.toLowerCase().split(/\s+/).filter(Boolean))];
+  if (words.length === 0) return text;
+  const pattern = new RegExp(`(${words.map((w) => w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|")})`, "gi");
+  return text.replace(pattern, "<mark>$1</mark>");
+}

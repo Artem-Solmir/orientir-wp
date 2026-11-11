@@ -1,5 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
+import { CardPlaceholder } from "@/components/card-placeholder";
+import { RevealOnScroll } from "@/components/reveal-on-scroll";
 import type { CardPost } from "@/lib/content";
 import { pickImage } from "@/lib/media";
 import { formatDate } from "@/lib/text";
@@ -11,19 +13,23 @@ export function PostCard({ post, priority = false }: { post: CardPost; priority?
   const href = `/${post.slug}`;
   const image = post.cover ? pickImage(post.cover, CARD_IMAGE_WIDTH) : null;
   return (
-    <article className="card">
-      <Link href={href} className="card-media" tabIndex={-1} aria-hidden="true">
-        {image && (
-          <Image
-            src={image.src}
-            alt=""
-            width={image.width}
-            height={image.height}
-            sizes="(max-width: 40rem) 86vw, 18rem"
-            priority={priority}
-          />
-        )}
-      </Link>
+    <RevealOnScroll>
+      <article className="card">
+        <Link href={href} className="card-media" tabIndex={-1} aria-hidden="true">
+          {image ? (
+            <Image
+              src={image.src}
+              alt=""
+              width={image.width}
+              height={image.height}
+              sizes="(max-width: 40rem) 86vw, 18rem"
+              priority={priority}
+              className="card-photo"
+            />
+          ) : (
+            <CardPlaceholder label={post.primaryCategory?.name} />
+          )}
+        </Link>
       <div>
         {post.publishedAt && (
           <time className="label" dateTime={post.publishedAt.toISOString()}>
@@ -35,7 +41,8 @@ export function PostCard({ post, priority = false }: { post: CardPost; priority?
         </h3>
         {post.summary && <p>{post.summary}</p>}
       </div>
-    </article>
+      </article>
+    </RevealOnScroll>
   );
 }
 

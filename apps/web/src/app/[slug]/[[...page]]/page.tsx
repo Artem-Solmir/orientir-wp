@@ -1,14 +1,12 @@
 import type { Metadata } from "next";
-import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
+import { PostArticle } from "@/components/post-view";
 import { Sections } from "@/components/sections";
-import { getNeighbors, getPage, getPost } from "@/lib/content";
-import { pickImage } from "@/lib/media";
+import { getPage, getPost } from "@/lib/content";
 import { parsePageSegments } from "@/lib/pagination";
 import { slugParams } from "@/lib/static-params";
 import { SITE_DESCRIPTION, absoluteUrl, mediaUrl } from "@/lib/site";
-import { formatDate, htmlToText, summarize } from "@/lib/text";
+import { htmlToText, summarize } from "@/lib/text";
 
 export const dynamicParams = false;
 
@@ -61,7 +59,7 @@ export default async function SlugPage({ params }: Props) {
   const post = await getPost(slug);
   if (post) {
     if (pageNumber !== 1) notFound(); // posts have no /page/N
-    return <PostView post={post} />;
+    return <PostArticle post={post} />;
   }
 
   const found = await getPage(slug);
@@ -73,53 +71,5 @@ export default async function SlugPage({ params }: Props) {
       {found.body && <div className="prose" dangerouslySetInnerHTML={{ __html: found.body }} />}
       <Sections sections={found.sections} page={pageNumber} pageBase={`/${found.slug}`} />
     </div>
-  );
-}
-
-async function PostView({ post }: { post: NonNullable<Awaited<ReturnType<typeof getPost>>> }) {
-  const { prev, next } = await getNeighbors(post.publishedAt);
-  const cover = post.cover ? pickImage(post.cover, 800) : null;
-  return (
-    <article className="container post">
-      <header className="post-head">
-        <h1>{post.title}</h1>
-        <div className="meta">
-          {post.publishedAt && <time dateTime={post.publishedAt.toISOString()}>{formatDate(post.publishedAt)}</time>}
-          {post.authorName && <span>{post.authorName}</span>}
-          {post.categories.map(({ category }) => (
-            <Link key={category.slug} href={`/category/${category.slug}`}>
-              {category.name}
-            </Link>
-          ))}
-        </div>
-      </header>
-      {post.cover && cover && (
-        <figure className="post-cover">
-          <Image
-            src={cover.src}
-            alt={post.cover.alt ?? ""}
-            width={cover.width}
-            height={cover.height}
-            sizes="(max-width: 72rem) 100vw, 68ch"
-            priority
-          />
-        </figure>
-      )}
-      {/* Body HTML is sanitized by the ETL and by the agent API on write (allow-list, no scripts). */}
-      <div className="prose" dangerouslySetInnerHTML={{ __html: post.body }} />
-      {post.tags.length > 0 && (
-        <ul className="tags" aria-label="Метки">
-          {post.tags.map(({ tag }) => (
-            <li key={tag.slug}>
-              <Link href={`/tag/${tag.slug}`}>{tag.name}</Link>
-            </li>
-          ))}
-        </ul>
-      )}
-      <nav className="neighbors" aria-label="Соседние записи">
-        <div>{prev && <Link href={`/${prev.slug}`}>{prev.title}</Link>}</div>
-        <div>{next && <Link href={`/${next.slug}`}>{next.title}</Link>}</div>
-      </nav>
-    </article>
   );
 }

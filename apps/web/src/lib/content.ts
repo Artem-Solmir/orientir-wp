@@ -14,11 +14,21 @@ export type CardPost = {
   title: string;
   summary: string;
   publishedAt: Date | null;
+  expiresAt: Date | null;
   authorName: string | null;
   cover: Cover | null;
+  primaryCategory: { slug: string; name: string } | null;
 };
 
-const live = (): Prisma.PostWhereInput => ({ status: "published", publishedAt: { lte: new Date() } });
+/** Published and not past WordPress expiration. */
+const live = (): Prisma.PostWhereInput => {
+  const now = new Date();
+  return {
+    status: "published",
+    publishedAt: { lte: now },
+    OR: [{ expiresAt: null }, { expiresAt: { gt: now } }],
+  };
+};
 
 const cardSelect = {
   slug: true,
@@ -26,15 +36,18 @@ const cardSelect = {
   excerpt: true,
   body: true,
   publishedAt: true,
+  expiresAt: true,
   authorName: true,
   cover: { select: { path: true, width: true, height: true, alt: true, variants: true } },
+  categories: { take: 1, select: { category: { select: { slug: true, name: true } } } },
 } satisfies Prisma.PostSelect;
 
 type CardRow = Prisma.PostGetPayload<{ select: typeof cardSelect }>;
 
 function toCard(row: CardRow): CardPost {
-  const { body, excerpt, ...rest } = row;
-  return { ...rest, summary: summarize(excerpt ? htmlToText(excerpt) : htmlToText(body), 140) };
+  const { body, excerpt, categories, ...rest } = row;
+  const primaryCategory = categories[0]?.category ?? null;
+  return { ...rest, primaryCategory, summary: summarize(excerpt ? htmlToText(excerpt) : htmlToText(body), 140) };
 }
 
 export type PostFilter = { categorySlugs?: string[]; excludeCategorySlugs?: string[]; tagSlug?: string; search?: string; withCover?: boolean };
@@ -74,14 +87,47 @@ export const getPost = cache(async (slug: string) => {
   });
 });
 
+const neighborSelect = {
+  slug: true,
+  title: true,
+  cover: { select: { path: true, width: true, height: true, alt: true, variants: true } },
+} satisfies Prisma.PostSelect;
+
 export async function getNeighbors(publishedAt: Date | null) {
   if (!publishedAt) return { prev: null, next: null };
-  const pick = { slug: true, title: true } as const;
   const [prev, next] = await Promise.all([
-    db.post.findFirst({ where: { ...live(), publishedAt: { lt: publishedAt } }, orderBy: { publishedAt: "desc" }, select: pick }),
-    db.post.findFirst({ where: { ...live(), publishedAt: { gt: publishedAt, lte: new Date() } }, orderBy: { publishedAt: "asc" }, select: pick }),
+    db.post.findFirst({ where: { ...live(), publishedAt: { lt: publishedAt } }, orderBy: { publishedAt: "desc" }, select: neighborSelect }),
+    db.post.findFirst({ where: { ...live(), publishedAt: { gt: publishedAt, lte: new Date() } }, orderBy: { publishedAt: "asc" }, select: neighborSelect }),
   ]);
   return { prev, next };
+}
+
+/** Plans that are still visible and expire in the future, nearest first. */
+export async function listUpcomingPlans(limit = 5) {
+  const now = new Date();
+  const rows = await db.post.findMany({
+    where: {
+      ...live(),
+      categories: { some: { category: { slug: "plany" } } },
+      expiresAt: { not: null, gt: now },
+    },
+    orderBy: { expiresAt: "asc" },
+    take: limit,
+    select: cardSelect,
+  });
+  return rows.map(toCard);
+}
+
+export async function archiveYears() {
+  const rows = await db.post.findMany({
+    where: live(),
+    select: { publishedAt: true },
+  });
+  const years = new Set<number>();
+  for (const r of rows) {
+    if (r.publishedAt) years.add(r.publishedAt.getFullYear());
+  }
+  return [...years].sort((a, b) => b - a);
 }
 
 export const getPage = cache(async (slug: string) => {

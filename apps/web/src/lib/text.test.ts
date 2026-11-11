@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { formatDate, htmlToText, summarize, xmlEscape } from "./text";
+import { countImagesInHtml, formatDate, highlightPlain, htmlToText, readingMinutes, summarize, xmlEscape } from "./text";
 
 describe("htmlToText", () => {
   it("strips tags, decodes common entities and collapses whitespace", () => {
@@ -37,6 +37,31 @@ describe("summarize", () => {
 describe("xmlEscape", () => {
   it("escapes all five XML special characters", () => {
     expect(xmlEscape(`<a href="x">&'</a>`)).toBe("&lt;a href=&quot;x&quot;&gt;&amp;&apos;&lt;/a&gt;");
+  });
+});
+
+describe("readingMinutes", () => {
+  it("returns at least one minute", () => {
+    expect(readingMinutes("один")).toBe(1);
+    expect(readingMinutes(Array(250).fill("слово").join(" "))).toBe(2);
+  });
+});
+
+describe("countImagesInHtml", () => {
+  it("counts img tags", () => {
+    expect(countImagesInHtml('<p>x</p><img src="a"><IMG alt="">')).toBe(2);
+  });
+});
+
+describe("highlightPlain", () => {
+  it("wraps matches in mark", () => {
+    expect(highlightPlain("Марафон Припятский", "припят")).toBe("Марафон <mark>Припят</mark>ский");
+  });
+
+  it("highlights every word in the query", () => {
+    expect(highlightPlain("Марафон Припятский весенний", "марафон весен")).toBe(
+      "<mark>Марафон</mark> Припятский <mark>весен</mark>ний",
+    );
   });
 });
 
