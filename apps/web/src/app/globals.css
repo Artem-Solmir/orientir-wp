@@ -19,6 +19,16 @@
   --color-focus: oklch(85% 0.13 75);
   --color-danger: oklch(78% 0.14 28);
 
+  /* the night palette, kept for surfaces that stay dark in the light theme */
+  --night-paper: oklch(15% 0.012 70);
+  --night-paper-3: oklch(26% 0.016 68);
+  --night-ink: oklch(95% 0.01 85);
+  --night-ink-2: oklch(84% 0.012 80);
+  --night-muted: oklch(69% 0.02 75);
+  --night-rule-2: oklch(52% 0.02 70);
+  --night-accent-deep: oklch(76% 0.135 62);
+  --night-focus: oklch(85% 0.13 75);
+
   --font-display: var(--font-unbounded), "Arial Black", sans-serif;
   --font-body: var(--font-golos), ui-sans-serif, system-ui, sans-serif;
   --font-outlier: var(--font-mono), ui-monospace, monospace;
@@ -50,12 +60,66 @@
   --dur-short: 160ms;
   --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
 }
+/* Light theme: warm paper, dark brown ink. The photo hero and the figures panel keep the night palette in both themes. */
+:root[data-theme="light"] {
+  color-scheme: light;
+  --color-paper: oklch(97.5% 0.008 85);
+  --color-paper-2: oklch(94.5% 0.01 82);
+  --color-paper-3: oklch(89% 0.014 80);
+  --color-ink: oklch(20% 0.015 70);
+  --color-ink-2: oklch(32% 0.015 70);
+  --color-muted: oklch(44% 0.02 70);
+  --color-rule: oklch(86% 0.012 80);
+  --color-rule-2: oklch(58% 0.02 70);
+  --color-accent-deep: oklch(50% 0.12 55);
+  --color-focus: oklch(48% 0.15 60);
+  --color-danger: oklch(48% 0.17 28);
+}
+
+:root[data-theme="light"] .hero,
+:root[data-theme="light"] .facts {
+  --color-paper: var(--night-paper);
+  --color-paper-3: var(--night-paper-3);
+  --color-ink: var(--night-ink);
+  --color-ink-2: var(--night-ink-2);
+  --color-muted: var(--night-muted);
+  --color-rule-2: var(--night-rule-2);
+  --color-accent-deep: var(--night-accent-deep);
+  --color-focus: var(--night-focus);
+}
+
+.theme-toggle {
+  display: inline-flex;
+  align-self: start;
+  border: var(--rule-hair) solid var(--color-rule-2);
+  border-radius: 999px;
+  padding: 2px;
+}
+
+.theme-option {
+  border: 0;
+  border-radius: 999px;
+  padding: var(--space-xs) var(--space-md);
+  background: transparent;
+  color: var(--color-ink-2);
+  font: inherit;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.theme-option[aria-pressed="true"] {
+  background: var(--color-accent);
+  color: var(--color-accent-ink);
+}
+
 html,
 body {
   overflow-x: clip;
 }
 
 html {
+  scroll-padding-top: 6rem;
   scrollbar-color: var(--color-rule-2) var(--color-paper-2);
 }
 
@@ -154,8 +218,9 @@ a:hover {
 
 /* Header */
 .site-header {
-  position: relative;
-  z-index: 5;
+  position: sticky;
+  top: 0;
+  z-index: 20;
   border-bottom: var(--rule-hair) solid var(--color-rule);
   background: var(--color-paper);
 }
@@ -169,14 +234,19 @@ a:hover {
 }
 
 .wordmark {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: var(--text-lg);
-  letter-spacing: var(--tracking-display);
-  text-transform: uppercase;
-  color: var(--color-ink);
-  text-decoration: none;
+  display: block;
   margin: 0;
+  line-height: 0;
+}
+
+/* The logo is white line art; as a mask it takes the ink colour of the current theme */
+.logo {
+  display: block;
+  width: 4.5rem;
+  aspect-ratio: 211 / 160;
+  background: var(--color-ink);
+  -webkit-mask: url("/logo.png") center / contain no-repeat;
+  mask: url("/logo.png") center / contain no-repeat;
 }
 
 .quick {

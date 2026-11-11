@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getNavCategories } from "@/lib/content";
 import { SITE_NAME } from "@/lib/site";
 import { SiteMenu } from "./site-menu";
+import { ThemeToggle } from "./theme-toggle";
 
 /** The two sections readers come for stay one click away; everything else lives in the menu. */
 const QUICK_SLUGS = ["otchyoty-o-poxodax", "plany"];
@@ -12,8 +13,8 @@ export async function SiteHeader() {
   return (
     <header className="site-header">
       <div className="container top-row">
-        <Link href="/" className="wordmark">
-          Ориентир
+        <Link href="/" className="wordmark" aria-label="Ориентир, на главную">
+          <span className="logo" aria-hidden="true" />
         </Link>
         <nav aria-label="Основное меню" className="quick">
           <ul>
@@ -87,6 +88,7 @@ export function SiteFooter() {
               <a href="/feed.xml">RSS-лента</a>
             </li>
           </ul>
+          <ThemeToggle />
         </div>
       </div>
     </footer>
