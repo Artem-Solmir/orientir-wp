@@ -5,6 +5,7 @@
 import { createReadStream, existsSync, readdirSync, statSync } from "node:fs";
 import { join, relative } from "node:path";
 import { Client } from "basic-ftp";
+import { ftpRemoteRoot } from "./ftp-remote-root";
 
 const ROOT = join(import.meta.dirname, "..");
 const OUT = join(ROOT, "out");
@@ -31,11 +32,11 @@ async function main() {
   const host = required("FTP_HOST");
   const user = required("FTP_USER");
   const pass = required("FTP_PASS");
-  const remoteRoot = (process.env.FTP_ROOT ?? "/www/orientir.by").replace(/\/$/, "");
+  const { cd: remoteCd, label: remoteLabel } = ftpRemoteRoot();
   const files = listFiles(OUT);
 
   if (dryRun) {
-    process.stdout.write(`dry-run: ${files.length} files -> ${remoteRoot}\n`);
+    process.stdout.write(`dry-run: ${files.length} files -> ${remoteLabel}\n`);
     return;
   }
 
@@ -43,7 +44,7 @@ async function main() {
   client.ftp.ipFamily = 4;
   try {
     await client.access({ host, user, password: pass, secure: process.env.FTP_SECURE === "1" });
-    await client.cd(remoteRoot);
+    if (remoteCd) await client.cd(remoteCd);
     for (const rel of files) {
       if (rel.startsWith("wp-content/")) {
         throw new Error(`refusing to upload ${rel} — wp-content is managed on the server`);
@@ -56,7 +57,7 @@ async function main() {
         await client.uploadFrom(createReadStream(local), rel);
       }
     }
-    process.stdout.write(`uploaded ${files.length} files to ${host}:${remoteRoot}\n`);
+    process.stdout.write(`uploaded ${files.length} files to ${host}:${remoteLabel}\n`);
   } finally {
     client.close();
   }

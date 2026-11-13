@@ -9,6 +9,7 @@
     "build:vercel": "tsx --env-file=.env scripts/build-vercel.ts",
     "deploy:vercel": "tsx scripts/deploy-vercel.ts",
     "deploy:ftp": "tsx --env-file=.env scripts/deploy-ftp.ts",
+    "deploy:ftp:probe": "tsx --env-file=.env scripts/ftp-probe.ts",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
