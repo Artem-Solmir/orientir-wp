@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
-import Script from "next/script";
 import { Golos_Text, JetBrains_Mono, Unbounded } from "next/font/google";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
+import { ThemeInit } from "@/components/theme-init";
 import { SITE_DESCRIPTION, SITE_NAME, siteUrl } from "@/lib/site";
 import "./globals.css";
 
@@ -24,14 +24,11 @@ export const metadata: Metadata = {
   alternates: { types: { "application/rss+xml": "/feed.xml" } },
 };
 
-/** Runs before first paint: saved choice wins, otherwise the system preference. Constant string, no user input. */
-const THEME_SCRIPT = `try{var t=localStorage.getItem("theme");if(t!=="light"&&t!=="dark"){t=matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"}document.documentElement.dataset.theme=t}catch(e){document.documentElement.dataset.theme="dark"}`;
-
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ru" data-theme="dark" suppressHydrationWarning className={`${unbounded.variable} ${golos.variable} ${mono.variable}`}>
       <body>
-        <Script id="theme-init" strategy="beforeInteractive" dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
+        <ThemeInit />
         <a className="skip-link" href="#content">
           К содержимому
         </a>

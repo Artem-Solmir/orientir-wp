@@ -16,7 +16,7 @@ function subscribe(listener: () => void) {
   return () => listeners.delete(listener);
 }
 
-// The real value is put on <html> by an inline script before first paint.
+// ThemeInit in the root layout sets <html data-theme> on the client before paint when possible.
 function readTheme(): Theme {
   return document.documentElement.dataset.theme === "light" ? "light" : "dark";
 }

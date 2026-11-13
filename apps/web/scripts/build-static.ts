@@ -8,6 +8,7 @@ import { copyFileSync, existsSync, readdirSync, readFileSync, statSync, writeFil
 import { join } from "node:path";
 import { PrismaClient } from "@prisma/client";
 import { securityHeaders } from "../deploy/security-headers";
+import { hideAdminRoutes, restoreAdminRoutes } from "./admin-export";
 
 const ROOT = join(import.meta.dirname, "..");
 const OUT = join(ROOT, "out");
@@ -74,8 +75,18 @@ function sanityChecks(): string[] {
 }
 
 async function main() {
-  const build = spawnSync("npx", ["next", "build"], { cwd: ROOT, stdio: "inherit", shell: true, env: { ...process.env, NODE_ENV: "production", APP_URL: PUBLIC_URL } });
-  if (build.status !== 0) throw new Error("next build failed");
+  hideAdminRoutes();
+  try {
+    const build = spawnSync("npx", ["next", "build"], {
+      cwd: ROOT,
+      stdio: "inherit",
+      shell: true,
+      env: { ...process.env, NODE_ENV: "production", APP_URL: PUBLIC_URL, ENABLE_ADMIN: "0" },
+    });
+    if (build.status !== 0) throw new Error("next build failed");
+  } finally {
+    restoreAdminRoutes();
+  }
 
   const template = readFileSync(join(ROOT, "deploy", "htaccess.template"), "utf8");
   const htaccess = template.replace("__HEADERS__", headerLines()).replace("__REDIRECTS__", await buildRedirects());

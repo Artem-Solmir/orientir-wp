@@ -1387,3 +1387,55 @@ textarea.input {
   resize: vertical;
   font: inherit;
 }
+
+/* Admin (local dev with ENABLE_ADMIN=1) */
+.admin-shell {
+  padding-block: var(--space-xl) var(--space-2xl);
+  max-width: 48rem;
+}
+
+.admin-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+
+.admin-head .actions {
+  align-items: center;
+}
+
+.admin-post-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: var(--rule-bar) solid var(--color-rule-2);
+}
+
+.admin-post-list > li {
+  display: grid;
+  gap: var(--space-xs);
+  padding-block: var(--space-md);
+  border-bottom: var(--rule-hair) solid var(--color-rule);
+}
+
+.admin-form .admin-body {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  min-height: 20rem;
+}
+
+.admin-login {
+  max-width: 24rem;
+}
+
+.admin-otp-dev {
+  margin-top: 0.75rem;
+  padding: 0.75rem 1rem;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  font-family: var(--font-mono), monospace;
+  letter-spacing: 0.12em;
+}

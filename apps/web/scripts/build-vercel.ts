@@ -5,6 +5,7 @@
  */
 import { spawnSync } from "node:child_process";
 import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from "node:fs";
+import { hideAdminRoutes, restoreAdminRoutes } from "./admin-export";
 import { dirname, join, resolve } from "node:path";
 import { PrismaClient } from "@prisma/client";
 import { securityHeaders } from "../deploy/security-headers";
@@ -95,8 +96,14 @@ function problems(): string[] {
 
 async function main() {
   rmSync(OUT, { recursive: true, force: true });
-  const env = { ...process.env, NODE_ENV: "production" as const, APP_URL: PUBLIC_URL, NEXT_PUBLIC_FORM_DISABLED: "1" };
-  if (spawnSync("npx", ["next", "build"], { cwd: ROOT, stdio: "inherit", shell: true, env }).status !== 0) throw new Error("next build failed");
+  hideAdminRoutes();
+  try {
+    const env = { ...process.env, NODE_ENV: "production" as const, APP_URL: PUBLIC_URL, NEXT_PUBLIC_FORM_DISABLED: "1", ENABLE_ADMIN: "0" };
+    const build = spawnSync("npx", ["next", "build"], { cwd: ROOT, stdio: "inherit", shell: true, env });
+    if (build.status !== 0) throw new Error("next build failed");
+  } finally {
+    restoreAdminRoutes();
+  }
 
   const config = vercelConfig(await redirects(), process.env.VERCEL_NOINDEX !== "0");
   writeFileSync(join(OUT, "vercel.json"), `${JSON.stringify(config, null, 2)}\n`);
