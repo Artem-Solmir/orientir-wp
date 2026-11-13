@@ -1,4 +1,4 @@
-export const SITE_NAME = "Клуб туризма «Ориентир»";
+export const SITE_NAME = "МСОО  \"МКТ  «Ориентир»\"";
 export const SITE_DESCRIPTION = "Походы, велопоходы и приключенческие гонки: отчёты, планы и новости клуба.";
 
 /** Public base URL without a trailing slash. Read lazily so unit tests and builds can set it. */

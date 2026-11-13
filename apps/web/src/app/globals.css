@@ -227,10 +227,40 @@ a:hover {
 
 .top-row {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding-block: var(--space-md);
+}
+
+.header-start {
+  display: flex;
+  flex-wrap: nowrap;
   align-items: center;
   gap: var(--space-sm) var(--space-md);
-  padding-block: var(--space-md);
+  min-width: 0;
+}
+
+.header-contacts {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  text-decoration: none;
+  color: var(--color-ink);
+  padding-block: var(--space-xs);
+  border-bottom: 2px solid transparent;
+  transition: border-color var(--dur-short) var(--ease-out);
+  white-space: nowrap;
+}
+
+.header-contacts:hover {
+  border-bottom-color: var(--color-accent);
+}
+
+.header-search {
+  flex: 0 1 22rem;
+  min-width: min(100%, 10rem);
+  margin-left: auto;
 }
 
 .wordmark {
@@ -247,38 +277,6 @@ a:hover {
   background: var(--color-ink);
   -webkit-mask: url("/logo.png") center / contain no-repeat;
   mask: url("/logo.png") center / contain no-repeat;
-}
-
-.quick {
-  margin-right: auto;
-}
-
-.quick ul {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-xs) var(--space-md);
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  font-size: var(--text-sm);
-  font-weight: 500;
-}
-
-.quick a {
-  text-decoration: none;
-  padding-block: var(--space-xs);
-  border-bottom: 2px solid transparent;
-  transition: border-color var(--dur-short) var(--ease-out);
-}
-
-.quick a:hover {
-  border-bottom-color: var(--color-accent);
-}
-
-@media (max-width: 64rem) {
-  .quick li:last-child {
-    display: none;
-  }
 }
 
 .menu-toggle {
@@ -353,20 +351,21 @@ a:hover {
   display: none;
 }
 
-/* Phones: only the logo and a burger stay in the bar; links and the call to action move into the panel */
 @media (max-width: 48rem) {
-  .quick,
-  .btn.header-cta {
-    display: none;
-  }
-
   .top-row {
-    flex-wrap: nowrap;
     padding-block: var(--space-sm);
+    gap: var(--space-sm);
   }
 
-  .menu {
-    margin-left: auto;
+  .header-search .btn--secondary {
+    padding-inline: var(--space-sm);
+    font-size: 0;
+  }
+
+  .header-search .btn--secondary::after {
+    content: "⌕";
+    font-size: var(--text-lg);
+    line-height: 1;
   }
 
   .menu-toggle {
