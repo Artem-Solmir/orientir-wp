@@ -69,12 +69,12 @@ export const SANITIZE: sanitizeHtml.IOptions = {
   ],
   allowedAttributes: {
     a: ["href", "title", "target", "rel"],
-    img: ["src", "alt", "width", "height", "class", "title", "loading", "decoding"],
+    img: ["src", "alt", "width", "height", "class", "title", "loading", "decoding", "fetchpriority"],
+    iframe: ["src", "width", "height", "allowfullscreen", "frameborder", "title", "loading"],
     figure: ["class"],
     div: ["data-gallery", "data-form"],
     th: ["colspan", "rowspan"],
     td: ["colspan", "rowspan"],
-    iframe: ["src", "width", "height", "allowfullscreen", "frameborder", "title"],
     video: ["src", "controls"],
   },
   allowedClasses: {
@@ -85,7 +85,8 @@ export const SANITIZE: sanitizeHtml.IOptions = {
   allowedIframeHostnames: IFRAME_HOSTS,
   transformTags: {
     a: sanitizeHtml.simpleTransform("a", { rel: "noopener" }, true),
-    img: sanitizeHtml.simpleTransform("img", { loading: "lazy", decoding: "async" }, true),
+    img: sanitizeHtml.simpleTransform("img", { loading: "lazy", decoding: "async", fetchpriority: "low" }, true),
+    iframe: sanitizeHtml.simpleTransform("iframe", { loading: "lazy" }, true),
   },
 };
 

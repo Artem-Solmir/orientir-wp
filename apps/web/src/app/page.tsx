@@ -1,12 +1,12 @@
-import Image from "next/image";
 import Link from "next/link";
 import { Sections } from "@/components/sections";
+import { SiteImage } from "@/components/site-image";
 import { UpcomingEvents } from "@/components/upcoming-events";
 import { getPage, listPosts } from "@/lib/content";
 import { pickImage } from "@/lib/media";
 
 const HOME_SLUG = "home";
-const HERO_IMAGE_WIDTH = 1600;
+const HERO_IMAGE_WIDTH = 1280;
 /** Announcements carry text posters; trip reports carry real photographs, so the hero draws from them. */
 const HERO_CATEGORIES = ["otchyoty-o-poxodax", "otchyoty-o-pvd-pokatushkax"];
 
@@ -29,7 +29,7 @@ export default async function Home() {
     <>
       <section className="hero">
         {image && (
-          <Image className="hero-photo" src={image.src} alt="" width={image.width} height={image.height} sizes="100vw" priority fetchPriority="high" />
+          <SiteImage className="hero-photo" src={image.src} alt="" width={image.width} height={image.height} sizes="100vw" priority fetchPriority="high" />
         )}
         <div className="container hero-copy">
           <h1>

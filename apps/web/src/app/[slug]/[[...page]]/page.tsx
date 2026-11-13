@@ -6,6 +6,7 @@ import { getPage, getPost } from "@/lib/content";
 import { parsePageSegments } from "@/lib/pagination";
 import { slugParams } from "@/lib/static-params";
 import { SITE_DESCRIPTION, absoluteUrl, mediaUrl } from "@/lib/site";
+import { prepareProseHtml } from "@/lib/prose-html";
 import { htmlToText, summarize } from "@/lib/text";
 
 export const dynamicParams = false;
@@ -70,7 +71,7 @@ export default async function SlugPage({ params }: Props) {
   return (
     <div className="container">
       <h1 className="page-title">{found.title}</h1>
-      {found.body && <div className="prose" dangerouslySetInnerHTML={{ __html: found.body }} />}
+      {found.body && <div className="prose" dangerouslySetInnerHTML={{ __html: prepareProseHtml(found.body) }} />}
       <Sections sections={found.sections} page={pageNumber} pageBase={`/${found.slug}`} />
     </div>
   );

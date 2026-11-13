@@ -1,8 +1,9 @@
-import Image from "next/image";
 import Link from "next/link";
 import { PostShare } from "@/components/post-share";
+import { SiteImage } from "@/components/site-image";
 import { getNeighbors, type PostView as Post } from "@/lib/content";
 import { pickImage } from "@/lib/media";
+import { prepareProseHtml } from "@/lib/prose-html";
 import { absoluteUrl } from "@/lib/site";
 import { countImagesInHtml, formatDate, htmlToText, readingMinutes } from "@/lib/text";
 
@@ -30,10 +31,10 @@ export async function PostArticle({ post }: { post: Post }) {
       </header>
       {post.cover && cover && (
         <figure className="post-cover">
-          <Image src={cover.src} alt={post.cover.alt ?? ""} width={cover.width} height={cover.height} sizes="(max-width: 72rem) 100vw, 68ch" priority />
+          <SiteImage src={cover.src} alt={post.cover.alt ?? ""} width={cover.width} height={cover.height} sizes="(max-width: 72rem) 100vw, 68ch" priority />
         </figure>
       )}
-      <div className="prose" dangerouslySetInnerHTML={{ __html: post.body }} />
+      <div className="prose" dangerouslySetInnerHTML={{ __html: prepareProseHtml(post.body) }} />
       {post.tags.length > 0 && (
         <ul className="tags" aria-label="Метки">
           {post.tags.map(({ tag }) => (
@@ -90,7 +91,7 @@ function NeighborLink({ post }: { post: NonNullable<Awaited<ReturnType<typeof ge
   const thumb = post.cover ? pickImage(post.cover, 400) : null;
   return (
     <Link href={`/${post.slug}`} className="neighbor-link">
-      {thumb && <Image src={thumb.src} alt="" width={thumb.width} height={thumb.height} sizes="8rem" className="neighbor-thumb" />}
+      {thumb && <SiteImage src={thumb.src} alt="" width={thumb.width} height={thumb.height} sizes="8rem" className="neighbor-thumb" />}
       <span>{post.title}</span>
     </Link>
   );

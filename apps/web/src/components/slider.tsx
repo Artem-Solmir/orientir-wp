@@ -1,7 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
+import { SiteImage } from "@/components/site-image";
 import { useRef } from "react";
 
 export type SlideItem = { href: string; title: string; image: { src: string; width: number; height: number } | null; date: string };
@@ -35,13 +35,14 @@ export function Slider({ items, label }: { items: SlideItem[]; label: string }) 
             <article className="card">
               <Link href={item.href} className="card-media" tabIndex={-1} aria-hidden="true">
                 {item.image && (
-                  <Image
+                  <SiteImage
                     src={item.image.src}
                     alt=""
                     width={item.image.width}
                     height={item.image.height}
                     sizes="(max-width: 40rem) 86vw, 30rem"
                     priority={i === 0}
+                    className="card-photo"
                   />
                 )}
               </Link>

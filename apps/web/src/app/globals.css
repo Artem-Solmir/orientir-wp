@@ -937,6 +937,14 @@ a:hover {
   border-radius: var(--radius-card);
 }
 
+.prose img[loading="lazy"] {
+  background: var(--color-paper-3);
+}
+
+.prose img[width][height] {
+  height: auto;
+}
+
 .prose iframe {
   width: 100%;
   aspect-ratio: 16 / 9;
@@ -1438,4 +1446,24 @@ textarea.input {
   border-radius: var(--radius);
   font-family: var(--font-mono), monospace;
   letter-spacing: 0.12em;
+}
+
+/* Below-fold lists: skip layout/paint until the user scrolls near them. */
+@media (prefers-reduced-motion: no-preference) {
+  .section ~ .section,
+  .cards > li {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 18rem;
+  }
+
+  .post .neighbors {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 8rem;
+  }
+}
+
+@media (prefers-reduced-data: reduce) {
+  .hero-photo {
+    display: none;
+  }
 }
