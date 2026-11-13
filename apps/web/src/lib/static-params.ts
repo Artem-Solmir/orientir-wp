@@ -1,6 +1,6 @@
 import "server-only";
-import { db } from "./db";
 import { listPosts } from "./content";
+import { loadStore } from "./store/reader";
 import { pageCount } from "./pagination";
 import { csv, isLatestSection, sectionConfig } from "./section-config";
 
@@ -18,7 +18,8 @@ export async function archiveParams() {
 }
 
 export async function categoryParams() {
-  const categories = await db.category.findMany({ where: { posts: { some: {} } }, select: { slug: true } });
+  const store = loadStore();
+  const categories = store.categories.filter((c) => store.posts.some((p) => p.categories.includes(c.slug)));
   const out: { slug: string; page: string[] }[] = [];
   for (const { slug } of categories) {
     const { total } = await listPosts({ categorySlugs: [slug] }, 1, 1);
@@ -28,7 +29,8 @@ export async function categoryParams() {
 }
 
 export async function tagParams() {
-  const tags = await db.tag.findMany({ where: { posts: { some: {} } }, select: { slug: true } });
+  const store = loadStore();
+  const tags = store.tags.filter((t) => store.posts.some((p) => p.tags.includes(t.slug)));
   const out: { slug: string; page: string[] }[] = [];
   for (const { slug } of tags) {
     const { total } = await listPosts({ tagSlug: slug }, 1, 1);
@@ -52,10 +54,10 @@ async function composerPages(sections: { type: string; config: unknown }[]): Pro
 
 /** Every post and page URL, plus the extra pages of paginated composer pages. */
 export async function slugParams() {
-  const [posts, pages] = await Promise.all([
-    db.post.findMany({ where: { status: "published", publishedAt: { lte: new Date() } }, select: { slug: true } }),
-    db.page.findMany({ where: { status: "published" }, select: { slug: true, sections: { select: { type: true, config: true } } } }),
-  ]);
+  const store = loadStore();
+  const now = new Date();
+  const posts = store.posts.filter((p) => p.status === "published" && p.publishedAt && new Date(p.publishedAt) <= now);
+  const pages = store.pages.filter((p) => p.status === "published");
   const out: { slug: string; page: string[] }[] = posts.map((p) => ({ slug: p.slug, page: [] }));
   for (const page of pages) {
     if (SYSTEM_PAGES.has(page.slug)) continue;

@@ -1,0 +1,907 @@
+[
+  {
+    "slug": "2017",
+    "name": "2017",
+    "legacyWpId": 127
+  },
+  {
+    "slug": "2018",
+    "name": "2018",
+    "legacyWpId": 147
+  },
+  {
+    "slug": "2019",
+    "name": "2019",
+    "legacyWpId": 171
+  },
+  {
+    "slug": "2022",
+    "name": "2022",
+    "legacyWpId": 185
+  },
+  {
+    "slug": "2023",
+    "name": "2023",
+    "legacyWpId": 189
+  },
+  {
+    "slug": "2024",
+    "name": "2024",
+    "legacyWpId": 199
+  },
+  {
+    "slug": "2025",
+    "name": "2025",
+    "legacyWpId": 206
+  },
+  {
+    "slug": "2026",
+    "name": "2026",
+    "legacyWpId": 213
+  },
+  {
+    "slug": "avtoputeshestviya",
+    "name": "Автопутешествия",
+    "legacyWpId": 62
+  },
+  {
+    "slug": "batyvlya",
+    "name": "Батывля",
+    "legacyWpId": 104
+  },
+  {
+    "slug": "beloe-more",
+    "name": "Белое море",
+    "legacyWpId": 54
+  },
+  {
+    "slug": "bratkovskaya",
+    "name": "Братковская",
+    "legacyWpId": 143
+  },
+  {
+    "slug": "velo-ponchik",
+    "name": "Вело-пончик",
+    "legacyWpId": 164
+  },
+  {
+    "slug": "vit",
+    "name": "Вить",
+    "legacyWpId": 168
+  },
+  {
+    "slug": "vodnyj-marafon",
+    "name": "Водный марафон",
+    "legacyWpId": 87
+  },
+  {
+    "slug": "vodnyj-poxod",
+    "name": "Водный поход",
+    "legacyWpId": 52
+  },
+  {
+    "slug": "vozdushnyj-zmej",
+    "name": "Воздушный змей",
+    "legacyWpId": 78
+  },
+  {
+    "slug": "gamak-svoimi-rukami",
+    "name": "Гамак своими руками",
+    "legacyWpId": 108
+  },
+  {
+    "slug": "glusk",
+    "name": "Глуск",
+    "legacyWpId": 119
+  },
+  {
+    "slug": "gornyj-turistskij-poxod",
+    "name": "Горный туристский поход",
+    "legacyWpId": 75
+  },
+  {
+    "slug": "gropa",
+    "name": "Гропа",
+    "legacyWpId": 138
+  },
+  {
+    "slug": "demenka",
+    "name": "Деменка",
+    "legacyWpId": 120
+  },
+  {
+    "slug": "deneshi",
+    "name": "Денеши",
+    "legacyWpId": 89
+  },
+  {
+    "slug": "doty",
+    "name": "Доты",
+    "legacyWpId": 105
+  },
+  {
+    "slug": "zhabeshi",
+    "name": "Жабеши",
+    "legacyWpId": 81
+  },
+  {
+    "slug": "zhaxovichi",
+    "name": "Жаховичи",
+    "legacyWpId": 181
+  },
+  {
+    "slug": "zimnij-poxod",
+    "name": "Зимний поход",
+    "legacyWpId": 59
+  },
+  {
+    "slug": "iozyr",
+    "name": "Иозырь",
+    "legacyWpId": 194
+  },
+  {
+    "slug": "ipa",
+    "name": "Ипа",
+    "legacyWpId": 74
+  },
+  {
+    "slug": "kazbek",
+    "name": "Казбек",
+    "legacyWpId": 69
+  },
+  {
+    "slug": "kazimirovka",
+    "name": "Казимировка",
+    "legacyWpId": 198
+  },
+  {
+    "slug": "kazimirovskaya-buda",
+    "name": "Казимировская Буда",
+    "legacyWpId": 197
+  },
+  {
+    "slug": "kareliya",
+    "name": "Карелия",
+    "legacyWpId": 182
+  },
+  {
+    "slug": "karpaty",
+    "name": "Карпаты",
+    "legacyWpId": 60
+  },
+  {
+    "slug": "kitlod",
+    "name": "Китлод",
+    "legacyWpId": 85
+  },
+  {
+    "slug": "klub",
+    "name": "Клуб",
+    "legacyWpId": 64
+  },
+  {
+    "slug": "krasnoberezhe",
+    "name": "Краснобережье",
+    "legacyWpId": 41
+  },
+  {
+    "slug": "lelchicy",
+    "name": "Лельчицы",
+    "legacyWpId": 40
+  },
+  {
+    "slug": "lyzhnyj-poxod",
+    "name": "Лыжный поход",
+    "legacyWpId": 70
+  },
+  {
+    "slug": "meropriyatiya",
+    "name": "Мероприятия",
+    "legacyWpId": 67
+  },
+  {
+    "slug": "mour",
+    "name": "МоУР",
+    "legacyWpId": 128
+  },
+  {
+    "slug": "mozyrskie-ovragi",
+    "name": "Мозырские овраги",
+    "legacyWpId": 106
+  },
+  {
+    "slug": "mytva",
+    "name": "Мытва",
+    "legacyWpId": 72
+  },
+  {
+    "slug": "nageb",
+    "name": "Нагеб",
+    "legacyWpId": 86
+  },
+  {
+    "slug": "naliboki",
+    "name": "Налибоки",
+    "legacyWpId": 124
+  },
+  {
+    "slug": "narovlya",
+    "name": "Наровля",
+    "legacyWpId": 117
+  },
+  {
+    "slug": "nenach",
+    "name": "Неначь",
+    "legacyWpId": 129
+  },
+  {
+    "slug": "oao-mozyrskij-npz",
+    "name": "ОАО \"Мозырский НПЗ\"",
+    "legacyWpId": 123
+  },
+  {
+    "slug": "obrashhenie",
+    "name": "Обращение",
+    "legacyWpId": 173
+  },
+  {
+    "slug": "ovragi",
+    "name": "Овраги",
+    "legacyWpId": 73
+  },
+  {
+    "slug": "okole",
+    "name": "Околе",
+    "legacyWpId": 142
+  },
+  {
+    "slug": "olmany",
+    "name": "Ольманы",
+    "legacyWpId": 133
+  },
+  {
+    "slug": "oresa",
+    "name": "Ореса",
+    "legacyWpId": 193
+  },
+  {
+    "slug": "otchyot-o-pvd",
+    "name": "Отчёт о ПВД",
+    "legacyWpId": 102
+  },
+  {
+    "slug": "otchyoty-o-poxodax",
+    "name": "Отчёты о походах",
+    "legacyWpId": 23
+  },
+  {
+    "slug": "pvd",
+    "name": "ПВД",
+    "legacyWpId": 24
+  },
+  {
+    "slug": "partizan",
+    "name": "Партизан",
+    "legacyWpId": 196
+  },
+  {
+    "slug": "pistajoki",
+    "name": "Пистайоки.",
+    "legacyWpId": 184
+  },
+  {
+    "slug": "plany",
+    "name": "Планы",
+    "legacyWpId": 66
+  },
+  {
+    "slug": "pokatushki",
+    "name": "Покатушки",
+    "legacyWpId": 25
+  },
+  {
+    "slug": "polese-2014",
+    "name": "Полесье 2014",
+    "legacyWpId": 107
+  },
+  {
+    "slug": "polese-2016",
+    "name": "Полесье 2016",
+    "legacyWpId": 100
+  },
+  {
+    "slug": "polese-2017",
+    "name": "Полесье 2017",
+    "legacyWpId": 126
+  },
+  {
+    "slug": "poxody",
+    "name": "Походы",
+    "legacyWpId": 22
+  },
+  {
+    "slug": "priklyuchencheskaya-gonka",
+    "name": "Приключенческая гонка",
+    "legacyWpId": 26
+  },
+  {
+    "slug": "pripyatskij",
+    "name": "Припятский",
+    "legacyWpId": 148
+  },
+  {
+    "slug": "pripyat",
+    "name": "Припять",
+    "legacyWpId": 42
+  },
+  {
+    "slug": "ptich",
+    "name": "Птичь",
+    "legacyWpId": 53
+  },
+  {
+    "slug": "rtss",
+    "name": "РТСС",
+    "legacyWpId": 150
+  },
+  {
+    "slug": "rudnya-gorbovichskaya",
+    "name": "Рудня-Горбовичская",
+    "legacyWpId": 130
+  },
+  {
+    "slug": "svanetiya",
+    "name": "Сванетия",
+    "legacyWpId": 82
+  },
+  {
+    "slug": "svidovec",
+    "name": "Свидовец",
+    "legacyWpId": 139
+  },
+  {
+    "slug": "severnaya-osetiya",
+    "name": "Северная Осетия",
+    "legacyWpId": 77
+  },
+  {
+    "slug": "slobodka",
+    "name": "Слободка",
+    "legacyWpId": 118
+  },
+  {
+    "slug": "snegostupy",
+    "name": "Снегоступы",
+    "legacyWpId": 61
+  },
+  {
+    "slug": "stviga",
+    "name": "Ствига",
+    "legacyWpId": 134
+  },
+  {
+    "slug": "tpm",
+    "name": "ТПМ",
+    "legacyWpId": 152
+  },
+  {
+    "slug": "tviber",
+    "name": "Твибер",
+    "legacyWpId": 84
+  },
+  {
+    "slug": "tur",
+    "name": "Тур",
+    "legacyWpId": 176
+  },
+  {
+    "slug": "ubort",
+    "name": "Уборть",
+    "legacyWpId": 39
+  },
+  {
+    "slug": "canner",
+    "name": "Цаннер",
+    "legacyWpId": 83
+  },
+  {
+    "slug": "centralnyj-kavkaz",
+    "name": "Центральный Кавказ",
+    "legacyWpId": 76
+  },
+  {
+    "slug": "chempionat-po-texnike-turizma",
+    "name": "Чемпионат по технике туризма",
+    "legacyWpId": 88
+  },
+  {
+    "slug": "chervonoe-ozero",
+    "name": "Червоное озеро",
+    "legacyWpId": 101
+  },
+  {
+    "slug": "chernaya-tisa",
+    "name": "Черная Тиса",
+    "legacyWpId": 141
+  },
+  {
+    "slug": "evakuaciya-postradavshix",
+    "name": "Эвакуация пострадавших",
+    "legacyWpId": 58
+  },
+  {
+    "slug": "everest",
+    "name": "Эверест",
+    "legacyWpId": 65
+  },
+  {
+    "slug": "yumorina",
+    "name": "Юморина",
+    "legacyWpId": 68
+  },
+  {
+    "slug": "yurovichi",
+    "name": "Юровичи",
+    "legacyWpId": 103
+  },
+  {
+    "slug": "yasinya",
+    "name": "Ясиня",
+    "legacyWpId": 140
+  },
+  {
+    "slug": "antologiya",
+    "name": "антология",
+    "legacyWpId": 191
+  },
+  {
+    "slug": "aprel",
+    "name": "апрель",
+    "legacyWpId": 209
+  },
+  {
+    "slug": "bajdarka",
+    "name": "байдарка",
+    "legacyWpId": 116
+  },
+  {
+    "slug": "beg",
+    "name": "бег",
+    "legacyWpId": 169
+  },
+  {
+    "slug": "benzin",
+    "name": "бензин",
+    "legacyWpId": 56
+  },
+  {
+    "slug": "boloto",
+    "name": "болото",
+    "legacyWpId": 132
+  },
+  {
+    "slug": "velo",
+    "name": "вело",
+    "legacyWpId": 111
+  },
+  {
+    "slug": "velogomel",
+    "name": "велогомель",
+    "legacyWpId": 149
+  },
+  {
+    "slug": "velosiped",
+    "name": "велосипед",
+    "legacyWpId": 97
+  },
+  {
+    "slug": "verevki",
+    "name": "веревки",
+    "legacyWpId": 96
+  },
+  {
+    "slug": "verevochnyj-park",
+    "name": "веревочный парк",
+    "legacyWpId": 93
+  },
+  {
+    "slug": "vertolyotnaya-ploshhadka",
+    "name": "вертолётная площадка",
+    "legacyWpId": 204
+  },
+  {
+    "slug": "vesennij",
+    "name": "весенний",
+    "legacyWpId": 208
+  },
+  {
+    "slug": "vodnyj",
+    "name": "водный",
+    "legacyWpId": 115
+  },
+  {
+    "slug": "vodnyj-etap",
+    "name": "водный этап",
+    "legacyWpId": 159
+  },
+  {
+    "slug": "volontyory",
+    "name": "волонтёры",
+    "legacyWpId": 158
+  },
+  {
+    "slug": "vosxozhdenie",
+    "name": "восхождение",
+    "legacyWpId": 131
+  },
+  {
+    "slug": "gaz",
+    "name": "газ",
+    "legacyWpId": 57
+  },
+  {
+    "slug": "gidropark",
+    "name": "гидропарк",
+    "legacyWpId": 94
+  },
+  {
+    "slug": "godovoj-otchyot",
+    "name": "годовой отчёт",
+    "legacyWpId": 188
+  },
+  {
+    "slug": "gonka",
+    "name": "гонка",
+    "legacyWpId": 157
+  },
+  {
+    "slug": "doping",
+    "name": "допинг",
+    "legacyWpId": 49
+  },
+  {
+    "slug": "druzya",
+    "name": "друзья",
+    "legacyWpId": 125
+  },
+  {
+    "slug": "drut",
+    "name": "друть",
+    "legacyWpId": 167
+  },
+  {
+    "slug": "duatlon",
+    "name": "дуатлон",
+    "legacyWpId": 170
+  },
+  {
+    "slug": "ezhegodnyj",
+    "name": "ежегодный",
+    "legacyWpId": 214
+  },
+  {
+    "slug": "zagadki",
+    "name": "загадки",
+    "legacyWpId": 155
+  },
+  {
+    "slug": "zakrytie-sezona",
+    "name": "закрытие сезона",
+    "legacyWpId": 110
+  },
+  {
+    "slug": "zapret",
+    "name": "запрет",
+    "legacyWpId": 146
+  },
+  {
+    "slug": "zima",
+    "name": "зима",
+    "legacyWpId": 135
+  },
+  {
+    "slug": "izluchina",
+    "name": "излучина",
+    "legacyWpId": 177
+  },
+  {
+    "slug": "kvest",
+    "name": "квест",
+    "legacyWpId": 154
+  },
+  {
+    "slug": "kleshhi",
+    "name": "клещи",
+    "legacyWpId": 63
+  },
+  {
+    "slug": "kommentarii",
+    "name": "комментарии",
+    "legacyWpId": 48
+  },
+  {
+    "slug": "konyuxov",
+    "name": "конюхов",
+    "legacyWpId": 50
+  },
+  {
+    "slug": "lyzhi",
+    "name": "лыжи",
+    "legacyWpId": 137
+  },
+  {
+    "slug": "maj",
+    "name": "май",
+    "legacyWpId": 145
+  },
+  {
+    "slug": "marafon",
+    "name": "марафон",
+    "legacyWpId": 112
+  },
+  {
+    "slug": "meropriyatij",
+    "name": "мероприятий",
+    "legacyWpId": 211
+  },
+  {
+    "slug": "mozyr",
+    "name": "мозырь",
+    "legacyWpId": 113
+  },
+  {
+    "slug": "multisport",
+    "name": "мультиспорт",
+    "legacyWpId": 98
+  },
+  {
+    "slug": "novosti",
+    "name": "новости",
+    "legacyWpId": 47
+  },
+  {
+    "slug": "nochyovka",
+    "name": "ночёвка",
+    "legacyWpId": 121
+  },
+  {
+    "slug": "npz",
+    "name": "нпз",
+    "legacyWpId": 46
+  },
+  {
+    "slug": "oktyabr",
+    "name": "октябрь",
+    "legacyWpId": 187
+  },
+  {
+    "slug": "organizaciya",
+    "name": "организация",
+    "legacyWpId": 44
+  },
+  {
+    "slug": "orientir",
+    "name": "ориентир",
+    "legacyWpId": 109
+  },
+  {
+    "slug": "orientirovanie",
+    "name": "ориентирование",
+    "legacyWpId": 160
+  },
+  {
+    "slug": "osennij",
+    "name": "осенний",
+    "legacyWpId": 179
+  },
+  {
+    "slug": "otchyot",
+    "name": "отчёт",
+    "legacyWpId": 71
+  },
+  {
+    "slug": "otchyot-o-deyatelnosti",
+    "name": "отчёт о деятельности",
+    "legacyWpId": 207
+  },
+  {
+    "slug": "partizany",
+    "name": "партизаны",
+    "legacyWpId": 174
+  },
+  {
+    "slug": "pervenstvo",
+    "name": "первенство",
+    "legacyWpId": 122
+  },
+  {
+    "slug": "pervenstvo-po-turizmu",
+    "name": "первенство по туризму",
+    "legacyWpId": 202
+  },
+  {
+    "slug": "pervestvo-po-turizmu",
+    "name": "первество по туризму",
+    "legacyWpId": 186
+  },
+  {
+    "slug": "pereval-rokuela-kenta",
+    "name": "перевал Рокуэла Кента",
+    "legacyWpId": 79
+  },
+  {
+    "slug": "pereval-semi",
+    "name": "перевал Семи",
+    "legacyWpId": 80
+  },
+  {
+    "slug": "plan",
+    "name": "план",
+    "legacyWpId": 165
+  },
+  {
+    "slug": "pojma",
+    "name": "пойма",
+    "legacyWpId": 156
+  },
+  {
+    "slug": "polese",
+    "name": "полесье",
+    "legacyWpId": 95
+  },
+  {
+    "slug": "poligon",
+    "name": "полигон",
+    "legacyWpId": 175
+  },
+  {
+    "slug": "ponchik",
+    "name": "пончик",
+    "legacyWpId": 153
+  },
+  {
+    "slug": "poxod",
+    "name": "поход",
+    "legacyWpId": 166
+  },
+  {
+    "slug": "poxodov",
+    "name": "походов",
+    "legacyWpId": 212
+  },
+  {
+    "slug": "priklyuchenie",
+    "name": "приключение",
+    "legacyWpId": 161
+  },
+  {
+    "slug": "pripyatskaya-vosmyorka",
+    "name": "припятская восьмёрка",
+    "legacyWpId": 178
+  },
+  {
+    "slug": "pripyatskijyu-strezhen",
+    "name": "припятскийЮ стрежень",
+    "legacyWpId": 190
+  },
+  {
+    "slug": "protoka",
+    "name": "протока",
+    "legacyWpId": 200
+  },
+  {
+    "slug": "reka",
+    "name": "река",
+    "legacyWpId": 183
+  },
+  {
+    "slug": "rekomendacii",
+    "name": "рекомендации",
+    "legacyWpId": 136
+  },
+  {
+    "slug": "rozhdestvo",
+    "name": "рождество",
+    "legacyWpId": 195
+  },
+  {
+    "slug": "skalolazanie",
+    "name": "скалолазание",
+    "legacyWpId": 91
+  },
+  {
+    "slug": "skaly",
+    "name": "скалы",
+    "legacyWpId": 90
+  },
+  {
+    "slug": "snaryazhenie",
+    "name": "снаряжение",
+    "legacyWpId": 55
+  },
+  {
+    "slug": "splav",
+    "name": "сплав",
+    "legacyWpId": 144
+  },
+  {
+    "slug": "splavy",
+    "name": "сплавы",
+    "legacyWpId": 205
+  },
+  {
+    "slug": "sportivnyj",
+    "name": "спортивный",
+    "legacyWpId": 215
+  },
+  {
+    "slug": "sportivnyj-turizm",
+    "name": "спортивный туризм",
+    "legacyWpId": 151
+  },
+  {
+    "slug": "staraya-ptich",
+    "name": "старая птичь",
+    "legacyWpId": 201
+  },
+  {
+    "slug": "straxovka",
+    "name": "страховка",
+    "legacyWpId": 92
+  },
+  {
+    "slug": "strezhen",
+    "name": "стрежень",
+    "legacyWpId": 192
+  },
+  {
+    "slug": "sudejstvo",
+    "name": "судейство",
+    "legacyWpId": 43
+  },
+  {
+    "slug": "sxemy-distancij",
+    "name": "схемы дистанций",
+    "legacyWpId": 162
+  },
+  {
+    "slug": "trek",
+    "name": "трек",
+    "legacyWpId": 210
+  },
+  {
+    "slug": "treking",
+    "name": "трекинг",
+    "legacyWpId": 99
+  },
+  {
+    "slug": "turizm",
+    "name": "туризм",
+    "legacyWpId": 180
+  },
+  {
+    "slug": "turslyot",
+    "name": "турслёт",
+    "legacyWpId": 203
+  },
+  {
+    "slug": "turya",
+    "name": "турья",
+    "legacyWpId": 114
+  },
+  {
+    "slug": "chempionat",
+    "name": "чемпионат",
+    "legacyWpId": 45
+  },
+  {
+    "slug": "elbrus",
+    "name": "эльбрус",
+    "legacyWpId": 51
+  },
+  {
+    "slug": "yubilej",
+    "name": "юбилей",
+    "legacyWpId": 172
+  }
+]

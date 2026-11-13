@@ -1,9 +1,10 @@
 import { createHash } from "node:crypto";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import type { Prisma, PrismaClient } from "@prisma/client";
 import sharp from "sharp";
 import { slugify } from "../../src/lib/slug";
+import { loadStore } from "../../src/lib/store/reader";
+import { registerMedia } from "../../src/lib/store/write";
 
 export const MAX_FILE_BYTES = 25 * 1024 * 1024;
 export const MAX_FILES = 200;
@@ -128,30 +129,29 @@ function monthFolder(now: Date): string {
   return `${now.getFullYear()}/${String(now.getMonth() + 1).padStart(2, "0")}`;
 }
 
-async function importOne(file: RemoteFile, ctx: { db: PrismaClient; root: string; now: Date }): Promise<ImportResult> {
+async function importOne(file: RemoteFile, ctx: { root: string; now: Date }): Promise<ImportResult> {
   const processed = await processImage(await download(file), file.name);
   const dir = monthFolder(ctx.now);
   const path = `${dir}/${processed.base}.jpg`;
-  if (await ctx.db.mediaAsset.findUnique({ where: { path } })) return { path, status: "exists" };
+  if (loadStore().media[path]) return { path, status: "exists" };
 
   mkdirSync(join(ctx.root, dir), { recursive: true });
   writeFileSync(join(ctx.root, path), processed.original);
   for (const v of processed.variants) writeFileSync(join(ctx.root, dir, v.meta.file), v.data);
-  const variants: Prisma.InputJsonArray = processed.variants.map((v) => ({ ...v.meta }));
-  const asset = await ctx.db.mediaAsset.create({
-    data: { path, mimeType: "image/jpeg", width: processed.width, height: processed.height, variants },
-  });
-  await ctx.db.auditLog.create({ data: { actorType: "agent", action: "photo.import", entity: "media", entityId: asset.id, meta: { path } } });
+  const variants = processed.variants.map((v) => ({ ...v.meta }));
+  registerMedia(path, { mimeType: "image/jpeg", width: processed.width, height: processed.height, alt: null, variants, legacyWpId: null });
   return { path, status: "imported" };
 }
 
-export async function importPhotos(
-  db: PrismaClient,
-  options: { url: string; apply: boolean; root: string; now?: Date },
-): Promise<{ found: number; skipped: string[]; results: ImportResult[] }> {
+export async function importPhotos(options: {
+  url: string;
+  apply: boolean;
+  root: string;
+  now?: Date;
+}): Promise<{ found: number; skipped: string[]; results: ImportResult[] }> {
   const { files, skipped } = await listRemote(parseShareUrl(options.url));
   if (files.length > MAX_FILES) throw new PhotoError(`В папке больше ${MAX_FILES} файлов; разделите её`);
-  const ctx = { db, root: options.root, now: options.now ?? new Date() };
+  const ctx = { root: options.root, now: options.now ?? new Date() };
   const results: ImportResult[] = [];
   for (const file of files) {
     if (!options.apply) {

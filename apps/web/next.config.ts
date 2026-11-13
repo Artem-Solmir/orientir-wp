@@ -11,7 +11,6 @@ const nextConfig: NextConfig = {
   ...(staticExport ? { output: "export" as const } : {}),
   trailingSlash: true, // same URLs as WordPress (/slug/) so nothing needs redirecting
   images: { unoptimized: true },
-  // Each export worker opens its own Prisma pool; keep the total well under Postgres max_connections.
   experimental: { cpus: 4 },
   turbopack: {
     rules: {
@@ -24,9 +23,10 @@ const nextConfig: NextConfig = {
   ...(isProd
     ? {}
     : {
-        // Dev only: serve legacy uploads from the local WordPress copy.
+        // Dev: proxy uploads from production host (uploads stay on the server).
         async rewrites() {
-          return [{ source: "/wp-content/uploads/:path*", destination: "http://orientir.local/wp-content/uploads/:path*" }];
+          const origin = (process.env.MEDIA_DEV_ORIGIN ?? "https://orientir.by").replace(/\/$/, "");
+          return [{ source: "/wp-content/uploads/:path*", destination: `${origin}/wp-content/uploads/:path*` }];
         },
         async headers() {
           return [{ source: "/:path*", headers: securityHeaders(false) }];

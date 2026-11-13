@@ -6,7 +6,7 @@
 import { spawnSync } from "node:child_process";
 import { copyFileSync, existsSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { PrismaClient } from "@prisma/client";
+import { legacyRedirects, wpShortlinks } from "../src/lib/store/redirects";
 import { securityHeaders } from "../deploy/security-headers";
 import { hideAdminRoutes, restoreAdminRoutes } from "./admin-export";
 
@@ -39,21 +39,12 @@ export function headerLines(): string {
     .join("\n");
 }
 
-async function buildRedirects(): Promise<string> {
-  const db = new PrismaClient();
-  try {
-    const [legacy, posts] = await Promise.all([
-      db.legacyRedirect.findMany(),
-      db.post.findMany({ where: { legacyWpId: { not: null }, status: "published" }, select: { legacyWpId: true, slug: true } }),
-    ]);
-    const rules = [
-      ...legacy.map((r) => redirectRule(r.fromPath, r.toPath)),
-      ...posts.map((p) => shortlinkRule(p.legacyWpId!, p.slug)),
-    ];
-    return rules.filter((r): r is string => r !== null).join("\n");
-  } finally {
-    await db.$disconnect();
-  }
+function buildRedirects(): string {
+  const rules = [
+    ...legacyRedirects().map((r) => redirectRule(r.from, r.to)),
+    ...wpShortlinks().map((p) => shortlinkRule(p.wpId, p.slug)),
+  ];
+  return rules.filter((r): r is string => r !== null).join("\n");
 }
 
 function listFiles(dir: string): string[] {
@@ -89,7 +80,7 @@ async function main() {
   }
 
   const template = readFileSync(join(ROOT, "deploy", "htaccess.template"), "utf8");
-  const htaccess = template.replace("__HEADERS__", headerLines()).replace("__REDIRECTS__", await buildRedirects());
+  const htaccess = template.replace("__HEADERS__", headerLines()).replace("__REDIRECTS__", buildRedirects());
   writeFileSync(join(OUT, ".htaccess"), htaccess);
 
   copyFileSync(join(ROOT, "deploy", "send.php"), join(OUT, "send.php"));

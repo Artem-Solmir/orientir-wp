@@ -1,0 +1,40 @@
+{
+  "slug": "otchyoty",
+  "title": "Отчёты",
+  "body": "",
+  "template": "composer",
+  "status": "published",
+  "seoTitle": null,
+  "seoDescription": null,
+  "legacyWpId": 473,
+  "updatedAt": "2026-11-09T14:38:04.461Z",
+  "sections": [
+    {
+      "order": 0,
+      "type": "featured_post_slider",
+      "config": {
+        "number": 6,
+        "sidebar": 0,
+        "category": 19,
+        "show_posts": "all",
+        "categorySlug": "otchyoty",
+        "is_show_headline_posts": 1
+      }
+    },
+    {
+      "order": 1,
+      "type": "latest",
+      "config": {
+        "title": "Отчёты",
+        "number": 6,
+        "sidebar": "Blog-sidebar",
+        "sub_title": "",
+        "super_title": "",
+        "show_pagination": 1,
+        "thumbnail_style": "classic",
+        "exclude_categories": "6,14,13,15,16,17,18",
+        "excludeCategorySlugs": "novosti,otchyoty-o-pvd-pokatushkax,otchyoty-o-poxodax,otchyoty-ob-oficialnyx-meropriyatiyax,oficialnye-meropriyatiya,zametki-o-snaryazhenii,raznoe"
+      }
+    }
+  ]
+}

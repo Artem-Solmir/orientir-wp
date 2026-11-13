@@ -1,0 +1,70 @@
+{
+  "slug": "priklyuchencheskaya-gonka-polese-2014",
+  "title": "Приключенческая гонка \"Полесье 2014\"",
+  "excerpt": null,
+  "body": "<p>Небольшая видеонарезка:</p>\n<iframe src=\"//www.youtube.com/embed/pCKupp9mUrw\" width=\"640\" height=\"360\" frameborder=\"0\" allowfullscreen=\"allowfullscreen\"></iframe>\n<p>Если понравилось - присоединяйтесь!!!! Ждём вас!!!</p>",
+  "status": "published",
+  "publishedAt": "2014-10-01T04:16:24.000Z",
+  "expiresAt": null,
+  "updatedAt": "2026-11-09T14:38:04.970Z",
+  "authorName": "Красный Мозырянин",
+  "seoTitle": null,
+  "seoDescription": null,
+  "legacyWpId": 4275,
+  "cover": {
+    "path": "Poster_2014.jpg",
+    "width": 800,
+    "height": 600,
+    "alt": null,
+    "variants": [
+      {
+        "file": "Poster_2014-80x60.jpg",
+        "width": 80,
+        "height": 60
+      },
+      {
+        "file": "Poster_2014-80x80.jpg",
+        "width": 80,
+        "height": 80
+      },
+      {
+        "file": "Poster_2014-165x75.jpg",
+        "width": 165,
+        "height": 75
+      },
+      {
+        "file": "Poster_2014-265x147.jpg",
+        "width": 265,
+        "height": 147
+      },
+      {
+        "file": "Poster_2014-360x200.jpg",
+        "width": 360,
+        "height": 200
+      },
+      {
+        "file": "Poster_2014-360x360.jpg",
+        "width": 360,
+        "height": 360
+      },
+      {
+        "file": "Poster_2014-750x420.jpg",
+        "width": 750,
+        "height": 420
+      },
+      {
+        "file": "Poster_2014-750x600.jpg",
+        "width": 750,
+        "height": 600
+      }
+    ]
+  },
+  "categories": [
+    "otchyoty-ob-oficialnyx-meropriyatiyax"
+  ],
+  "tags": [
+    "priklyuchencheskaya-gonka",
+    "meropriyatiya",
+    "polese-2014"
+  ]
+}

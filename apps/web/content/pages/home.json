@@ -1,0 +1,54 @@
+{
+  "slug": "home",
+  "title": "Главная",
+  "body": "",
+  "template": "composer",
+  "status": "published",
+  "seoTitle": null,
+  "seoDescription": null,
+  "legacyWpId": 88,
+  "updatedAt": "2026-11-09T14:38:04.430Z",
+  "sections": [
+    {
+      "order": 0,
+      "type": "featured_post_slider",
+      "config": {
+        "number": 15,
+        "sidebar": 0,
+        "category": 0,
+        "show_posts": "only_featured",
+        "is_show_headline_posts": 0
+      }
+    },
+    {
+      "order": 1,
+      "type": "latest",
+      "config": {
+        "title": "Последние записи",
+        "number": 8,
+        "sidebar": "Home-categories",
+        "sub_title": "",
+        "super_title": "",
+        "show_pagination": 0,
+        "thumbnail_style": "large",
+        "exclude_categories": 1,
+        "excludeCategorySlugs": "bez-rubriki"
+      }
+    },
+    {
+      "order": 2,
+      "type": "latest_category",
+      "config": {
+        "title": "Отчёты о...",
+        "number": 4,
+        "sidebar": "Home-3-sidebar-3",
+        "category": 19,
+        "sub_title": "",
+        "super_title": "",
+        "categorySlug": "otchyoty",
+        "show_pagination": 1,
+        "thumbnail_style": "classic"
+      }
+    }
+  ]
+}

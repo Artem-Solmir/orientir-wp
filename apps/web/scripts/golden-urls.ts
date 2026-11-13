@@ -1,20 +1,24 @@
 /**
- * Golden URL check: every imported post/page slug must answer 200 on Next and carry the same <h1>
- * as the WordPress original. Usage: npm run golden [-- --next=http://localhost:3000 --wp=http://orientir.local]
+ * Golden URL check: every post/page slug must answer 200 on Next and carry the same <h1>
+ * as the WordPress original. Usage: npm run golden [-- --next=http://localhost:3000 --wp=https://orientir.by]
  */
-import { PrismaClient } from "@prisma/client";
+import { loadStore } from "../src/lib/store/reader";
 
 const arg = (name: string, fallback: string) =>
   process.argv.find((a) => a.startsWith(`--${name}=`))?.split("=").slice(1).join("=") ?? fallback;
 const NEXT = arg("next", "http://localhost:3000");
-const WP = arg("wp", "http://orientir.local");
+const WP = arg("wp", "https://orientir.by");
 
 const decodeEntities = (s: string) =>
-  s.replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(Number(n)))
+  s
+    .replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(Number(n)))
     .replace(/&#x([0-9a-f]+);/gi, (_, n) => String.fromCodePoint(parseInt(n, 16)))
-    .replace(/&amp;/g, "&").replace(/&quot;/g, '"').replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&nbsp;/g, " ");
+    .replace(/&amp;/g, "&")
+    .replace(/&quot;/g, '"')
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&nbsp;/g, " ");
 
-/** WordPress wptexturize turns quotes/dashes typographic; that is cosmetic, not a content difference. */
 const norm = (s: string) =>
   s.replace(/…/g, "...").replace(/[«»“”„"'’‘]/g, "").replace(/[–—-]/g, "-").replace(/\s+/g, " ").trim();
 
@@ -33,12 +37,11 @@ async function get(base: string, slug: string) {
 }
 
 async function main() {
-  const db = new PrismaClient();
+  const store = loadStore();
   const slugs = [
-    ...(await db.post.findMany({ where: { status: "published" }, select: { slug: true } })),
-    ...(await db.page.findMany({ select: { slug: true } })),
-  ].map((r) => r.slug).filter((s) => !["home", "blog"].includes(s)); // WP system pages: home and /archive replace them
-  await db.$disconnect();
+    ...store.posts.filter((p) => p.status === "published").map((p) => p.slug),
+    ...store.pages.map((p) => p.slug),
+  ].filter((s) => !["home", "blog"].includes(s));
 
   const problems: string[] = [];
   let next = 0;
@@ -58,4 +61,3 @@ async function main() {
 }
 
 void main();
-

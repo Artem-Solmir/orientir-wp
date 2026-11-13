@@ -7,7 +7,7 @@ import { spawnSync } from "node:child_process";
 import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { hideAdminRoutes, restoreAdminRoutes } from "./admin-export";
 import { dirname, join, resolve } from "node:path";
-import { PrismaClient } from "@prisma/client";
+import { legacyRedirects, wpShortlinks } from "../src/lib/store/redirects";
 import { securityHeaders } from "../deploy/security-headers";
 
 const ROOT = join(import.meta.dirname, "..");
@@ -39,17 +39,11 @@ export function vercelConfig(redirects: Redirect[], noindex: boolean) {
   return { trailingSlash: true, cleanUrls: false, redirects, headers: [{ source: "/(.*)", headers }] };
 }
 
-async function redirects(): Promise<Redirect[]> {
-  const db = new PrismaClient();
-  try {
-    const [legacy, posts] = await Promise.all([
-      db.legacyRedirect.findMany(),
-      db.post.findMany({ where: { legacyWpId: { not: null }, status: "published" }, select: { legacyWpId: true, slug: true } }),
-    ]);
-    return [...legacy.flatMap((r) => legacyRedirect(r.fromPath, r.toPath)), ...posts.flatMap((p) => shortlinkRedirect(p.legacyWpId!, p.slug))];
-  } finally {
-    await db.$disconnect();
-  }
+function redirects(): Redirect[] {
+  return [
+    ...legacyRedirects().flatMap((r) => legacyRedirect(r.from, r.to)),
+    ...wpShortlinks().flatMap((p) => shortlinkRedirect(p.wpId, p.slug)),
+  ];
 }
 
 /** Distinct upload URLs mentioned in a page, rejecting anything that could climb out of the uploads folder. */
@@ -105,7 +99,7 @@ async function main() {
     restoreAdminRoutes();
   }
 
-  const config = vercelConfig(await redirects(), process.env.VERCEL_NOINDEX !== "0");
+  const config = vercelConfig(redirects(), process.env.VERCEL_NOINDEX !== "0");
   writeFileSync(join(OUT, "vercel.json"), `${JSON.stringify(config, null, 2)}\n`);
 
   const media = copyMedia();

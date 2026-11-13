@@ -1,0 +1,40 @@
+{
+  "slug": "plany",
+  "title": "Планы",
+  "body": "",
+  "template": "composer",
+  "status": "published",
+  "seoTitle": null,
+  "seoDescription": null,
+  "legacyWpId": 476,
+  "updatedAt": "2026-11-09T14:38:04.474Z",
+  "sections": [
+    {
+      "order": 0,
+      "type": "featured_post_slider",
+      "config": {
+        "number": 6,
+        "sidebar": 0,
+        "category": 21,
+        "show_posts": "all",
+        "categorySlug": "plany",
+        "is_show_headline_posts": 1
+      }
+    },
+    {
+      "order": 1,
+      "type": "latest",
+      "config": {
+        "title": "Планы",
+        "number": 6,
+        "sidebar": "Blog-sidebar",
+        "sub_title": "",
+        "super_title": "",
+        "show_pagination": 1,
+        "thumbnail_style": "classic",
+        "exclude_categories": "1,6,14,13,15,17,18",
+        "excludeCategorySlugs": "bez-rubriki,novosti,otchyoty-o-pvd-pokatushkax,otchyoty-o-poxodax,otchyoty-ob-oficialnyx-meropriyatiyax,zametki-o-snaryazhenii,raznoe"
+      }
+    }
+  ]
+}

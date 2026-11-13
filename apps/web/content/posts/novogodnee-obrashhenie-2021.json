@@ -1,0 +1,83 @@
+{
+  "slug": "novogodnee-obrashhenie-2021",
+  "title": "Новогоднее обращение 2021!",
+  "excerpt": null,
+  "body": "<iframe src=\"//www.youtube.com/embed/zkH8M75RF50\" width=\"560\" height=\"314\" allowfullscreen=\"allowfullscreen\"></iframe>",
+  "status": "published",
+  "publishedAt": "2020-12-31T11:58:49.000Z",
+  "expiresAt": null,
+  "updatedAt": "2026-11-09T14:38:06.100Z",
+  "authorName": "Mihail",
+  "seoTitle": null,
+  "seoDescription": null,
+  "legacyWpId": 7829,
+  "cover": {
+    "path": "323baa5d2b3a41b79d9fce6309d4cafc.max-2500x1500.jpg",
+    "width": 2253,
+    "height": 1500,
+    "alt": null,
+    "variants": [
+      {
+        "file": "323baa5d2b3a41b79d9fce6309d4cafc.max-2500x1500-80x53.jpg",
+        "width": 80,
+        "height": 53
+      },
+      {
+        "file": "323baa5d2b3a41b79d9fce6309d4cafc.max-2500x1500-850x566.jpg",
+        "width": 850,
+        "height": 566
+      },
+      {
+        "file": "323baa5d2b3a41b79d9fce6309d4cafc.max-2500x1500-1080x719.jpg",
+        "width": 1080,
+        "height": 719
+      },
+      {
+        "file": "323baa5d2b3a41b79d9fce6309d4cafc.max-2500x1500-80x80.jpg",
+        "width": 80,
+        "height": 80
+      },
+      {
+        "file": "323baa5d2b3a41b79d9fce6309d4cafc.max-2500x1500-165x75.jpg",
+        "width": 165,
+        "height": 75
+      },
+      {
+        "file": "323baa5d2b3a41b79d9fce6309d4cafc.max-2500x1500-265x147.jpg",
+        "width": 265,
+        "height": 147
+      },
+      {
+        "file": "323baa5d2b3a41b79d9fce6309d4cafc.max-2500x1500-360x200.jpg",
+        "width": 360,
+        "height": 200
+      },
+      {
+        "file": "323baa5d2b3a41b79d9fce6309d4cafc.max-2500x1500-360x360.jpg",
+        "width": 360,
+        "height": 360
+      },
+      {
+        "file": "323baa5d2b3a41b79d9fce6309d4cafc.max-2500x1500-750x420.jpg",
+        "width": 750,
+        "height": 420
+      },
+      {
+        "file": "323baa5d2b3a41b79d9fce6309d4cafc.max-2500x1500-750x750.jpg",
+        "width": 750,
+        "height": 750
+      },
+      {
+        "file": "323baa5d2b3a41b79d9fce6309d4cafc.max-2500x1500-1140x641.jpg",
+        "width": 1140,
+        "height": 641
+      }
+    ]
+  },
+  "categories": [
+    "novosti"
+  ],
+  "tags": [
+    "obrashhenie"
+  ]
+}

@@ -22,30 +22,32 @@ const decode = (slug: string) => {
   }
 };
 
+function postMetadata(post: NonNullable<Awaited<ReturnType<typeof getPost>>>): Metadata {
+  const description = summarize(htmlToText(post.excerpt || post.body), 160) || SITE_DESCRIPTION;
+  const image = post.cover ? absoluteUrl(mediaUrl(post.cover.path)) : undefined;
+  return {
+    title: post.title,
+    description,
+    alternates: { canonical: absoluteUrl(`/${post.slug}`) },
+    openGraph: {
+      type: "article",
+      title: post.title,
+      description,
+      url: absoluteUrl(`/${post.slug}`),
+      publishedTime: post.publishedAt?.toISOString(),
+      modifiedTime: (post.updatedAt ?? post.publishedAt)?.toISOString(),
+      images: image ? [{ url: image }] : undefined,
+    },
+  };
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug: raw, page } = await params;
   const slug = decode(raw);
   if (!slug || parsePageSegments(page) === null) return {};
 
   const post = await getPost(slug);
-  if (post) {
-    const description = summarize(htmlToText(post.excerpt || post.body), 160) || SITE_DESCRIPTION;
-    const image = post.cover ? absoluteUrl(mediaUrl(post.cover.path)) : undefined;
-    return {
-      title: post.title,
-      description,
-      alternates: { canonical: absoluteUrl(`/${post.slug}`) },
-      openGraph: {
-        type: "article",
-        title: post.title,
-        description,
-        url: absoluteUrl(`/${post.slug}`),
-        publishedTime: post.publishedAt?.toISOString(),
-        modifiedTime: post.updatedAt.toISOString(),
-        images: image ? [{ url: image }] : undefined,
-      },
-    };
-  }
+  if (post) return postMetadata(post);
   const found = await getPage(slug);
   return found ? { title: found.title, alternates: { canonical: absoluteUrl(`/${found.slug}`) } } : {};
 }

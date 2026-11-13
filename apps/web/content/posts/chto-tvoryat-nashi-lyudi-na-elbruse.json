@@ -1,0 +1,79 @@
+{
+  "slug": "chto-tvoryat-nashi-lyudi-na-elbruse",
+  "title": "Что творят наши люди на Эльбрусе!",
+  "excerpt": null,
+  "body": "<p>Наши парни, Владимир Беляй и Вячеслав Хорошавин, хорошо размялись на Эльбрусе! Вова первый среди любителей, Слава девятый. Молодцы ребята! Так бежать! Пора потоптать и Монблан! Подробности: <a href=\"http://www.alpfederation.ru/journal/centernews/2014/05/09/5420\" target=\"_blank\" rel=\"noopener\">www.alpfederation.ru</a></p>",
+  "status": "published",
+  "publishedAt": "2014-05-11T11:56:42.000Z",
+  "expiresAt": null,
+  "updatedAt": "2026-11-09T14:38:05.244Z",
+  "authorName": "Mihail",
+  "seoTitle": null,
+  "seoDescription": null,
+  "legacyWpId": 718,
+  "cover": {
+    "path": "gasperi.jpg",
+    "width": 960,
+    "height": 720,
+    "alt": null,
+    "variants": [
+      {
+        "file": "gasperi-80x60.jpg",
+        "width": 80,
+        "height": 60
+      },
+      {
+        "file": "gasperi-850x638.jpg",
+        "width": 850,
+        "height": 638
+      },
+      {
+        "file": "gasperi-80x80.jpg",
+        "width": 80,
+        "height": 80
+      },
+      {
+        "file": "gasperi-165x75.jpg",
+        "width": 165,
+        "height": 75
+      },
+      {
+        "file": "gasperi-265x147.jpg",
+        "width": 265,
+        "height": 147
+      },
+      {
+        "file": "gasperi-360x200.jpg",
+        "width": 360,
+        "height": 200
+      },
+      {
+        "file": "gasperi-360x360.jpg",
+        "width": 360,
+        "height": 360
+      },
+      {
+        "file": "gasperi-750x420.jpg",
+        "width": 750,
+        "height": 420
+      },
+      {
+        "file": "gasperi-750x720.jpg",
+        "width": 750,
+        "height": 720
+      },
+      {
+        "file": "gasperi-960x641.jpg",
+        "width": 960,
+        "height": 641
+      }
+    ]
+  },
+  "categories": [
+    "novosti"
+  ],
+  "tags": [
+    "novosti",
+    "elbrus"
+  ]
+}

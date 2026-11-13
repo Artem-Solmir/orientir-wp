@@ -1,22 +1,23 @@
-# Операции ИИ-агента (локальный CLI)
+# Операции агента (локальный CLI)
 
-Сайт статический, сервера с API нет. Агент работает на машине владельца через CLI, который пишет в локальную PostgreSQL. Сетевой поверхности и токенов нет: кто может запустить CLI, тот и так владеет компьютером. Чтобы изменения попали на сайт, после правок нужна сборка и заливка (`npm run build:static`, см. `CUTOVER.md`).
+Контент в **`apps/web/content/`**. CLI читает и пишет JSON-файлы. Postgres не нужен.
 
-Запуск из `apps/web` (нужны `.env` и запущенный Postgres: `npm run db:up`):
+Запуск из `apps/web`:
 
 | Операция | Команда |
 |---|---|
-| Список записей | `npm run agent -- post:list --q=текст --status=published --limit=20 --offset=0` |
-| Одна запись (с body) | `npm run agent -- post:get <slug>` |
-| Создать и сразу опубликовать | `npm run agent -- post:create файл.json` (или `-` для stdin) |
-| Изменить | `npm run agent -- post:update <slug> файл.json` (любое подмножество полей, в т.ч. `status`) |
-| Убрать с сайта | `npm run agent -- post:archive <slug>` (мягко: статус `archived`) |
-| Изменить страницу | `npm run agent -- page:update <slug> файл.json` (`title`, `body`) |
+| Список записей | `npm run agent -- post:list --q=текст --status=published --limit=20` |
+| Одна запись | `npm run agent -- post:get <slug>` |
+| Создать | `npm run agent -- post:create файл.json` |
+| Изменить | `npm run agent -- post:update <slug> файл.json` |
+| Убрать с сайта | `npm run agent -- post:archive <slug>` |
+| Страница | `npm run agent -- page:update <slug> файл.json` |
+| Фото с Я.Диска | `npm run agent -- photos:import <url> [--apply]` |
 
-Вывод: JSON в stdout. Ошибки: JSON в stderr и ненулевой код выхода (валидация перечисляет поля в `issues`).
+После изменений: `npm run build:static` и `npm run deploy:ftp`.
 
-Поля записи: `title` (3-200), `body` (HTML, до 200 000 символов; общий sanitizer вырезает скрипты и опасные атрибуты), `slug` (необязательно: иначе транслитерация заголовка; зарезервированные и занятые отклоняются), `excerpt`, `categories` (slug существующих рубрик), `tags` (имена, новые создаются), `publishedAt`, `expiresAt`, `coverPath` (путь существующего медиафайла в `MediaAsset`), `authorName`, `seoTitle`, `seoDescription`. Неизвестные поля отклоняются.
+Импорт фото пишет файлы в `MEDIA_ROOT` (локально или на сервер отдельно) и дописывает `content/media.json`.
 
-Каждая запись пишет строку в `AuditLog` (без текста body). Черновиков нет: запись публикуется сразу, но на сайте появится только после сборки и заливки.
+Лог действий: `content/audit.log` (не коммитить).
 
-Не реализовано: добавление новых медиафайлов (фото берутся из публичных папок Яндекс Диска: агент скачивает их в `wp-content/uploads/YYYY/MM/` и заводит `MediaAsset`), правка секций главной.
+Поля записи — те же, что в Zod-схемах в `scripts/agent/schemas.ts`.

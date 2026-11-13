@@ -1,0 +1,62 @@
+[
+  {
+    "slug": "bez-rubriki",
+    "name": "Без рубрики",
+    "legacyWpId": 1
+  },
+  {
+    "slug": "zametki-o-snaryazhenii",
+    "name": "Заметки о снаряжении",
+    "legacyWpId": 17
+  },
+  {
+    "slug": "nashi-druzya-i-partnyory",
+    "name": "Наши друзья и партнёры",
+    "legacyWpId": 163
+  },
+  {
+    "slug": "novosti",
+    "name": "Новости",
+    "legacyWpId": 6
+  },
+  {
+    "slug": "otchyoty",
+    "name": "Отчёты",
+    "legacyWpId": 19
+  },
+  {
+    "slug": "otchyoty-o-pvd-pokatushkax",
+    "name": "Отчёты о ПВД / покатушках",
+    "legacyWpId": 14
+  },
+  {
+    "slug": "otchyoty-o-poxodax",
+    "name": "Отчёты о походах",
+    "legacyWpId": 13
+  },
+  {
+    "slug": "otchyoty-ob-oficialnyx-meropriyatiyax",
+    "name": "Отчёты об официальных мероприятиях",
+    "legacyWpId": 15
+  },
+  {
+    "slug": "oficialnye-meropriyatiya",
+    "name": "Официальные мероприятия",
+    "legacyWpId": 16
+  },
+  {
+    "slug": "plany",
+    "name": "Планы",
+    "legacyWpId": 21
+  },
+  {
+    "slug": "raznoe",
+    "name": "Разное",
+    "legacyWpId": 18
+  },
+  {
+    "slug": "stati",
+    "name": "Статьи",
+    "legacyWpId": 20
+  }
+]

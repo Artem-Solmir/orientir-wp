@@ -1,0 +1,37 @@
+{
+  "slug": "blog",
+  "title": "Блог",
+  "body": "",
+  "template": "default",
+  "status": "published",
+  "seoTitle": null,
+  "seoDescription": null,
+  "legacyWpId": 90,
+  "updatedAt": "2026-11-09T14:38:04.439Z",
+  "sections": [
+    {
+      "order": 0,
+      "type": "featured_post_slider",
+      "config": {
+        "number": 6,
+        "sidebar": 0,
+        "category": 0,
+        "show_posts": "all",
+        "is_show_headline_posts": 1
+      }
+    },
+    {
+      "order": 1,
+      "type": "latest",
+      "config": {
+        "title": "",
+        "number": 6,
+        "sidebar": "Blog-sidebar",
+        "sub_title": "",
+        "super_title": "",
+        "show_pagination": 0,
+        "thumbnail_style": "large-small"
+      }
+    }
+  ]
+}

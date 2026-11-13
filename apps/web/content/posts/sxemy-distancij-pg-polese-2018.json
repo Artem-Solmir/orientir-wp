@@ -1,0 +1,71 @@
+{
+  "slug": "sxemy-distancij-pg-polese-2018",
+  "title": "Схемы дистанций ПГ \"Полесье-2018\"",
+  "excerpt": null,
+  "body": "<p><strong><span>ПРО</span></strong></p>\n<p> </p>\n<p><a href=\"/wp-content/uploads/ПРО.jpg\" rel=\"noopener\"><img class=\"aligncenter size-medium\" src=\"/wp-content/uploads/ПРО-850x463.jpg\" alt=\"\" width=\"850\" height=\"463\" loading=\"lazy\" decoding=\"async\" /></a></p>\n<p> </p>\n<p><strong><span>ВЕЛО</span></strong></p>\n<p> </p>\n<p><a href=\"/wp-content/uploads/ВЕЛО.jpg\" rel=\"noopener\"><img class=\"aligncenter size-medium\" src=\"/wp-content/uploads/ВЕЛО-850x463.jpg\" alt=\"\" width=\"850\" height=\"463\" loading=\"lazy\" decoding=\"async\" /></a></p>\n<p> </p>\n<p><strong><span>ТРЕК</span></strong></p>\n<p> </p>\n<p><a href=\"/wp-content/uploads/ТРЕК-800x600-1.jpg\" rel=\"noopener\"><img class=\"aligncenter size-full\" src=\"/wp-content/uploads/ТРЕК-800x600-1.jpg\" alt=\"\" width=\"800\" height=\"477\" loading=\"lazy\" decoding=\"async\" /></a></p>\n<p> </p>\n<p><strong><span>SOLO</span></strong></p>\n<p><a href=\"/wp-content/uploads/SOLO-1.jpg\" rel=\"noopener\"><img class=\"aligncenter size-medium\" src=\"/wp-content/uploads/SOLO-1-850x322.jpg\" alt=\"\" width=\"850\" height=\"322\" loading=\"lazy\" decoding=\"async\" /></a></p>\n<p> </p>\n<p> </p>\n<p><strong><span>EASY</span></strong></p>\n<p> </p>\n<p><a href=\"/wp-content/uploads/EASY.jpg\" rel=\"noopener\"><img class=\"aligncenter size-medium\" src=\"/wp-content/uploads/EASY-850x323.jpg\" alt=\"\" width=\"850\" height=\"323\" loading=\"lazy\" decoding=\"async\" /></a></p>",
+  "status": "published",
+  "publishedAt": "2018-08-30T17:16:06.000Z",
+  "expiresAt": null,
+  "updatedAt": "2026-11-09T14:38:05.794Z",
+  "authorName": "Mihail",
+  "seoTitle": null,
+  "seoDescription": null,
+  "legacyWpId": 6068,
+  "cover": {
+    "path": "ПРО-800x600.jpg",
+    "width": 800,
+    "height": 435,
+    "alt": null,
+    "variants": [
+      {
+        "file": "ПРО-800x600-80x44.jpg",
+        "width": 80,
+        "height": 44
+      },
+      {
+        "file": "ПРО-800x600-80x80.jpg",
+        "width": 80,
+        "height": 80
+      },
+      {
+        "file": "ПРО-800x600-165x75.jpg",
+        "width": 165,
+        "height": 75
+      },
+      {
+        "file": "ПРО-800x600-265x147.jpg",
+        "width": 265,
+        "height": 147
+      },
+      {
+        "file": "ПРО-800x600-360x200.jpg",
+        "width": 360,
+        "height": 200
+      },
+      {
+        "file": "ПРО-800x600-360x360.jpg",
+        "width": 360,
+        "height": 360
+      },
+      {
+        "file": "ПРО-800x600-750x420.jpg",
+        "width": 750,
+        "height": 420
+      },
+      {
+        "file": "ПРО-800x600-750x435.jpg",
+        "width": 750,
+        "height": 435
+      }
+    ]
+  },
+  "categories": [
+    "oficialnye-meropriyatiya",
+    "plany"
+  ],
+  "tags": [
+    "polese",
+    "gonka",
+    "sxemy-distancij"
+  ]
+}

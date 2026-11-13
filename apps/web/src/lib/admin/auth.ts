@@ -1,13 +1,34 @@
 import "server-only";
-import { timingSafeEqual } from "node:crypto";
+import { createHmac, timingSafeEqual } from "node:crypto";
 import { cookies } from "next/headers";
-import { db } from "@/lib/db";
 import { adminPassword, sessionSecret } from "./config";
-import { randomToken, sha256 } from "./crypto";
 
 const SESSION_TTL_MS = 12 * 60 * 60 * 1000;
-const SESSION_LABEL = "admin";
 export const SESSION_COOKIE = "orientir_admin";
+const SESSION_LABEL = "admin";
+
+function sign(body: string): string {
+  return createHmac("sha256", sessionSecret()).update(body).digest("base64url");
+}
+
+function makeSessionToken(): string {
+  const exp = Date.now() + SESSION_TTL_MS;
+  const body = `${SESSION_LABEL}:${exp}`;
+  return `${body}.${sign(body)}`;
+}
+
+function verifySessionToken(token: string): boolean {
+  const dot = token.lastIndexOf(".");
+  if (dot < 0) return false;
+  const body = token.slice(0, dot);
+  const sig = token.slice(dot + 1);
+  const expected = sign(body);
+  const a = Buffer.from(sig);
+  const b = Buffer.from(expected);
+  if (a.length !== b.length || !timingSafeEqual(a, b)) return false;
+  const exp = Number(body.split(":")[1]);
+  return Number.isFinite(exp) && exp > Date.now();
+}
 
 function passwordsMatch(given: string, expected: string): boolean {
   const a = Buffer.from(given);
@@ -27,12 +48,8 @@ export async function loginWithPassword(passwordRaw: string): Promise<{ ok: true
   }
   if (!passwordsMatch(given, expected)) return { ok: false, message: "Неверный пароль" };
 
-  const token = randomToken();
-  await db.adminSession.create({
-    data: { email: SESSION_LABEL, tokenHash: sha256(`${token}:${sessionSecret()}`), expiresAt: new Date(Date.now() + SESSION_TTL_MS) },
-  });
   const jar = await cookies();
-  jar.set(SESSION_COOKIE, token, {
+  jar.set(SESSION_COOKIE, makeSessionToken(), {
     httpOnly: true,
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production",
@@ -44,19 +61,14 @@ export async function loginWithPassword(passwordRaw: string): Promise<{ ok: true
 
 export async function clearSession(): Promise<void> {
   const jar = await cookies();
-  const token = jar.get(SESSION_COOKIE)?.value;
   jar.delete(SESSION_COOKIE);
-  if (token) await db.adminSession.deleteMany({ where: { tokenHash: sha256(`${token}:${sessionSecret()}`) } });
 }
 
 export async function adminEmail(): Promise<string | null> {
   const jar = await cookies();
   const token = jar.get(SESSION_COOKIE)?.value;
-  if (!token) return null;
-  const row = await db.adminSession.findFirst({
-    where: { tokenHash: sha256(`${token}:${sessionSecret()}`), expiresAt: { gt: new Date() } },
-  });
-  return row?.email ?? null;
+  if (!token || !verifySessionToken(token)) return null;
+  return SESSION_LABEL;
 }
 
 export async function requireAdmin(): Promise<string> {

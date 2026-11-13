@@ -12,7 +12,6 @@
  * Output is JSON on stdout; errors go to stderr with a non-zero exit code.
  */
 import { readFileSync } from "node:fs";
-import { PrismaClient } from "@prisma/client";
 import { ZodError } from "zod";
 import { resolve } from "node:path";
 import { Agent, AgentError } from "./posts";
@@ -41,7 +40,7 @@ function flags(args: string[]): Record<string, string> {
   );
 }
 
-type Handler = (agent: Agent, args: string[], db: PrismaClient) => Promise<unknown>;
+type Handler = (agent: Agent, args: string[]) => Promise<unknown>;
 
 const COMMANDS: Record<string, Handler> = {
   "post:list": (agent, args) => agent.listPosts(listQuerySchema.parse(flags(args))),
@@ -52,8 +51,8 @@ const COMMANDS: Record<string, Handler> = {
     await agent.archivePost(slugSchema.parse(slug));
     return { ok: true };
   },
-  "photos:import": (_agent, [url], db) =>
-    importPhotos(db, {
+  "photos:import": (_agent, [url]) =>
+    importPhotos({
       url: url ?? "",
       apply: process.argv.includes("--apply"),
       root: resolve(process.env.MEDIA_ROOT ?? resolve(process.cwd(), "../../wp-content/uploads")),
@@ -79,14 +78,11 @@ async function main() {
     process.exitCode = 2;
     return;
   }
-  const db = new PrismaClient();
   try {
-    process.stdout.write(`${JSON.stringify(await handler(new Agent(db), args, db), null, 2)}\n`);
+    process.stdout.write(`${JSON.stringify(await handler(new Agent(), args), null, 2)}\n`);
   } catch (error) {
     process.stderr.write(`${describe(error)}\n`);
     process.exitCode = 1;
-  } finally {
-    await db.$disconnect();
   }
 }
 

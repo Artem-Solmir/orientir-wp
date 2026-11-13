@@ -1,10 +1,10 @@
 import "server-only";
 import { unstable_cache } from "next/cache";
 import { cache } from "react";
-import type { Prisma } from "@prisma/client";
-import { db } from "./db";
-import { PER_PAGE } from "./pagination";
 import { htmlToText, summarize } from "./text";
+import { isLivePost, loadStore, parseIso } from "./store/reader";
+import type { PostRecord } from "./store/types";
+import { PER_PAGE } from "./pagination";
 
 export const REVALIDATE = 3600;
 
@@ -20,144 +20,193 @@ export type CardPost = {
   primaryCategory: { slug: string; name: string } | null;
 };
 
-/** Published and not past WordPress expiration. */
-const live = (): Prisma.PostWhereInput => {
-  const now = new Date();
-  return {
-    status: "published",
-    publishedAt: { lte: now },
-    OR: [{ expiresAt: null }, { expiresAt: { gt: now } }],
-  };
-};
-
-const cardSelect = {
-  slug: true,
-  title: true,
-  excerpt: true,
-  body: true,
-  publishedAt: true,
-  expiresAt: true,
-  authorName: true,
-  cover: { select: { path: true, width: true, height: true, alt: true, variants: true } },
-  categories: { take: 1, select: { category: { select: { slug: true, name: true } } } },
-} satisfies Prisma.PostSelect;
-
-type CardRow = Prisma.PostGetPayload<{ select: typeof cardSelect }>;
-
-function toCard(row: CardRow): CardPost {
-  const { body, excerpt, categories, ...rest } = row;
-  const primaryCategory = categories[0]?.category ?? null;
-  return { ...rest, primaryCategory, summary: summarize(excerpt ? htmlToText(excerpt) : htmlToText(body), 140) };
-}
-
 export type PostFilter = { categorySlugs?: string[]; excludeCategorySlugs?: string[]; tagSlug?: string; search?: string; withCover?: boolean };
 
-function where(filter: PostFilter): Prisma.PostWhereInput {
-  const and: Prisma.PostWhereInput[] = [live()];
-  if (filter.categorySlugs?.length) and.push({ categories: { some: { category: { slug: { in: filter.categorySlugs } } } } });
-  if (filter.excludeCategorySlugs?.length) and.push({ categories: { none: { category: { slug: { in: filter.excludeCategorySlugs } } } } });
-  if (filter.tagSlug) and.push({ tags: { some: { tag: { slug: filter.tagSlug } } } });
-  if (filter.withCover) and.push({ coverId: { not: null } });
-  if (filter.search) {
-    and.push({ OR: [{ title: { contains: filter.search, mode: "insensitive" } }, { body: { contains: filter.search, mode: "insensitive" } }] });
-  }
-  return { AND: and };
+function primaryCategory(post: PostRecord) {
+  const store = loadStore();
+  const slug = post.categories[0];
+  if (!slug) return null;
+  const c = store.categoriesBySlug.get(slug);
+  return c ? { slug: c.slug, name: c.name } : { slug, name: slug };
+}
+
+function toCard(post: PostRecord): CardPost {
+  return {
+    slug: post.slug,
+    title: post.title,
+    publishedAt: parseIso(post.publishedAt),
+    expiresAt: parseIso(post.expiresAt),
+    authorName: post.authorName,
+    cover: post.cover,
+    primaryCategory: primaryCategory(post),
+    summary: summarize(post.excerpt ? htmlToText(post.excerpt) : htmlToText(post.body), 140),
+  };
+}
+
+function matchesCategory(post: PostRecord, filter: PostFilter): boolean {
+  if (filter.categorySlugs?.length && !filter.categorySlugs.some((s) => post.categories.includes(s))) return false;
+  if (filter.excludeCategorySlugs?.length && filter.excludeCategorySlugs.some((s) => post.categories.includes(s))) return false;
+  return true;
+}
+
+function matchesSearch(post: PostRecord, q: string | undefined): boolean {
+  if (!q) return true;
+  const needle = q.toLowerCase();
+  return post.title.toLowerCase().includes(needle) || post.body.toLowerCase().includes(needle);
+}
+
+function matchesFilter(post: PostRecord, filter: PostFilter, now: Date): boolean {
+  if (!isLivePost(post, now)) return false;
+  if (!matchesCategory(post, filter)) return false;
+  if (filter.tagSlug && !post.tags.includes(filter.tagSlug)) return false;
+  if (filter.withCover && !post.cover) return false;
+  return matchesSearch(post, filter.search);
+}
+
+function filteredPosts(filter: PostFilter, now = new Date()): PostRecord[] {
+  return loadStore().posts.filter((p) => matchesFilter(p, filter, now));
 }
 
 export async function listPosts(filter: PostFilter, page = 1, perPage = PER_PAGE) {
-  const w = where(filter);
-  const [rows, total] = await Promise.all([
-    db.post.findMany({ where: w, select: cardSelect, orderBy: { publishedAt: "desc" }, skip: (page - 1) * perPage, take: perPage }),
-    db.post.count({ where: w }),
-  ]);
-  return { items: rows.map(toCard), total };
+  const items = filteredPosts(filter);
+  const total = items.length;
+  const slice = items.slice((page - 1) * perPage, page * perPage);
+  return { items: slice.map(toCard), total };
 }
 
 export type PostView = NonNullable<Awaited<ReturnType<typeof getPost>>>;
 
 export const getPost = cache(async (slug: string) => {
-  return db.post.findFirst({
-    where: { slug, ...live() },
-    select: {
-      slug: true, title: true, excerpt: true, body: true, publishedAt: true, updatedAt: true, authorName: true,
-      cover: { select: { path: true, width: true, height: true, alt: true, variants: true } },
-      categories: { select: { category: { select: { slug: true, name: true } } } },
-      tags: { select: { tag: { select: { slug: true, name: true } } } },
-    },
-  });
+  const post = loadStore().postsBySlug.get(slug);
+  if (!post || !isLivePost(post)) return null;
+  const store = loadStore();
+  return {
+    slug: post.slug,
+    title: post.title,
+    excerpt: post.excerpt,
+    body: post.body,
+    publishedAt: parseIso(post.publishedAt),
+    updatedAt: parseIso(post.updatedAt),
+    authorName: post.authorName,
+    cover: post.cover,
+    categories: post.categories
+      .map((slug) => store.categoriesBySlug.get(slug))
+      .filter(Boolean)
+      .map((c) => ({ category: { slug: c!.slug, name: c!.name } })),
+    tags: post.tags
+      .map((slug) => store.tagsBySlug.get(slug))
+      .filter(Boolean)
+      .map((t) => ({ tag: { slug: t!.slug, name: t!.name } })),
+  };
 });
-
-const neighborSelect = {
-  slug: true,
-  title: true,
-  cover: { select: { path: true, width: true, height: true, alt: true, variants: true } },
-} satisfies Prisma.PostSelect;
 
 export async function getNeighbors(publishedAt: Date | null) {
   if (!publishedAt) return { prev: null, next: null };
-  const [prev, next] = await Promise.all([
-    db.post.findFirst({ where: { ...live(), publishedAt: { lt: publishedAt } }, orderBy: { publishedAt: "desc" }, select: neighborSelect }),
-    db.post.findFirst({ where: { ...live(), publishedAt: { gt: publishedAt, lte: new Date() } }, orderBy: { publishedAt: "asc" }, select: neighborSelect }),
-  ]);
-  return { prev, next };
+  const now = new Date();
+  const live = filteredPosts({}, now);
+  const prev = live.find((p) => {
+    const d = parseIso(p.publishedAt);
+    return d && d < publishedAt;
+  });
+  const next = [...live].reverse().find((p) => {
+    const d = parseIso(p.publishedAt);
+    return d && d > publishedAt && d <= now;
+  });
+  const neighbor = (p: PostRecord | undefined) =>
+    p
+      ? {
+          slug: p.slug,
+          title: p.title,
+          cover: p.cover,
+        }
+      : null;
+  return { prev: neighbor(prev), next: neighbor(next) };
 }
 
-/** Plans that are still visible and expire in the future, nearest first. */
 export async function listUpcomingPlans(limit = 5) {
   const now = new Date();
-  const rows = await db.post.findMany({
-    where: {
-      ...live(),
-      categories: { some: { category: { slug: "plany" } } },
-      expiresAt: { not: null, gt: now },
-    },
-    orderBy: { expiresAt: "asc" },
-    take: limit,
-    select: cardSelect,
-  });
-  return rows.map(toCard);
+  const rows = loadStore().posts.filter(
+    (p) =>
+      isLivePost(p, now) &&
+      p.categories.includes("plany") &&
+      p.expiresAt != null &&
+      parseIso(p.expiresAt)! > now,
+  );
+  rows.sort((a, b) => parseIso(a.expiresAt)!.getTime() - parseIso(b.expiresAt)!.getTime());
+  return rows.slice(0, limit).map(toCard);
 }
 
 export async function archiveYears() {
-  const rows = await db.post.findMany({
-    where: live(),
-    select: { publishedAt: true },
-  });
   const years = new Set<number>();
-  for (const r of rows) {
-    if (r.publishedAt) years.add(r.publishedAt.getFullYear());
+  for (const p of filteredPosts({})) {
+    const d = parseIso(p.publishedAt);
+    if (d) years.add(d.getFullYear());
   }
   return [...years].sort((a, b) => b - a);
 }
 
 export const getPage = cache(async (slug: string) => {
-  return db.page.findFirst({
-    where: { slug, status: "published" },
-    include: { sections: { orderBy: { order: "asc" } } },
-  });
+  const page = loadStore().pagesBySlug.get(slug);
+  if (!page || page.status !== "published") return null;
+  return {
+    slug: page.slug,
+    title: page.title,
+    body: page.body,
+    template: page.template,
+    status: page.status,
+    seoTitle: page.seoTitle,
+    seoDescription: page.seoDescription,
+    legacyWpId: page.legacyWpId,
+    sections: [...page.sections]
+      .sort((a, b) => a.order - b.order)
+      .map((s) => ({ id: `${page.slug}-${s.order}`, type: s.type, config: s.config })),
+  };
 });
 
-export const getCategory = (slug: string) => db.category.findUnique({ where: { slug } });
-export const getTag = (slug: string) => db.tag.findUnique({ where: { slug } });
+export const getCategory = async (slug: string) => loadStore().categoriesBySlug.get(slug) ?? null;
+export const getTag = async (slug: string) => loadStore().tagsBySlug.get(slug) ?? null;
 
-/** Navigation: categories with a meaningful number of posts. Cached; revalidated hourly or by tag. */
 export const getNavCategories = unstable_cache(
   async () => {
-    const rows = await db.category.findMany({
-      select: { slug: true, name: true, _count: { select: { posts: true } } },
-    });
-    return rows.filter((c) => c._count.posts >= 5 && c.slug !== "bez-rubriki").sort((a, b) => b._count.posts - a._count.posts);
+    const store = loadStore();
+    const counts = new Map<string, number>();
+    for (const p of filteredPosts({})) {
+      for (const slug of p.categories) counts.set(slug, (counts.get(slug) ?? 0) + 1);
+    }
+    return store.categories
+      .map((c) => ({ slug: c.slug, name: c.name, _count: { posts: counts.get(c.slug) ?? 0 } }))
+      .filter((c) => c._count.posts >= 5 && c.slug !== "bez-rubriki")
+      .sort((a, b) => b._count.posts - a._count.posts);
   },
   ["nav-categories"],
   { revalidate: REVALIDATE, tags: ["nav"] },
 );
 
 export async function allSlugsForSitemap() {
-  const [posts, pages, categories, tags] = await Promise.all([
-    db.post.findMany({ where: live(), select: { slug: true, updatedAt: true } }),
-    db.page.findMany({ where: { status: "published" }, select: { slug: true, updatedAt: true } }),
-    db.category.findMany({ where: { posts: { some: {} } }, select: { slug: true } }),
-    db.tag.findMany({ where: { posts: { some: {} } }, select: { slug: true, _count: { select: { posts: true } } } }),
-  ]);
+  const store = loadStore();
+  const now = new Date();
+  const posts = store.posts
+    .filter((p) => isLivePost(p, now))
+    .map((p) => ({ slug: p.slug, updatedAt: parseIso(p.updatedAt) ?? parseIso(p.publishedAt) ?? now }));
+  const pages = store.pages
+    .filter((p) => p.status === "published")
+    .map((p) => ({ slug: p.slug, updatedAt: parseIso(p.updatedAt) ?? now }));
+  const postSlugs = new Set(posts.map((p) => p.slug));
+  const usedCats = new Set<string>();
+  const usedTags = new Set<string>();
+  for (const p of store.posts.filter((x) => isLivePost(x, now))) {
+    p.categories.forEach((c) => usedCats.add(c));
+    p.tags.forEach((t) => usedTags.add(t));
+  }
+  const categories = store.categories.filter((c) => usedCats.has(c.slug)).map((c) => ({ slug: c.slug }));
+  const tags = store.tags
+    .filter((t) => usedTags.has(t.slug))
+    .map((t) => ({ slug: t.slug, _count: { posts: store.posts.filter((p) => isLivePost(p, now) && p.tags.includes(t.slug)).length } }));
+  void postSlugs;
   return { posts, pages, categories, tags };
+}
+
+export async function allLivePostsForSearch() {
+  const now = new Date();
+  return loadStore().posts.filter((p) => isLivePost(p, now));
 }
