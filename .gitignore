@@ -24,5 +24,6 @@ Desktop.ini
 .env
 .env.*
 !.env.example
+/backups/
 /apps/web/node_modules/
 /apps/web/.next/

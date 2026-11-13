@@ -1,0 +1,36 @@
+---
+description: Карта проекта — где что лежит и как проверить правку
+alwaysApply: true
+---
+
+# Карта проекта
+
+Сайт — `apps/web` (Next.js 16, собирается в статические HTML-страницы). Все команды `npm` запускай из `apps/web`. Папка `wp-content/` в корне — старый WordPress, её не трогаем (кроме `wp-content/uploads/`, куда импорт кладёт новые фото).
+
+## Где что лежит
+
+| Что | Где |
+|---|---|
+| Записи (отчёты, новости) | `apps/web/content/posts/<адрес>.json` |
+| Страницы (Главная, Контакты, Планы) | `apps/web/content/pages/<адрес>.json` |
+| Рубрики и метки | `apps/web/content/categories.json`, `tags.json` |
+| Данные о фото | `apps/web/content/media.json` (сами фото — на сервере) |
+| Перенаправления старых адресов | `apps/web/content/redirects.json` |
+| Цвета, шрифты, отступы | `apps/web/src/app/globals.css` (переменные в `:root`) |
+| Шапка, меню, подвал | `apps/web/src/components/site-chrome.tsx`, `site-menu.tsx` |
+| Главная страница | `apps/web/src/app/page.tsx` |
+| Карточки записей, статья | `apps/web/src/components/post-card.tsx`, `post-view.tsx` |
+| Название и описание сайта | `apps/web/src/lib/site.ts` |
+
+## Инструменты для контента
+
+- CLI агента: `npm run agent -- <команда>` — см. `migration/AGENT_CLI.md` (список, создание, изменение записей, импорт фото с Яндекс.Диска).
+- Админка в браузере: в `.env` должно быть `ENABLE_ADMIN=1`, затем `npm run dev` и `http://localhost:3000/admin/login/`. На опубликованном сайте админки нет.
+
+## Как проверить правку
+
+1. `npm run check` — проверка типов, стиля кода, тесты. Должно пройти без ошибок.
+2. Для видимых изменений: `npm run dev` (если ещё не запущен) и открыть нужную страницу на `http://localhost:3000`. Фото подгружаются с orientir.by.
+3. Для крупных изменений перед публикацией: `npm run build:static` — сборка должна завершиться без ошибок.
+
+Если проверка упала — сначала почини, не сообщай «готово» с ошибками.
