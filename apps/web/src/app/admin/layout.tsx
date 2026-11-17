@@ -8,7 +8,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     return (
       <div className="container admin-shell">
         <h1 className="page-title">Админка</h1>
-        <p className="notice">На этом окружении панель отключена. Для локальной работы добавьте в <code>.env</code> переменную <code>ENABLE_ADMIN=1</code> и перезапустите <code>npm run dev</code>.</p>
+        <p className="notice">Админка на этом сайте недоступна.</p>
       </div>
     );
   }

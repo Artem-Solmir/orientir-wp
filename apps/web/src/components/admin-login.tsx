@@ -1,45 +1,114 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { loginAdminAction } from "@/lib/admin/actions";
+import { adminUsesRemoteApi } from "@/lib/admin/remote-api";
 
-export function AdminLogin() {
+type Props = { emailHint: string; otpUrl: string };
+
+async function postOtp(url: string, body: URLSearchParams, creds: RequestCredentials) {
+  const res = await fetch(url, {
+    method: "POST",
+    credentials: creds,
+    headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
+    body,
+  });
+  const data = (await res.json().catch(() => ({}))) as { error?: string; token?: string; hint?: string };
+  if (!res.ok) return { ok: false as const, message: data.error ?? "Не удалось выполнить запрос" };
+  return { ok: true as const, data };
+}
+
+export function AdminLogin({ emailHint, otpUrl }: Props) {
+  const router = useRouter();
   const [message, setMessage] = useState<string | null>(null);
+  const [phase, setPhase] = useState<"request" | "verify">("request");
   const [pending, setPending] = useState(false);
+  const [code, setCode] = useState("");
+  const creds: RequestCredentials = "include";
 
-  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function onRequestCode() {
+    setPending(true);
+    setMessage(null);
+    const res = await postOtp(otpUrl, new URLSearchParams({ action: "request" }), creds);
+    setPending(false);
+    if (!res.ok) {
+      setMessage(res.message);
+      return;
+    }
+    setPhase("verify");
+    setMessage(`Код отправлен на ${res.data.hint ?? emailHint}`);
+  }
+
+  async function onSubmitCode(e: React.FormEvent) {
     e.preventDefault();
     setPending(true);
     setMessage(null);
-    const res = await loginAdminAction(new FormData(e.currentTarget));
+    const res = await postOtp(otpUrl, new URLSearchParams({ action: "verify", code: code.trim() }), creds);
+    if (!res.ok) {
+      setPending(false);
+      setMessage(res.message);
+      return;
+    }
     setPending(false);
-    if (!res.ok) setMessage(res.message);
+    if (!adminUsesRemoteApi()) {
+      setMessage("Настройте NEXT_PUBLIC_ADMIN_API_URL");
+      return;
+    }
+    router.replace("/admin/");
+    router.refresh();
   }
 
   return (
     <div className="admin-login">
       <h1 className="page-title">Вход в админку</h1>
-      <p className="label">Локальный доступ по паролю.</p>
-      <form className="form" onSubmit={onSubmit}>
-        <div className="field">
-          <label className="label" htmlFor="admin-password">
-            Пароль
-          </label>
-          <input
-            id="admin-password"
-            name="password"
-            className="input"
-            type="password"
-            required
-            autoComplete="current-password"
-            autoFocus
-          />
-        </div>
-        <button type="submit" className="btn btn--primary" disabled={pending}>
-          {pending ? "Входим…" : "Войти"}
+      <p className="label">
+        Код приходит на почту <strong>{emailHint}</strong>.
+      </p>
+      {phase === "request" ? (
+        <button type="button" className="btn btn--primary" disabled={pending} onClick={onRequestCode}>
+          {pending ? "Отправляем…" : "Получить код"}
         </button>
-      </form>
-      {message && <p className="error">{message}</p>}
+      ) : (
+        <form className="form" onSubmit={onSubmitCode}>
+          <div className="field">
+            <label className="label" htmlFor="admin-code">
+              Код из письма
+            </label>
+            <input
+              id="admin-code"
+              name="code"
+              className="input"
+              type="text"
+              inputMode="numeric"
+              pattern="\d{6}"
+              maxLength={6}
+              required
+              autoComplete="one-time-code"
+              autoFocus
+              value={code}
+              onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
+            />
+          </div>
+          <div className="form-actions">
+            <button type="submit" className="btn btn--primary" disabled={pending || code.length !== 6}>
+              {pending ? "Проверяем…" : "Войти"}
+            </button>
+            <button
+              type="button"
+              className="btn btn--secondary"
+              disabled={pending}
+              onClick={() => {
+                setPhase("request");
+                setCode("");
+                setMessage(null);
+              }}
+            >
+              Запросить код снова
+            </button>
+          </div>
+        </form>
+      )}
+      {message && <p className={message.includes("отправлен") ? "notice" : "error"}>{message}</p>}
     </div>
   );
 }

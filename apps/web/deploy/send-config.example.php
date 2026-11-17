@@ -1,5 +1,6 @@
 <?php
-// Copy to send-config.php (git-ignored) and fill in. build:static copies it next to send.php.
+// Copy to send-config.php (git-ignored). build:static puts a copy in out/private/;
+// на сервер: npm run deploy:form-secrets (не кладите send-config.php в корень сайта).
 return [
     'to' => 'tk.orientir@gmail.com',
     // Must be an address on the site's own domain, otherwise mail servers treat the message as spoofed.

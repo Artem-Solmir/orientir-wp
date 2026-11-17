@@ -12,8 +12,8 @@ async function send(payload: Record<string, string>): Promise<State> {
   try {
     const res = await fetch(ENDPOINT, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
+      headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
+      body: new URLSearchParams(payload),
     });
     if (res.ok) return { kind: "sent" };
     const data = (await res.json().catch(() => ({}))) as { error?: string };

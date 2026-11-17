@@ -1,7 +1,8 @@
 import "server-only";
 import { createHmac, timingSafeEqual } from "node:crypto";
 import { cookies } from "next/headers";
-import { adminPassword, sessionSecret } from "./config";
+import { adminOtpSecret, sessionSecret } from "./config";
+import { verifyAdminOtpExchangeToken } from "./otp-exchange";
 
 const SESSION_TTL_MS = 12 * 60 * 60 * 1000;
 export const SESSION_COOKIE = "orientir_admin";
@@ -30,24 +31,7 @@ function verifySessionToken(token: string): boolean {
   return Number.isFinite(exp) && exp > Date.now();
 }
 
-function passwordsMatch(given: string, expected: string): boolean {
-  const a = Buffer.from(given);
-  const b = Buffer.from(expected);
-  if (a.length !== b.length) return false;
-  return timingSafeEqual(a, b);
-}
-
-export async function loginWithPassword(passwordRaw: string): Promise<{ ok: true } | { ok: false; message: string }> {
-  const given = passwordRaw.trim();
-  if (!given) return { ok: false, message: "Введите пароль" };
-  let expected: string;
-  try {
-    expected = adminPassword();
-  } catch {
-    return { ok: false, message: "Пароль админки не настроен (ADMIN_PASSWORD)" };
-  }
-  if (!passwordsMatch(given, expected)) return { ok: false, message: "Неверный пароль" };
-
+async function setAdminSession(): Promise<void> {
   const jar = await cookies();
   jar.set(SESSION_COOKIE, makeSessionToken(), {
     httpOnly: true,
@@ -56,6 +40,23 @@ export async function loginWithPassword(passwordRaw: string): Promise<{ ok: true
     path: "/admin",
     maxAge: SESSION_TTL_MS / 1000,
   });
+}
+
+export async function loginWithOtpExchange(
+  tokenRaw: string,
+): Promise<{ ok: true } | { ok: false; message: string }> {
+  const token = tokenRaw.trim();
+  if (!token) return { ok: false, message: "Сначала введите код из письма" };
+  let secret: string;
+  try {
+    secret = adminOtpSecret();
+  } catch {
+    return { ok: false, message: "В .env не задан ADMIN_OTP_SECRET" };
+  }
+  if (!verifyAdminOtpExchangeToken(token, secret)) {
+    return { ok: false, message: "Код устарел. Запросите новый" };
+  }
+  await setAdminSession();
   return { ok: true };
 }
 

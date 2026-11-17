@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { createPostAction, updatePostAction } from "@/lib/admin/actions";
+import { adminUsesRemoteApi, remoteCreatePost, remoteUpdatePost } from "@/lib/admin/remote-api";
+import { useRouter } from "next/navigation";
 
 type Category = { slug: string; name: string };
 
@@ -84,20 +85,49 @@ export function AdminPostForm({
   categories: Category[];
   initial?: Initial;
 }) {
+  const router = useRouter();
   const [pending, setPending] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
 
+  function payloadFromForm(fd: FormData) {
+    const categories = String(fd.get("categories") ?? "")
+      .split(/[,;\s]+/)
+      .map((s) => s.trim())
+      .filter(Boolean);
+    return {
+      title: String(fd.get("title") ?? ""),
+      body: String(fd.get("body") ?? ""),
+      excerpt: String(fd.get("excerpt") ?? ""),
+      authorName: String(fd.get("authorName") ?? ""),
+      slug: mode === "create" ? String(fd.get("slug") ?? "") : undefined,
+      categories,
+    };
+  }
+
+  async function submitRemote(fd: FormData) {
+    const payload = payloadFromForm(fd);
+    const res =
+      mode === "create"
+        ? await remoteCreatePost(payload)
+        : await remoteUpdatePost(initial!.slug, payload);
+    setPending(false);
+    if (!res.ok) {
+      setMessage(res.message ?? "Ошибка");
+      return;
+    }
+    if (mode === "create" && "slug" in res) router.push(`/admin/posts/${res.slug}/`);
+  }
+
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (!adminUsesRemoteApi()) {
+      setMessage("Настройте NEXT_PUBLIC_ADMIN_API_URL");
+      return;
+    }
     setPending(true);
     setMessage(null);
     const fd = new FormData(e.currentTarget);
-    const res =
-      mode === "create" ? await createPostAction(fd) : await updatePostAction(initial!.slug, fd);
-    if (res && !res.ok) {
-      setMessage(res.message ?? "Ошибка");
-      setPending(false);
-    }
+    await submitRemote(fd);
   }
 
   return (

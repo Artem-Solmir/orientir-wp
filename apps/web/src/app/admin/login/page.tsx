@@ -1,10 +1,13 @@
-import { redirect } from "next/navigation";
 import { AdminLogin } from "@/components/admin-login";
-import { adminEmail } from "@/lib/admin/auth";
-import { adminEnabled } from "@/lib/admin/config";
+import { adminEnabled, adminLoginEmailHint, adminOtpEndpoint } from "@/lib/admin/config";
 
-export default async function AdminLoginPage() {
-  if (!adminEnabled()) return null;
-  if (await adminEmail()) redirect("/admin");
-  return <AdminLogin />;
+export default function AdminLoginPage() {
+  if (!adminEnabled()) {
+    return (
+      <p className="notice">
+        Админка на этом сайте не включена.
+      </p>
+    );
+  }
+  return <AdminLogin emailHint={adminLoginEmailHint()} otpUrl={adminOtpEndpoint()} />;
 }

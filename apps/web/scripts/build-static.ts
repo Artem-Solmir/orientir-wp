@@ -4,11 +4,10 @@
  * Usage: npm run build:static
  */
 import { spawnSync } from "node:child_process";
-import { copyFileSync, existsSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
+import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { legacyRedirects, wpShortlinks } from "../src/lib/store/redirects";
 import { securityHeaders } from "../deploy/security-headers";
-import { hideAdminRoutes, restoreAdminRoutes } from "./admin-export";
 
 const ROOT = join(import.meta.dirname, "..");
 const OUT = join(ROOT, "out");
@@ -56,7 +55,18 @@ function sanityChecks(): string[] {
   const problems: string[] = [];
   for (const f of files) {
     const rel = f.slice(OUT.length + 1).replaceAll("\\", "/");
-    if (/\.(php|phtml|phar)$/i.test(rel) && rel !== "send.php" && rel !== "send-config.php") problems.push(`unexpected executable file: ${rel}`);
+    const allowedPhp = new Set([
+      "send.php",
+      "admin-otp.php",
+      "admin-api.php",
+      "admin-session.php",
+      "private/orientir-send-config.php",
+      "private/orientir-admin-otp-config.php",
+    ]);
+    if (/\.(php|phtml|phar)$/i.test(rel) && !allowedPhp.has(rel)) {
+      problems.push(`unexpected executable file: ${rel}`);
+    }
+    if (rel === "send-config.php") problems.push("send-config.php must not be in site root — use private/orientir-send-config.php");
     if (/\.(html|txt|xml|json)$/.test(rel) && /orientir\.local|localhost:3000/.test(readFileSync(f, "utf8"))) {
       problems.push(`local address leaked into: ${rel}`);
     }
@@ -66,27 +76,46 @@ function sanityChecks(): string[] {
 }
 
 async function main() {
-  hideAdminRoutes();
-  try {
-    const build = spawnSync("npx", ["next", "build"], {
-      cwd: ROOT,
-      stdio: "inherit",
-      shell: true,
-      env: { ...process.env, NODE_ENV: "production", APP_URL: PUBLIC_URL, ENABLE_ADMIN: "0" },
-    });
-    if (build.status !== 0) throw new Error("next build failed");
-  } finally {
-    restoreAdminRoutes();
-  }
+  const build = spawnSync("npx", ["next", "build"], {
+    cwd: ROOT,
+    stdio: "inherit",
+    shell: true,
+    env: {
+      ...process.env,
+      NODE_ENV: "production",
+      APP_URL: PUBLIC_URL,
+      ENABLE_ADMIN: "0",
+      NEXT_PUBLIC_ADMIN_ENABLED: "1",
+      NEXT_PUBLIC_ADMIN_OTP_URL: "/admin-otp.php",
+      NEXT_PUBLIC_ADMIN_API_URL: "/admin-api.php",
+    },
+  });
+  if (build.status !== 0) throw new Error("next build failed");
 
   const template = readFileSync(join(ROOT, "deploy", "htaccess.template"), "utf8");
   const htaccess = template.replace("__HEADERS__", headerLines()).replace("__REDIRECTS__", buildRedirects());
   writeFileSync(join(OUT, ".htaccess"), htaccess);
 
   copyFileSync(join(ROOT, "deploy", "send.php"), join(OUT, "send.php"));
+  copyFileSync(join(ROOT, "deploy", "admin-otp.php"), join(OUT, "admin-otp.php"));
+  copyFileSync(join(ROOT, "deploy", "admin-api.php"), join(OUT, "admin-api.php"));
+  copyFileSync(join(ROOT, "deploy", "admin-session.php"), join(OUT, "admin-session.php"));
   const config = join(ROOT, "deploy", "send-config.php");
-  if (existsSync(config)) copyFileSync(config, join(OUT, "send-config.php"));
-  else process.stdout.write("WARNING: deploy/send-config.php is missing, the contact form will answer 500 until it is added\n");
+  const otpConfig = join(ROOT, "deploy", "admin-otp-config.php");
+  const privateDir = join(OUT, "private");
+  mkdirSync(privateDir, { recursive: true });
+  if (existsSync(config)) {
+    copyFileSync(config, join(privateDir, "orientir-send-config.php"));
+  } else {
+    process.stdout.write(
+      "WARNING: deploy/send-config.php is missing — run npm run deploy:form-secrets after you add it\n",
+    );
+  }
+  if (existsSync(otpConfig)) {
+    copyFileSync(otpConfig, join(privateDir, "orientir-admin-otp-config.php"));
+  } else {
+    process.stdout.write("WARNING: deploy/admin-otp-config.php missing — copy from admin-otp-config.example.php\n");
+  }
 
   const problems = sanityChecks();
   const size = listFiles(OUT).reduce((sum, f) => sum + statSync(f).size, 0);

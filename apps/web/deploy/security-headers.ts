@@ -9,7 +9,7 @@ export function contentSecurityPolicy(isProd: boolean): string {
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data: blob:",
     "font-src 'self' data:",
-    "connect-src 'self'",
+    "connect-src 'self' https://orientir.by https://www.orientir.by",
     "frame-src https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com https://www.google.com",
     "media-src 'self'",
     "frame-ancestors 'none'",

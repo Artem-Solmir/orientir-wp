@@ -50,3 +50,4 @@ coverage/
 
 # Production mail config (recipient address)
 /deploy/send-config.php
+/deploy/admin-otp-config.php

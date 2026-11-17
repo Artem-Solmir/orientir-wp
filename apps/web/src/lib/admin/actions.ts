@@ -2,12 +2,12 @@
 
 import { redirect } from "next/navigation";
 import { adminEnabled } from "./config";
-import { clearSession, loginWithPassword } from "./auth";
+import { clearSession, loginWithOtpExchange } from "./auth";
 import { adminCreatePost, adminUpdatePost } from "./posts";
 
-export async function loginAdminAction(formData: FormData) {
+export async function loginAdminWithTokenAction(token: string) {
   if (!adminEnabled()) return { ok: false as const, message: "Админка отключена" };
-  const res = await loginWithPassword(String(formData.get("password") ?? ""));
+  const res = await loginWithOtpExchange(token);
   if (res.ok) redirect("/admin");
   return res;
 }

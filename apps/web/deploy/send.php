@@ -16,13 +16,31 @@ function respond(int $status, array $body): never
     exit;
 }
 
-if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
-    header('Allow: POST');
+$method = $_SERVER['REQUEST_METHOD'] ?? '';
+if ($method === 'OPTIONS') {
+    header('Allow: POST, OPTIONS');
+    http_response_code(204);
+    exit;
+}
+if ($method !== 'POST') {
+    header('Allow: POST, OPTIONS');
     respond(405, ['error' => 'Method not allowed']);
 }
 
-$configFile = __DIR__ . '/send-config.php';
-if (!is_file($configFile)) {
+$configFile = null;
+foreach (
+    [
+        dirname(__DIR__) . '/private/orientir-send-config.php',
+        __DIR__ . '/private/orientir-send-config.php',
+        __DIR__ . '/send-config.php',
+    ] as $path
+) {
+    if (is_file($path)) {
+        $configFile = $path;
+        break;
+    }
+}
+if ($configFile === null) {
     respond(500, ['error' => 'Форма не настроена']);
 }
 /** @var array{to:string,from:string,origins:string[]} $config */
@@ -34,13 +52,21 @@ if ($origin !== '' && !in_array($origin, $config['origins'], true)) {
     respond(403, ['error' => 'Forbidden']);
 }
 
-$raw = file_get_contents('php://input', false, null, 0, 40001);
-if ($raw === false || strlen($raw) > 40000) {
-    respond(413, ['error' => 'Слишком большой запрос']);
-}
-$data = json_decode($raw, true);
-if (!is_array($data)) {
-    respond(400, ['error' => 'Некорректный запрос']);
+$contentType = $_SERVER['CONTENT_TYPE'] ?? '';
+if (str_starts_with(strtolower($contentType), 'application/json')) {
+    $raw = file_get_contents('php://input', false, null, 0, 40001);
+    if ($raw === false || strlen($raw) > 40000) {
+        respond(413, ['error' => 'Слишком большой запрос']);
+    }
+    $data = json_decode($raw, true);
+    if (!is_array($data)) {
+        respond(400, ['error' => 'Некорректный запрос']);
+    }
+} else {
+    $data = $_POST;
+    if (!is_array($data) || $data === []) {
+        respond(400, ['error' => 'Некорректный запрос']);
+    }
 }
 
 // Honeypot: real visitors never fill this field. Pretend success to bots.

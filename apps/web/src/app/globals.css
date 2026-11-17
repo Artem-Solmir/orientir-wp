@@ -609,7 +609,7 @@ a:hover {
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: linear-gradient(to top, var(--color-paper) 3%, color-mix(in oklab, var(--color-paper) 70%, transparent) 40%, color-mix(in oklab, var(--color-paper) 42%, transparent) 100%);
+  background: linear-gradient(to top, var(--color-paper) 3%, color-mix(in oklab, var(--color-paper) 60%, transparent) 10%, color-mix(in oklab, var(--color-paper) 23%, transparent) 100%);
 }
 
 .hero-copy {
@@ -876,7 +876,7 @@ a:hover {
 
 .post-head h1 {
   letter-spacing: -0.01em;
-  font-size: var(--text-display);
+  font-size: var(--text-xl);
   margin-bottom: var(--space-md);
   text-transform: none;
 }

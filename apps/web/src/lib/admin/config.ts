@@ -1,15 +1,26 @@
 import "server-only";
 
 export function adminEnabled(): boolean {
+  if (process.env.NEXT_PUBLIC_ADMIN_ENABLED === "1") return true;
   return process.env.ENABLE_ADMIN === "1";
 }
 
-/** Local admin password; default 1111 only in non-production when unset. */
-export function adminPassword(): string {
-  const p = process.env.ADMIN_PASSWORD?.trim();
-  if (p) return p;
-  if (adminEnabled() && process.env.NODE_ENV !== "production") return "1111";
-  throw new Error("ADMIN_PASSWORD must be set when ENABLE_ADMIN=1 in production");
+/** Shared with deploy/admin-otp.php (private config on the host). */
+export function adminOtpSecret(): string {
+  const s = process.env.ADMIN_OTP_SECRET?.trim();
+  if (s && s.length >= 32) return s;
+  if (adminEnabled() && process.env.NODE_ENV !== "production") {
+    return "dev-only-admin-otp-secret-32-chars!!!!";
+  }
+  throw new Error("ADMIN_OTP_SECRET must be at least 32 characters when ENABLE_ADMIN=1");
+}
+
+export function adminLoginEmailHint(): string {
+  return process.env.NEXT_PUBLIC_ADMIN_LOGIN_EMAIL?.trim() || "email не указан в настройках";
+}
+
+export function adminOtpEndpoint(): string {
+  return process.env.NEXT_PUBLIC_ADMIN_OTP_URL?.trim() || "https://orientir.by/admin-otp.php";
 }
 
 export function sessionSecret(): string {

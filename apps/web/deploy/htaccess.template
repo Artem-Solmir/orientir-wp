@@ -12,6 +12,9 @@ __HEADERS__
 <IfModule mod_rewrite.c>
 RewriteEngine On
 
+# Service files (form mail settings) are not public pages.
+RewriteRule ^private/ - [F,L]
+
 # HTTPS only
 RewriteCond %{HTTPS} !=on
 RewriteCond %{HTTP:X-Forwarded-Proto} !https
@@ -39,6 +42,18 @@ __REDIRECTS__
 </FilesMatch>
 <Files "send.php">
   Require all granted
+</Files>
+<Files "admin-otp.php">
+  Require all granted
+</Files>
+<Files "admin-api.php">
+  Require all granted
+</Files>
+<Files "admin-session.php">
+  Require all denied
+</Files>
+<Files "send-config.php">
+  Require all denied
 </Files>
 
 <IfModule mod_expires.c>
