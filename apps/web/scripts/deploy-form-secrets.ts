@@ -48,18 +48,15 @@ async function main() {
       process.stdout.write("настройки формы: папка ../private/ на сервере\n");
     } else {
       await client.cd(root);
-      await mkdirPrivate(client);
-      await client.uploadFrom(createReadStream(FORM_CONFIG), `private/${REMOTE_FORM}`);
+      await uploadInPrivate(client, root, FORM_CONFIG, REMOTE_FORM);
       uploaded = true;
       process.stdout.write("настройки формы: orientir.by/private/ (закрыто правилами .htaccess)\n");
     }
 
     if (!uploaded) throw new Error("could not upload form config");
 
-    await client.cd(root);
-    await mkdirPrivate(client);
     if (existsSync(OTP_CONFIG)) {
-      await client.uploadFrom(createReadStream(OTP_CONFIG), `private/${REMOTE_OTP}`);
+      await uploadInPrivate(client, root, OTP_CONFIG, REMOTE_OTP);
       process.stdout.write("настройки входа в админку: private/\n");
     } else {
       process.stdout.write("WARNING: deploy/admin-otp-config.php нет — вход по коду не заработает\n");
@@ -77,12 +74,12 @@ async function main() {
   }
 }
 
-async function mkdirPrivate(client: Client) {
-  try {
-    await client.ensureDir("private");
-  } catch {
-    /* directory may already exist */
-  }
+async function uploadInPrivate(client: Client, siteRoot: string, local: string, remoteName: string) {
+  await client.cd(siteRoot);
+  await client.ensureDir("private");
+  await client.cd("private");
+  await client.uploadFrom(createReadStream(local), remoteName);
+  await client.cd(siteRoot);
 }
 
 /** @returns true when FTP allows stepping above the site root */

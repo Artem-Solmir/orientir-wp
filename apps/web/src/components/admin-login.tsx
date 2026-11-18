@@ -36,7 +36,8 @@ export function AdminLogin({ emailHint, otpUrl }: Props) {
       return;
     }
     setPhase("verify");
-    setMessage(`Код отправлен на ${res.data.hint ?? emailHint}`);
+    const target = res.data.hint ?? emailHint;
+    setMessage(`Код отправлен на ${target}. Проверьте входящие и папку «Спам».`);
   }
 
   async function onSubmitCode(e: React.FormEvent) {

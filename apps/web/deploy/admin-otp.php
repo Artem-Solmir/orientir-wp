@@ -67,6 +67,56 @@ if (!in_array($action, ['request', 'verify'], true)) {
     respond(400, ['error' => 'Некорректный запрос']);
 }
 
+function smtp_read($socket): array
+{
+    $text = '';
+    while (($line = fgets($socket, 515)) !== false) {
+        $text .= $line;
+        if (strlen($line) < 4 || $line[3] !== '-') {
+            break;
+        }
+    }
+    return [(int) substr($text, 0, 3), $text];
+}
+
+function smtp_cmd($socket, string $command, int $expect): bool
+{
+    fwrite($socket, $command . "\r\n");
+    [$code] = smtp_read($socket);
+    return $code === $expect;
+}
+
+/** @param array{host:string,port:int,user:string,pass:string} $smtp */
+function smtp_send(array $smtp, string $fromAddress, string $to, string $headers, string $body): bool
+{
+    $socket = @stream_socket_client(
+        'ssl://' . $smtp['host'] . ':' . $smtp['port'],
+        $errno,
+        $errstr,
+        15,
+    );
+    if ($socket === false) {
+        return false;
+    }
+    stream_set_timeout($socket, 15);
+    [$greeting] = smtp_read($socket);
+    $ok = $greeting === 220
+        && smtp_cmd($socket, 'EHLO orientir.by', 250)
+        && smtp_cmd($socket, 'AUTH LOGIN', 334)
+        && smtp_cmd($socket, base64_encode($smtp['user']), 334)
+        && smtp_cmd($socket, base64_encode(str_replace(' ', '', (string) ($smtp['pass'] ?? ''))), 235)
+        && smtp_cmd($socket, 'MAIL FROM:<' . $fromAddress . '>', 250)
+        && smtp_cmd($socket, 'RCPT TO:<' . $to . '>', 250)
+        && smtp_cmd($socket, 'DATA', 354);
+    if ($ok) {
+        $message = $headers . "\r\n\r\n" . str_replace("\n.", "\n..", $body);
+        $ok = smtp_cmd($socket, $message . "\r\n.", 250);
+    }
+    @fwrite($socket, "QUIT\r\n");
+    fclose($socket);
+    return $ok;
+}
+
 function allowed(string $key, int $max, int $windowSeconds): bool
 {
     $file = sys_get_temp_dir() . '/orientir-rl-' . hash('sha256', $key);
@@ -111,13 +161,31 @@ if ($action === 'request') {
     file_put_contents($codeDir . '/' . $hash, json_encode($payload), LOCK_EX);
     $subject = mb_encode_mimeheader('Код входа в админку Ориентир', 'UTF-8');
     $body = "Код для входа: {$code}\n\nДействует 10 минут.\n";
+    $fromAddress = preg_match('/<([^>]+)>/', $config['from'], $m) === 1 ? $m[1] : $config['from'];
+    $host = parse_url('https://' . ($_SERVER['HTTP_HOST'] ?? 'orientir.by'), PHP_URL_HOST) ?: 'orientir.by';
     $headers = [
         'From: ' . $config['from'],
+        'Reply-To: ' . $fromAddress,
+        'Return-Path: ' . $fromAddress,
+        'Date: ' . date('r'),
+        'Message-ID: <' . bin2hex(random_bytes(12)) . '@' . $host . '>',
         'MIME-Version: 1.0',
         'Content-Type: text/plain; charset=UTF-8',
         'Content-Transfer-Encoding: 8bit',
     ];
-    if (!mail($config['email'], $subject, $body, implode("\r\n", $headers))) {
+    $smtp = $config['smtp'] ?? null;
+    if (is_array($smtp)) {
+        $fromAddress = $smtp['user'];
+        $from = 'From: ' . mb_encode_mimeheader('Сайт Ориентир', 'UTF-8') . ' <' . $fromAddress . '>';
+        $headers[0] = $from;
+        $headers[1] = 'Reply-To: ' . $fromAddress;
+        $headers[2] = 'To: ' . $config['email'];
+        $headers[] = 'Subject: ' . $subject;
+        $sent = smtp_send($smtp, $fromAddress, $config['email'], implode("\r\n", $headers), $body);
+    } else {
+        $sent = mail($config['email'], $subject, $body, implode("\r\n", $headers), '-f' . $fromAddress);
+    }
+    if (!$sent) {
         respond(500, ['error' => 'Не удалось отправить письмо']);
     }
     respond(200, ['ok' => true, 'hint' => $config['email']]);
@@ -154,14 +222,3 @@ if ($origin !== '' && in_array($origin, $localOrigins, true)) {
   $payload['token'] = b64url($body) . '.' . b64url($sig);
 }
 respond(200, $payload);
-
-<?php
-// Copy to admin-otp-config.php (git-ignored). Same ADMIN_OTP_SECRET as in apps/web/.env
-return [
-    // Куда уходит код; эту же почту показываем на странице входа (NEXT_PUBLIC_ADMIN_LOGIN_EMAIL).
-    'email' => 'tk.orientir@gmail.com',
-    // Must match ADMIN_OTP_SECRET in .env (at least 32 characters).
-    'secret' => 'change-me-to-the-same-secret-as-in-env-file',
-    'from' => 'Сайт Ориентир <no-reply@orientir.by>',
-    'origins' => ['http://localhost:3000', 'http://127.0.0.1:3000', 'https://orientir.by', 'https://www.orientir.by'],
-];
