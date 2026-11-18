@@ -352,17 +352,40 @@ a:hover {
 }
 
 @media (max-width: 48rem) {
+  html:has(.menu[open]),
+  html:has(.menu[open]) body {
+    overflow: hidden;
+  }
+
   .top-row {
     padding-block: var(--space-sm);
     gap: var(--space-sm);
   }
 
-  .header-search .btn--secondary {
+  .header-start {
+    flex: 1;
+    justify-content: space-between;
+  }
+
+  .header-contacts {
+    display: none;
+  }
+
+  .menu-panel-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    min-height: 100%;
+  }
+
+  .header-search .btn--secondary,
+  .menu-search .btn--secondary {
     padding-inline: var(--space-sm);
     font-size: 0;
   }
 
-  .header-search .btn--secondary::after {
+  .header-search .btn--secondary::after,
+  .menu-search .btn--secondary::after {
     content: "⌕";
     font-size: var(--text-lg);
     line-height: 1;
@@ -391,9 +414,16 @@ a:hover {
 
   .menu .menu-panel {
     /* 100% is the header (the containing block), so the panel fills the rest of the screen */
+    display: flex;
+    flex-direction: column;
     height: calc(100dvh - 100%);
     overflow-y: auto;
     padding-block: var(--space-md);
+  }
+
+  .menu-panel .menu-panel-body {
+    flex: 1;
+    min-height: 0;
   }
 
   .menu-panel .menu-list {
@@ -457,6 +487,23 @@ a:hover {
 .search {
   display: flex;
   gap: var(--space-xs);
+}
+
+.search.menu-search {
+  display: none;
+}
+
+@media (max-width: 48rem) {
+  .search.header-search {
+    display: none;
+  }
+
+  .search.menu-search {
+    display: flex;
+    margin-top: auto;
+    padding-top: var(--space-md);
+    border-top: var(--rule-hair) solid var(--color-rule);
+  }
 }
 
 .input {

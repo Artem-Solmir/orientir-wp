@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getNavCategories } from "@/lib/content";
 import { SITE_NAME } from "@/lib/site";
 import { SiteMenu } from "./site-menu";
+import { SiteSearchForm } from "./site-search-form";
 import { ThemeToggle } from "./theme-toggle";
 
 export async function SiteHeader() {
@@ -14,35 +15,30 @@ export async function SiteHeader() {
             <span className="logo" aria-hidden="true" />
           </Link>
           <SiteMenu>
-            <div className="container menu-grid">
-              <ul className="menu-list" aria-label="Рубрики">
-                {categories.map((c) => (
-                  <li key={c.slug}>
-                    <Link href={`/category/${c.slug}`}>{c.name}</Link>
+            <div className="container menu-panel-body">
+              <div className="menu-grid">
+                <ul className="menu-list" aria-label="Рубрики">
+                  {categories.map((c) => (
+                    <li key={c.slug}>
+                      <Link href={`/category/${c.slug}`}>{c.name}</Link>
+                    </li>
+                  ))}
+                  <li>
+                    <Link href="/archive">Все записи</Link>
                   </li>
-                ))}
-                <li>
-                  <Link href="/archive">Все записи</Link>
-                </li>
-              </ul>
-              <Link href="/materials" className="btn btn--primary menu-cta">
-                Прислать материалы
-              </Link>
+                </ul>
+                <Link href="/materials" className="btn btn--primary menu-cta">
+                  Прислать материалы
+                </Link>
+              </div>
+              <SiteSearchForm inputId="menu-site-search" className="search menu-search" />
             </div>
           </SiteMenu>
           <Link href="/contact" className="header-contacts">
             Контакты
           </Link>
         </div>
-        <form action="/search" role="search" className="search header-search">
-          <label className="label" htmlFor="site-search" hidden>
-            Поиск по сайту
-          </label>
-          <input id="site-search" className="input" type="search" name="s" placeholder="Поиск по сайту" maxLength={100} autoComplete="off" />
-          <button type="submit" className="btn btn--secondary">
-            Найти
-          </button>
-        </form>
+        <SiteSearchForm inputId="site-search" className="search header-search" />
       </div>
     </header>
   );
