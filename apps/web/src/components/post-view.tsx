@@ -34,7 +34,7 @@ export async function PostArticle({ post }: { post: Post }) {
           <SiteImage src={cover.src} alt={post.cover.alt ?? ""} width={cover.width} height={cover.height} sizes="(max-width: 72rem) 100vw, 68ch" priority />
         </figure>
       )}
-      <div className="prose" dangerouslySetInnerHTML={{ __html: prepareProseHtml(post.body) }} />
+      <div className="prose" data-slug={post.slug} dangerouslySetInnerHTML={{ __html: prepareProseHtml(post.body) }} />
       {post.tags.length > 0 && (
         <ul className="tags" aria-label="Метки">
           {post.tags.map(({ tag }) => (

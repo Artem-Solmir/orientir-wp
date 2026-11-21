@@ -962,6 +962,11 @@ a:hover {
   margin-top: var(--space-md);
 }
 
+/* Выравнивание по ширине включается точечно для конкретной записи (см. data-slug в post-view.tsx). */
+.prose[data-slug="reka-ubort-2019-tri-majskix-dnya"] p {
+  text-align: justify;
+}
+
 .prose h2,
 .prose h3,
 .prose h4 {
