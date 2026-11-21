@@ -6,12 +6,74 @@
   "status": "published",
   "publishedAt": "2018-04-24T01:15:29.000Z",
   "expiresAt": null,
-  "updatedAt": "2026-11-09T14:38:05.698Z",
+  "updatedAt": "2026-11-21T16:51:36.880Z",
   "authorName": "Mihail",
   "seoTitle": null,
   "seoDescription": null,
   "legacyWpId": 5595,
-  "cover": null,
+  "cover": {
+    "path": "афиша-марафон-2018-1.jpg",
+    "width": 1280,
+    "height": 905,
+    "alt": null,
+    "variants": [
+      {
+        "file": "афиша-марафон-2018-1-80x57.jpg",
+        "width": 80,
+        "height": 57
+      },
+      {
+        "file": "афиша-марафон-2018-1-850x601.jpg",
+        "width": 850,
+        "height": 601
+      },
+      {
+        "file": "афиша-марафон-2018-1-1080x764.jpg",
+        "width": 1080,
+        "height": 764
+      },
+      {
+        "file": "афиша-марафон-2018-1-80x80.jpg",
+        "width": 80,
+        "height": 80
+      },
+      {
+        "file": "афиша-марафон-2018-1-165x75.jpg",
+        "width": 165,
+        "height": 75
+      },
+      {
+        "file": "афиша-марафон-2018-1-265x147.jpg",
+        "width": 265,
+        "height": 147
+      },
+      {
+        "file": "афиша-марафон-2018-1-360x200.jpg",
+        "width": 360,
+        "height": 200
+      },
+      {
+        "file": "афиша-марафон-2018-1-360x360.jpg",
+        "width": 360,
+        "height": 360
+      },
+      {
+        "file": "афиша-марафон-2018-1-750x420.jpg",
+        "width": 750,
+        "height": 420
+      },
+      {
+        "file": "афиша-марафон-2018-1-750x750.jpg",
+        "width": 750,
+        "height": 750
+      },
+      {
+        "file": "афиша-марафон-2018-1-1140x641.jpg",
+        "width": 1140,
+        "height": 641
+      }
+    ]
+  },
   "categories": [
     "otchyoty-ob-oficialnyx-meropriyatiyax",
     "otchyoty"
