@@ -211673,5 +211673,24 @@
       }
     ],
     "legacyWpId": 8414
+  },
+  "2026/11/marafon-pripyatskij-osennij-2026-8134079a.jpg": {
+    "mimeType": "image/jpeg",
+    "width": 1181,
+    "height": 827,
+    "alt": "Марафон «Припятский осенний 2026»",
+    "variants": [
+      {
+        "file": "marafon-pripyatskij-osennij-2026-8134079a-400x280.jpg",
+        "width": 400,
+        "height": 280
+      },
+      {
+        "file": "marafon-pripyatskij-osennij-2026-8134079a-800x560.jpg",
+        "width": 800,
+        "height": 560
+      }
+    ],
+    "legacyWpId": null
   }
 }

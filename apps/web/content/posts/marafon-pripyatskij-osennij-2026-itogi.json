@@ -6,12 +6,29 @@
   "status": "published",
   "publishedAt": "2026-10-31T17:00:00.000Z",
   "expiresAt": null,
-  "updatedAt": "2026-11-21T15:04:31.085Z",
+  "updatedAt": "2026-11-21T16:26:04.519Z",
   "authorName": "Михаил Радивончик",
   "seoTitle": null,
   "seoDescription": null,
   "legacyWpId": null,
-  "cover": null,
+  "cover": {
+    "path": "2026/11/marafon-pripyatskij-osennij-2026-8134079a.jpg",
+    "width": 1181,
+    "height": 827,
+    "alt": "Марафон «Припятский осенний 2026»",
+    "variants": [
+      {
+        "file": "marafon-pripyatskij-osennij-2026-8134079a-400x280.jpg",
+        "width": 400,
+        "height": 280
+      },
+      {
+        "file": "marafon-pripyatskij-osennij-2026-8134079a-800x560.jpg",
+        "width": 800,
+        "height": 560
+      }
+    ]
+  },
   "categories": [
     "otchyoty-ob-oficialnyx-meropriyatiyax"
   ],
