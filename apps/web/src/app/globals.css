@@ -965,7 +965,8 @@ a:hover {
 /* Выравнивание по ширине включается точечно для конкретных записей (см. data-slug в post-view.tsx). */
 .prose[data-slug="reka-ubort-2019-tri-majskix-dnya"] p,
 .prose[data-slug="vitaminy-i-adaptogeny-v-gornom-poxode"] p,
-.prose[data-slug="vitaminy-i-adaptogeny-v-gornom-poxode"] li {
+.prose[data-slug="vitaminy-i-adaptogeny-v-gornom-poxode"] li,
+.prose[data-slug="reka-styr-i-pripyat-20-23-iyulya-2023-g"] p {
   text-align: justify;
 }
 
