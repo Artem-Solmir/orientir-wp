@@ -962,8 +962,10 @@ a:hover {
   margin-top: var(--space-md);
 }
 
-/* Выравнивание по ширине включается точечно для конкретной записи (см. data-slug в post-view.tsx). */
-.prose[data-slug="reka-ubort-2019-tri-majskix-dnya"] p {
+/* Выравнивание по ширине включается точечно для конкретных записей (см. data-slug в post-view.tsx). */
+.prose[data-slug="reka-ubort-2019-tri-majskix-dnya"] p,
+.prose[data-slug="vitaminy-i-adaptogeny-v-gornom-poxode"] p,
+.prose[data-slug="vitaminy-i-adaptogeny-v-gornom-poxode"] li {
   text-align: justify;
 }
 
