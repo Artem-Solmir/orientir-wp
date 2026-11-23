@@ -903,5 +903,21 @@
     "slug": "yubilej",
     "name": "юбилей",
     "legacyWpId": 172
+  },
+  {
+    "slug": "pervaya",
+    "name": "первая"
+  },
+  {
+    "slug": "pomoshh",
+    "name": "помощь"
+  },
+  {
+    "slug": "medicina",
+    "name": "медицина"
+  },
+  {
+    "slug": "spasenie",
+    "name": "спасение"
   }
 ]

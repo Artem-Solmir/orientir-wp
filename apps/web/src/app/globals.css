@@ -975,7 +975,8 @@ a:hover {
 .prose[data-slug="reka-ubort-2019-tri-majskix-dnya"] p,
 .prose[data-slug="vitaminy-i-adaptogeny-v-gornom-poxode"] p,
 .prose[data-slug="vitaminy-i-adaptogeny-v-gornom-poxode"] li,
-.prose[data-slug="reka-styr-i-pripyat-20-23-iyulya-2023-g"] p {
+.prose[data-slug="reka-styr-i-pripyat-20-23-iyulya-2023-g"] p,
+.prose[data-slug="pervaya-pomoshh-pri-utoplenii"] p {
   text-align: justify;
 }
 
