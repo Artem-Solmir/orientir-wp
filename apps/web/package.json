@@ -10,6 +10,7 @@
     "deploy:vercel": "tsx scripts/deploy-vercel.ts",
     "deploy:ftp": "tsx --env-file=.env scripts/deploy-ftp.ts",
     "deploy:ftp:probe": "tsx --env-file=.env scripts/ftp-probe.ts",
+    "ftp:cleanup": "tsx --env-file=.env scripts/ftp-cleanup.ts",
     "deploy:form-secrets": "tsx --env-file=.env scripts/deploy-form-secrets.ts",
     "content:push-private": "tsx --env-file=.env scripts/content-push-private.ts",
     "lint": "eslint",

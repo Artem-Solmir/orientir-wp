@@ -220,7 +220,7 @@ a:hover {
 .site-header {
   position: sticky;
   top: 0;
-  z-index: 20;
+  z-index: 110;
   border-bottom: var(--rule-hair) solid var(--color-rule);
   background: var(--color-paper);
 }
@@ -352,8 +352,7 @@ a:hover {
 }
 
 @media (max-width: 48rem) {
-  html:has(.menu[open]),
-  html:has(.menu[open]) body {
+  html:has(.menu[open]) {
     overflow: hidden;
   }
 
@@ -412,18 +411,28 @@ a:hover {
     display: block;
   }
 
-  .menu .menu-panel {
-    /* 100% is the header (the containing block), so the panel fills the rest of the screen */
+  html:has(.menu[open]) main,
+  html:has(.menu[open]) .site-footer {
+    visibility: hidden;
+  }
+
+  .menu[open] .menu-panel {
+    position: fixed;
+    inset-inline: 0;
+    top: var(--menu-panel-top, 4rem);
+    bottom: 0;
+    z-index: 100;
     display: flex;
     flex-direction: column;
-    height: calc(100dvh - 100%);
+    height: auto;
+    max-height: none;
     overflow-y: auto;
     padding-block: var(--space-md);
   }
 
-  .menu-panel .menu-panel-body {
-    flex: 1;
-    min-height: 0;
+  .menu[open] .menu-panel .menu-panel-body {
+    flex: none;
+    min-height: auto;
   }
 
   .menu-panel .menu-list {

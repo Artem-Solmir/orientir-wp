@@ -15,6 +15,29 @@ export function SiteMenu({ children }: { children: ReactNode }) {
     ref.current?.removeAttribute("open");
   }, [pathname]);
 
+  useEffect(() => {
+    const details = ref.current;
+    if (!details) return;
+
+    const syncPanelTop = () => {
+      const header = document.querySelector<HTMLElement>(".site-header");
+      if (!header) return;
+      document.documentElement.style.setProperty("--menu-panel-top", `${header.offsetHeight}px`);
+    };
+
+    const onToggle = () => {
+      if (details.open) syncPanelTop();
+    };
+
+    syncPanelTop();
+    details.addEventListener("toggle", onToggle);
+    window.addEventListener("resize", syncPanelTop);
+    return () => {
+      details.removeEventListener("toggle", onToggle);
+      window.removeEventListener("resize", syncPanelTop);
+    };
+  }, []);
+
   return (
     <details className="menu" ref={ref}>
       <summary className="menu-toggle">
